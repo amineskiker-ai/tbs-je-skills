@@ -531,6 +531,78 @@
               </button>
             </div>
           </div>
+        
+          <!-- LIVE GOOGLE SHEETS PRESENCE FREQUENCY CARD -->
+          <div class="px-card p-4 space-y-3 border border-white/10 bg-[#0E142A]" id="live-attendance-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Presence Frequency</span>
+              </div>
+              <button onclick="syncGoogleSheetsAttendance(true)" id="btn-sync-attendance" 
+                      class="text-[11px] font-mono text-indigo-400 hover:text-white flex items-center gap-1 transition cursor-pointer"
+                      title="Sync directly with TBS JE Attendance Google Sheet">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span>Live Sync</span>
+              </button>
+            </div>
+
+            <!-- Primary Rate & Metric Pills -->
+            <div class="flex items-baseline justify-between pt-1">
+              <div>
+                <span id="live-attendance-rate" class="text-2xl sm:text-3xl font-black text-white font-mono leading-none">77.8%</span>
+                <span class="text-[10px] text-slate-400 font-semibold block mt-1">Official Mandate Attendance</span>
+              </div>
+              <span id="live-attendance-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono">
+                Standard
+              </span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+              <div id="live-attendance-bar" class="h-full rounded-full bg-gradient-to-r from-[#5E4AE3] to-emerald-400 transition-all duration-500" style="width: 78%;"></div>
+            </div>
+
+            <!-- Detailed Counts Breakdown -->
+            <div class="grid grid-cols-4 gap-1.5 pt-1 text-center font-mono">
+              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+                <span class="text-[9px] text-slate-400 block">Present</span>
+                <span id="live-attended-count" class="text-xs font-bold text-white">7</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+                <span class="text-[9px] text-slate-400 block">Late</span>
+                <span id="live-late-count" class="text-xs font-bold text-amber-300">0</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+                <span class="text-[9px] text-slate-400 block">Excused</span>
+                <span id="live-excused-count" class="text-xs font-bold text-indigo-300">2</span>
+              </div>
+              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
+                <span class="text-[9px] text-slate-400 block">Total</span>
+                <span id="live-total-count" class="text-xs font-bold text-slate-300">9</span>
+              </div>
+            </div>
+
+            <!-- Recent Sessions History -->
+            <div class="pt-2 border-t border-white/5">
+              <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1.5">Recent Gatherings (GM & Training)</span>
+              <div id="live-sessions-strip" class="flex flex-wrap gap-1">
+                <!-- Injected dynamically via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Real-time Source Footnote -->
+            <div class="pt-1 flex items-center justify-between text-[9px] text-slate-500">
+              <span class="flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Google Sheets Live</span>
+              </span>
+              <a href="https://docs.google.com/spreadsheets/d/1-ExaEn2F1k6swU3tp8R510hTa3LteLWEjdM_kYVxYuk/edit?gid=232275285#gid=232275285" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 underline transition">
+                Open Sheet ↗
+              </a>
+            </div>
+          </div>
+
         </div>
 
         <!-- ========================================== -->
@@ -12540,6 +12612,2516 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
     
 
+    
+    // =========================================================================
+    // GOOGLE SHEETS LIVE ATTENDANCE & PRESENCE FREQUENCY ENGINE
+    // =========================================================================
+    const INITIAL_ATTENDANCE_SNAPSHOT = {
+  "abir marai": {
+    "num": "1",
+    "name": "Abir Marai",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 1,
+    "jav": 1,
+    "total": 9,
+    "rate": "77.78%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "ahmed ben ahmed": {
+    "num": "2",
+    "name": "Ahmed Ben Ahmed",
+    "present": 6,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 1,
+    "jav": 0,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "ahmed mefteh": {
+    "num": "3",
+    "name": "Ahmed Mefteh",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "ahmed skander safi": {
+    "num": "4",
+    "name": "Ahmed Skander Safi",
+    "present": 7,
+    "unexcused": 0,
+    "late": 1,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "L"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "akram jarray": {
+    "num": "5",
+    "name": "Akram Jarray",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAV"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "anas ben abdallah": {
+    "num": "6",
+    "name": "Anas Ben Abdallah",
+    "present": 7,
+    "unexcused": 0,
+    "late": 1,
+    "jai": 0,
+    "jav": 1,
+    "total": 9,
+    "rate": "77.78%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "L"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "belkis bejaoui": {
+    "num": "7",
+    "name": "Belkis Bejaoui",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "chayma ben rahma": {
+    "num": "8",
+    "name": "Chayma Ben Rahma",
+    "present": 6,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 1,
+    "jav": 1,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "emna bouzoffara": {
+    "num": "9",
+    "name": "Emna Bouzoffara",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 1,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "emna brahem": {
+    "num": "10",
+    "name": "Emna Brahem",
+    "present": 6,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 1,
+    "jav": 1,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "emna sassi": {
+    "num": "11",
+    "name": "Emna Sassi",
+    "present": 3,
+    "unexcused": 4,
+    "late": 1,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "37.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "L"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "fedi ben said": {
+    "num": "12",
+    "name": "Fedi Ben Said",
+    "present": 5,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 1,
+    "jav": 1,
+    "total": 8,
+    "rate": "62.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "feriel mhedhbi": {
+    "num": "13",
+    "name": "Feriel Mhedhbi",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "hanine harrabi": {
+    "num": "14",
+    "name": "Hanine Harrabi",
+    "present": 5,
+    "unexcused": 2,
+    "late": 0,
+    "jai": 0,
+    "jav": 2,
+    "total": 9,
+    "rate": "55.56%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "ibtihel hamouda": {
+    "num": "15",
+    "name": "Ibtihel Hamouda",
+    "present": 6,
+    "unexcused": 2,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "israa khoualdia": {
+    "num": "16",
+    "name": "Israa Khoualdia",
+    "present": 6,
+    "unexcused": 2,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "khouloud bahri": {
+    "num": "17",
+    "name": "Khouloud Bahri",
+    "present": 5,
+    "unexcused": 0,
+    "late": 1,
+    "jai": 2,
+    "jav": 1,
+    "total": 9,
+    "rate": "55.56%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "L"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "lina zouabi": {
+    "num": "18",
+    "name": "Lina Zouabi",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "mariam lassoued": {
+    "num": "19",
+    "name": "Mariam Lassoued",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "mariem mrabet": {
+    "num": "20",
+    "name": "Mariem Mrabet",
+    "present": 3,
+    "unexcused": 3,
+    "late": 0,
+    "jai": 0,
+    "jav": 2,
+    "total": 8,
+    "rate": "37.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "mariem touhami": {
+    "num": "21",
+    "name": "Mariem Touhami",
+    "present": 4,
+    "unexcused": 4,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "50.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "maram hbaieb": {
+    "num": "22",
+    "name": "Maram Hbaieb",
+    "present": 7,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "maryem bejaoui": {
+    "num": "23",
+    "name": "Maryem Bejaoui",
+    "present": 5,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 2,
+    "jav": 1,
+    "total": 8,
+    "rate": "62.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "JAV"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "mayssa attig": {
+    "num": "24",
+    "name": "Mayssa Attig",
+    "present": 4,
+    "unexcused": 4,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "50.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "miniar haj ammar": {
+    "num": "25",
+    "name": "Miniar Haj Ammar",
+    "present": 5,
+    "unexcused": 2,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "62.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "mohamed amine achouri": {
+    "num": "26",
+    "name": "Mohamed Amine Achouri",
+    "present": 5,
+    "unexcused": 2,
+    "late": 0,
+    "jai": 1,
+    "jav": 0,
+    "total": 8,
+    "rate": "62.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "mohamed amine belaid": {
+    "num": "27",
+    "name": "Mohamed Amine Belaid",
+    "present": 7,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "mohamed amine yedeas": {
+    "num": "28",
+    "name": "Mohamed Amine Yedeas",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "mohamed bara mdaini": {
+    "num": "29",
+    "name": "Mohamed Bara Mdaini",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "mohamed khalil abid": {
+    "num": "30",
+    "name": "Mohamed Khalil Abid",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "nour achich": {
+    "num": "31",
+    "name": "Nour Achich",
+    "present": 6,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "nour zouaoui": {
+    "num": "32",
+    "name": "Nour Zouaoui",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "roaa saafi": {
+    "num": "33",
+    "name": "Roaa Saafi",
+    "present": 6,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 2,
+    "jav": 1,
+    "total": 9,
+    "rate": "66.67%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "salma tissaoui": {
+    "num": "34",
+    "name": "Salma Tissaoui",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 1,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "salma yedes": {
+    "num": "35",
+    "name": "Salma Yedes",
+    "present": 8,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "100.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "sana mhadhbi": {
+    "num": "36",
+    "name": "Sana Mhadhbi",
+    "present": 7,
+    "unexcused": 1,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "sarah ben salah": {
+    "num": "37",
+    "name": "Sarah Ben Salah",
+    "present": 6,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 2,
+    "jav": 0,
+    "total": 8,
+    "rate": "75.00%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "JAI"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "sinda bel aanes": {
+    "num": "38",
+    "name": "Sinda Bel Aanes",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "syrine laroussi": {
+    "num": "39",
+    "name": "Syrine Laroussi",
+    "present": 7,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 1,
+    "total": 8,
+    "rate": "87.50%",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "takwa mathlouthi": {
+    "num": "40",
+    "name": "Takwa Mathlouthi",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAV"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "JAI"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "yasmine hannachi": {
+    "num": "41",
+    "name": "Yasmine Hannachi",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "JAI"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "A"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "youssef azaiez": {
+    "num": "42",
+    "name": "Youssef Azaiez",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "A"
+      }
+    ]
+  },
+  "youssef bouslema": {
+    "num": "43",
+    "name": "Youssef Bouslema",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "A"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "A"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "zaineb akrout": {
+    "num": "44",
+    "name": "Zaineb Akrout",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  },
+  "zaineb jlidi": {
+    "num": "45",
+    "name": "Zaineb Jlidi",
+    "present": 0,
+    "unexcused": 0,
+    "late": 0,
+    "jai": 0,
+    "jav": 0,
+    "total": 0,
+    "rate": "",
+    "sessions": [
+      {
+        "date": "13-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "14-Oct",
+        "type": "Training",
+        "val": "JAV"
+      },
+      {
+        "date": "18-Oct",
+        "type": "Team building",
+        "val": "P"
+      },
+      {
+        "date": "21-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "23-Oct",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "28-Oct",
+        "type": "Training",
+        "val": "P"
+      },
+      {
+        "date": "2-Nov",
+        "type": "GM",
+        "val": "P"
+      },
+      {
+        "date": "15-Nov",
+        "type": "AG",
+        "val": "P"
+      }
+    ]
+  }
+};
+    let attendanceDataStore = {};
+
+    try {
+      const cached = localStorage.getItem('tbs_je_attendance_cache');
+      if (cached) {
+        attendanceDataStore = JSON.parse(cached);
+      } else {
+        attendanceDataStore = INITIAL_ATTENDANCE_SNAPSHOT;
+      }
+    } catch(e) {
+      attendanceDataStore = INITIAL_ATTENDANCE_SNAPSHOT;
+    }
+
+    // JSONP Handler for Google Sheets GViz endpoint
+    window.handleGoogleAttendance = function(resp) {
+      try {
+        if (!resp || !resp.table || !resp.table.rows) return;
+        const rows = resp.table.rows;
+        if (rows.length < 3) return;
+
+        const r1 = rows[1].c;
+        const r0 = rows[0].c;
+        const sessionDates = [];
+        const sessionTypes = [];
+
+        for (let i = 2; i < 10; i++) {
+          sessionDates.push(r1[i] ? String(r1[i].v || '') : '');
+          sessionTypes.push(r0[i] ? String(r0[i].v || '') : '');
+        }
+
+        const parsed = {};
+        for (let ri = 2; ri < rows.length; ri++) {
+          const row = rows[ri].c;
+          if (!row || !row[1] || !row[1].v) continue;
+          const name = String(row[1].v).trim();
+          const num = row[0] ? String(row[0].v || '') : '';
+
+          const present = row[51] ? Number(row[51].v || 0) : 0;
+          const unexcused = row[52] ? Number(row[52].v || 0) : 0;
+          const late = row[53] ? Number(row[53].v || 0) : 0;
+          const jai = row[54] ? Number(row[54].v || 0) : 0;
+          const jav = row[55] ? Number(row[55].v || 0) : 0;
+          const total = row[56] ? Number(row[56].v || 0) : 0;
+          
+          let rate = row[57] ? (row[57].f || (Math.round(Number(row[57].v || 0) * 1000) / 10 + '%')) : '';
+          if (!rate && total > 0) {
+            rate = Math.round(((present + 0.5 * (jai + jav)) / total) * 1000) / 10 + '%';
+          }
+
+          const sessions = [];
+          for (let s = 2; s < 10; s++) {
+            const val = row[s] ? String(row[s].v || '') : '';
+            sessions.push({
+              date: sessionDates[s - 2],
+              type: sessionTypes[s - 2],
+              val: val
+            });
+          }
+
+          parsed[name.toLowerCase()] = {
+            num: num,
+            name: name,
+            present: present,
+            unexcused: unexcused,
+            late: late,
+            jai: jai,
+            jav: jav,
+            total: total,
+            rate: rate,
+            sessions: sessions
+          };
+        }
+
+        attendanceDataStore = parsed;
+        try {
+          localStorage.setItem('tbs_je_attendance_cache', JSON.stringify(parsed));
+        } catch(e) {}
+
+        if (typeof renderPlayerCard === 'function') renderPlayerCard();
+        if (typeof renderAdminTab === 'function') renderAdminTab();
+
+        const btn = document.getElementById('btn-sync-attendance');
+        if (btn) {
+          btn.innerHTML = `<svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Synced!</span>`;
+          setTimeout(() => {
+            btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span>Live Sync</span>`;
+          }, 2500);
+        }
+      } catch(err) {
+        console.error("Error parsing Google Sheets attendance:", err);
+      }
+    };
+
+    function syncGoogleSheetsAttendance(force) {
+      const btn = document.getElementById('btn-sync-attendance');
+      if (btn) {
+        btn.innerHTML = `<svg class="w-3.5 h-3.5 animate-spin text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg><span>Syncing...</span>`;
+      }
+
+      const existing = document.getElementById('gviz-attendance-script');
+      if (existing) existing.remove();
+
+      const script = document.createElement('script');
+      script.id = 'gviz-attendance-script';
+      script.src = `https://docs.google.com/spreadsheets/d/1-ExaEn2F1k6swU3tp8R510hTa3LteLWEjdM_kYVxYuk/gviz/tq?tqx=responseHandler:handleGoogleAttendance&gid=232275285&_cb=${Date.now()}`;
+      script.onerror = function() {
+        console.warn("Google Sheets JSONP sync failed, relying on cached presence data.");
+        if (btn) btn.innerHTML = `<span>Cached</span>`;
+      };
+      document.body.appendChild(script);
+    }
+
+    // Auto-trigger sync on load and periodically every 3 minutes
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => syncGoogleSheetsAttendance(), 800);
+      setInterval(() => syncGoogleSheetsAttendance(), 3 * 60 * 1000);
+    });
+
+
     function renderPlayerCard() {
       if (!appState || !Array.isArray(appState.members) || appState.members.length === 0) return;
 
@@ -12680,6 +15262,86 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
 
       // Render Radar
+      
+      // UPDATE LIVE ATTENDANCE WIDGET
+      try {
+        const att = (m && m.name) ? attendanceDataStore[m.name.toLowerCase()] : null;
+        const rateEl = document.getElementById('live-attendance-rate');
+        const badgeEl = document.getElementById('live-attendance-badge');
+        const barEl = document.getElementById('live-attendance-bar');
+        const attendedEl = document.getElementById('live-attended-count');
+        const lateEl = document.getElementById('live-late-count');
+        const excusedEl = document.getElementById('live-excused-count');
+        const totalEl = document.getElementById('live-total-count');
+        const stripEl = document.getElementById('live-sessions-strip');
+
+        if (att) {
+          const rateNum = parseFloat(att.rate) || 0;
+          if (rateEl) rateEl.innerText = att.rate || '0%';
+          if (barEl) barEl.style.width = Math.min(100, Math.max(5, rateNum)) + '%';
+          if (attendedEl) attendedEl.innerText = att.present || '0';
+          if (lateEl) lateEl.innerText = att.late || '0';
+          if (excusedEl) excusedEl.innerText = ((att.jai || 0) + (att.jav || 0)) || '0';
+          if (totalEl) totalEl.innerText = att.total || '0';
+
+          if (badgeEl) {
+            if (rateNum >= 90) {
+              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono";
+              badgeEl.innerText = "Honor Roll";
+            } else if (rateNum >= 75) {
+              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono";
+              badgeEl.innerText = "Standard";
+            } else {
+              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono";
+              badgeEl.innerText = "Attendance Alert";
+            }
+          }
+
+          if (stripEl && Array.isArray(att.sessions)) {
+            stripEl.innerHTML = '';
+            att.sessions.forEach(sess => {
+              let badgeStyle = "bg-white/[0.04] text-slate-400 border border-white/5";
+              let icon = sess.val || '-';
+              if (sess.val === 'P') {
+                badgeStyle = "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
+                icon = "✓ P";
+              } else if (sess.val === 'L') {
+                badgeStyle = "bg-amber-500/15 text-amber-300 border border-amber-500/30";
+                icon = "⏱ L";
+              } else if (sess.val === 'JAI' || sess.val === 'JAV') {
+                badgeStyle = "bg-indigo-500/15 text-indigo-300 border border-indigo-500/30";
+                icon = sess.val;
+              } else if (sess.val === 'A') {
+                badgeStyle = "bg-rose-500/15 text-rose-300 border border-rose-500/30";
+                icon = "✗ A";
+              }
+              stripEl.innerHTML += `
+                <div class="px-2 py-1 rounded-lg ${badgeStyle} text-[10px] font-mono flex items-center gap-1" title="${escapeHtml(sess.type)} (${escapeHtml(sess.date)})">
+                  <span class="text-slate-400 text-[9px]">${escapeHtml(sess.date)}:</span>
+                  <span class="font-bold">${escapeHtml(icon)}</span>
+                </div>
+              `;
+            });
+          }
+        } else {
+          if (rateEl) rateEl.innerText = '100%';
+          if (barEl) barEl.style.width = '100%';
+          if (attendedEl) attendedEl.innerText = '0';
+          if (lateEl) lateEl.innerText = '0';
+          if (excusedEl) excusedEl.innerText = '0';
+          if (totalEl) totalEl.innerText = '0';
+          if (badgeEl) {
+            badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono";
+            badgeEl.innerText = "New Member";
+          }
+          if (stripEl) {
+            stripEl.innerHTML = '<span class="text-[10px] text-slate-500">Pending initial attendance logging by HR</span>';
+          }
+        }
+      } catch(attErr) {
+        console.warn("Attendance render error:", attErr);
+      }
+
       if (typeof drawAthleteRadar === 'function') {
         try {
           drawAthleteRadar(m, 'athleteSingleRadarCanvas');
