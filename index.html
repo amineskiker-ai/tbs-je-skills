@@ -400,9 +400,11 @@
               <span class="font-bold">Mandate 26-27</span>
               <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px] font-mono">24%</span>
             </div>
-            <div class="px-capsule px-capsule-lilac">
-              <span class="font-medium">Project Time</span>
-              <span class="font-bold font-mono">65%</span>
+            <div class="px-capsule bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm flex items-center gap-2 cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})" title="Click to view full attendance breakdown">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-slate-300 font-medium">Presence Rate</span>
+              <span id="hero-presence-rate-pill" class="font-extrabold font-mono text-white text-xs">77.78%</span>
+              <span id="hero-presence-badge-pill" class="bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono uppercase">Standard</span>
             </div>
             <div class="px-capsule px-capsule-peach">
               <span class="font-medium">Output</span>
@@ -512,6 +514,18 @@
                 <span id="hero-dept-tag">Hexacom • Hexapro 3</span>
               </div>
               <span class="text-[10px] text-slate-400 font-mono">S1/S2</span>
+            </div>
+
+            <!-- Live Presence Frequency Row (Directly visible in Drawer) -->
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#131C38] border border-white/5 text-xs font-bold text-slate-200 transition cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs">📅</span>
+                <span>Presence Frequency</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="drawer-presence-rate" class="font-mono text-xs font-extrabold text-white">77.78%</span>
+                <span id="drawer-presence-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono">Standard</span>
+              </div>
             </div>
 
             <!-- Director Endorsements Badge Row -->
@@ -15278,6 +15292,22 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         if (att) {
           const rateNum = parseFloat(att.rate) || 0;
           if (rateEl) rateEl.innerText = att.rate || '0%';
+          const heroRateEl = document.getElementById('hero-presence-rate-pill');
+          const heroBadgeEl = document.getElementById('hero-presence-badge-pill');
+          const drawerRateEl = document.getElementById('drawer-presence-rate');
+          const drawerBadgeEl = document.getElementById('drawer-presence-badge');
+
+          if (heroRateEl) heroRateEl.innerText = att.rate || '0%';
+          if (drawerRateEl) drawerRateEl.innerText = att.rate || '0%';
+
+          if (heroBadgeEl) {
+            heroBadgeEl.innerText = (parseFloat(att.rate) >= 90) ? "Honor Roll" : ((parseFloat(att.rate) >= 75) ? "Standard" : "Alert");
+            heroBadgeEl.className = (parseFloat(att.rate) >= 90) ? "bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : ((parseFloat(att.rate) >= 75) ? "bg-indigo-500/30 text-indigo-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : "bg-amber-500/30 text-amber-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono");
+          }
+          if (drawerBadgeEl) {
+            drawerBadgeEl.innerText = (parseFloat(att.rate) >= 90) ? "Honor Roll" : ((parseFloat(att.rate) >= 75) ? "Standard" : "Alert");
+            drawerBadgeEl.className = (parseFloat(att.rate) >= 90) ? "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono" : ((parseFloat(att.rate) >= 75) ? "px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono" : "px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono");
+          }
           if (barEl) barEl.style.width = Math.min(100, Math.max(5, rateNum)) + '%';
           if (attendedEl) attendedEl.innerText = att.present || '0';
           if (lateEl) lateEl.innerText = att.late || '0';
