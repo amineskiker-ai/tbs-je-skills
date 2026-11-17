@@ -10,6 +10,227 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --bg-canvas: #090D16;
+      --surface-header: rgba(10, 13, 20, 0.92);
+      --surface-base: #0E131F;
+      --surface-card: #111726;
+      --surface-subtle: #151D30;
+      --surface-interactive: #1A243B;
+      --surface-active: #1E2945;
+      --border-subtle: #161F33;
+      --border-default: #1E283D;
+      --border-strong: #2A3854;
+      --border-focus: #6366F1;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --accent-primary: #4F46E5;
+      --accent-hover: #4338CA;
+      --accent-tint: rgba(99, 102, 241, 0.12);
+      --accent-border: rgba(99, 102, 241, 0.35);
+      --amber-accent: #F59E0B;
+      --emerald-accent: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.011em;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* Production SaaS Structural Surfaces (Solid, technical, flat & crisp) */
+    .saas-header {
+      background: var(--surface-header);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .saas-panel {
+      background: var(--surface-base);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+    }
+
+    .saas-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .saas-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .saas-tile {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+    }
+
+    /* Segmented Tab Navigation Control */
+    .saas-tab-nav {
+      background: #0E131F;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .saas-tab-btn {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .saas-tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--surface-interactive);
+    }
+
+    .tab-item-active {
+      background: #1C2438 !important;
+      color: #FFFFFF !important;
+      border: 1px solid #2B3754 !important;
+      font-weight: 600 !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Forms & Inputs */
+    .saas-input {
+      background: #0B0F19;
+      border: 1px solid var(--border-default);
+      color: var(--text-primary);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .saas-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    .saas-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .saas-btn-primary {
+      background-color: var(--accent-primary);
+      color: #FFFFFF;
+      font-weight: 500;
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .saas-btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .saas-btn-secondary {
+      background-color: var(--surface-subtle);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .saas-btn-secondary:hover {
+      background-color: var(--surface-interactive);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    /* Badges & Tags */
+    .saas-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* Tactical Star Rating */
+    .star-btn {
+      transition: transform 0.1s ease, color 0.1s ease;
+    }
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* Range input styling */
+    input[type=range] {
+      accent-color: var(--border-focus);
+      height: 4px;
+    }
+
+    /* Scrollbars */
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E283D;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2D3A56;
+    }
+  </style>
+<style>
+    :root {
       --bg-body: #F4F5F9;
       --bg-card: #FFFFFF;
       --bg-card-subtle: #F8F9FD;
@@ -27,7 +248,7 @@
       --accent-peach-text: #D97706;
       --accent-mint: #ECFDF5;
       --accent-mint-text: #059669;
-      --border-light: rgba(0, 0, 0, 0.05);
+      --border-light: rgba(0, 0, 0, 0.06);
       --border-subtle: #E2E8F0;
       --card-radius: 24px;
       --inner-radius: 16px;
@@ -60,9 +281,7 @@
       --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -70,8 +289,6 @@
       color: var(--text-primary);
       min-height: 100vh;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       letter-spacing: -0.012em;
       transition: background-color 0.25s ease, color 0.25s ease;
     }
@@ -80,7 +297,6 @@
       font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
-    /* Peoplexio Header & Shell */
     .peoplexio-header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-light);
@@ -88,116 +304,63 @@
       transition: background-color 0.25s ease;
     }
 
-    /* Peoplexio Cards (Smooth, rounded, soft elevation) */
     .px-card {
       background: var(--bg-card);
       border-radius: var(--card-radius);
       padding: 24px;
       box-shadow: var(--shadow-card);
       border: 1px solid var(--border-light);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.25s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .px-card:hover {
-      box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06);
+    .px-card-subtle {
+      background: var(--bg-card-subtle);
+      border-radius: var(--inner-radius);
+      border: 1px solid var(--border-light);
     }
 
-    /* Signature Peoplexio Dark Contrast Card */
     .px-dark-card {
       background: var(--bg-dark-card);
       color: var(--text-dark-card);
       border-radius: var(--card-radius);
       padding: 24px;
-      box-shadow: 0 8px 25px -5px rgba(22, 25, 46, 0.4);
-    }
-
-    /* Peoplexio Pill Shapes */
-    .px-pill-nav {
-      background: var(--bg-card-subtle);
-      border: 1px solid var(--border-light);
-      border-radius: var(--pill-radius);
-      padding: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.25);
     }
 
     .px-pill-btn {
-      color: var(--text-secondary);
+      border-radius: var(--pill-radius);
+      padding: 7px 18px;
       font-size: 13px;
       font-weight: 600;
-      padding: 8px 18px;
-      border-radius: var(--pill-radius);
-      border: none;
       transition: all 0.15s ease;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .px-pill-btn:hover {
-      color: var(--text-primary);
+      border: none;
     }
 
     .tab-item-active {
-      background: var(--primary-purple) !important;
+      background-color: var(--primary-purple) !important;
       color: #FFFFFF !important;
-      box-shadow: 0 4px 14px rgba(94, 74, 227, 0.35) !important;
-    }
-
-    /* Peoplexio Action Buttons */
-    .px-btn-primary {
-      background: var(--primary-purple);
-      color: #FFFFFF;
-      font-weight: 600;
-      font-size: 13px;
-      padding: 9px 20px;
-      border-radius: var(--pill-radius);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.15s ease;
       box-shadow: 0 4px 14px rgba(94, 74, 227, 0.3);
-      cursor: pointer;
     }
 
-    .px-btn-primary:hover {
-      background: var(--primary-purple-hover);
-      transform: translateY(-1px);
-    }
-
-    .px-btn-secondary {
-      background: var(--bg-card-subtle);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-primary);
-      font-weight: 600;
-      font-size: 13px;
-      padding: 8px 16px;
-      border-radius: var(--pill-radius);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-      cursor: pointer;
-    }
-
-    .px-btn-secondary:hover {
-      background: var(--primary-purple-light);
-      color: var(--primary-purple);
-      border-color: var(--primary-purple);
-    }
-
-    /* Peoplexio Status Capsules & Badges */
     .px-capsule {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       padding: 6px 14px;
       border-radius: var(--pill-radius);
       font-size: 12px;
       font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .px-capsule-navy {
+      background: var(--accent-navy);
+      color: #FFFFFF;
     }
 
     .px-capsule-purple {
@@ -210,11 +373,6 @@
       color: var(--primary-purple);
     }
 
-    .px-capsule-navy {
-      background: var(--accent-navy);
-      color: #FFFFFF;
-    }
-
     .px-capsule-peach {
       background: var(--accent-peach);
       color: var(--accent-peach-text);
@@ -225,135 +383,99 @@
       color: var(--accent-mint-text);
     }
 
-    /* Inputs */
-    .px-input {
-      background: var(--bg-card-subtle);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-primary);
-      border-radius: 12px;
-      padding: 8px 14px;
-      font-size: 13px;
-      transition: all 0.15s ease;
+    .px-bar {
+      width: 14px;
+      border-radius: 9999px;
+      background: #E2E8F0;
+      transition: height 0.4s ease, background-color 0.2s ease;
     }
 
-    .px-input:focus {
-      outline: none;
-      border-color: var(--primary-purple);
-      box-shadow: 0 0 0 3px var(--primary-purple-tint);
+    [data-theme="dark"] .px-bar {
+      background: #1E283D;
     }
 
-    /* Tactical Star Rating */
-    .star-btn {
-      transition: transform 0.1s ease, color 0.1s ease;
-    }
-    .star-btn:hover {
-      transform: scale(1.2);
+    .px-bar-active {
+      background: var(--primary-purple) !important;
     }
 
-    /* Vertical Bar Chart Styles */
-    .px-bar-track {
-      background: var(--primary-purple-light);
-      border-radius: var(--pill-radius);
-      width: 12px;
-      height: 90px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .px-bar-fill {
-      background: var(--primary-purple);
-      border-radius: var(--pill-radius);
-      width: 100%;
-      transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Scrollbars */
-    .scrollbar-none::-webkit-scrollbar { display: none; }
-    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-subtle);
-      border-radius: 3px;
+    .px-circle-progress {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
     }
   </style>
-</head>
-<body class="min-h-screen flex flex-col font-sans antialiased">
 
-  <!-- PEOPLEXIO TOP NAVIGATION BAR -->
-  <header class="peoplexio-header sticky top-0 z-40 w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+</head>
+<body class="bg-[#090D16] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
+
+  <!-- TOP APP BAR -->
+  <!-- PEOPLEXIO TOP NAVBAR -->
+  <header class="peoplexio-header sticky top-0 z-40">
+    <div class="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
       
-      <!-- Brand & Tagline -->
+      <!-- Brand & Subtitle -->
       <div class="flex items-center gap-3 shrink-0 cursor-pointer" onclick="setMainTab('player')">
-        <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-extrabold text-xl shadow-md">
+        <div class="w-10 h-10 rounded-2xl bg-[#5E4AE3] flex items-center justify-center text-white font-extrabold text-xl shadow-md shadow-indigo-500/20">
           P
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">Peoplexio</h1>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">TBS JE</span>
+            <span class="text-lg font-black text-slate-900 dark:text-white tracking-tight">Peoplexio</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-mono">TBS JE</span>
           </div>
-          <span class="text-[11px] text-slate-500 font-medium block mt-0.5">Empower. Engage. Elevate. • Mandate 2026-2027</span>
+          <span class="text-[11px] text-slate-400 font-medium block -mt-0.5">Empower. Engage. Elevate.</span>
         </div>
       </div>
 
-      <!-- Center Capsule Tab Navigation -->
-      <nav class="px-pill-nav overflow-x-auto max-w-full scrollbar-none">
+      <!-- Floating Pill Navigation (Peoplexio Center Navigation) -->
+      <nav class="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200/60 dark:border-slate-800/60 shadow-xs">
         <button onclick="setMainTab('player')" id="tab-btn-player" class="px-pill-btn tab-item-active">
-          <span>Dashboard</span>
+          Dashboard
         </button>
-        <button onclick="setMainTab('admin')" id="tab-btn-admin" class="px-pill-btn">
-          <span>People (47)</span>
+        <button onclick="setMainTab('admin')" id="tab-btn-admin" class="px-pill-btn text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          Members
         </button>
-        <button onclick="setMainTab('skills')" id="tab-btn-skills" class="px-pill-btn">
-          <span>Self-Evaluation</span>
+        <button onclick="setMainTab('skills')" id="tab-btn-skills" class="px-pill-btn text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          Skills Radar
         </button>
-        <button onclick="setMainTab('manager')" id="tab-btn-manager" class="px-pill-btn">
-          <span>Manager Review</span>
+        <button onclick="setMainTab('manager')" id="tab-btn-manager" class="px-pill-btn text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          Staffing
         </button>
-        <button onclick="setMainTab('board')" id="tab-btn-board" class="px-pill-btn">
-          <span>Analytics</span>
+        <button onclick="setMainTab('board')" id="tab-btn-board" class="px-pill-btn text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          Leaderboard
         </button>
-        <button onclick="setMainTab('execboard')" id="tab-btn-execboard" class="px-pill-btn">
-          <span>Executive Board</span>
+        <button onclick="setMainTab('execboard')" id="tab-btn-execboard" class="px-pill-btn text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          Executive Board
         </button>
       </nav>
 
-      <!-- Right Actions Toolbar (Settings, Theme, Profile) -->
-      <div class="flex items-center gap-3 shrink-0">
-        <!-- Theme Toggle Button -->
-        <button onclick="togglePeoplexioTheme()" id="theme-toggle-btn" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition cursor-pointer" title="Toggle Light / Dark Palette">
-          <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.03 9.03 0 008.354-5.646z"/></svg>
+      <!-- Right Action Controls (Theme Switcher, QR, Notifications, Profile) -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <!-- 1-Click Theme Toggle Button (Light <-> Dark) -->
+        <button onclick="togglePeoplexioTheme()" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition cursor-pointer" title="Toggle Light/Dark Theme">
+          <svg class="w-4 h-4 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-4 h-4 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
         </button>
 
-        <button onclick="openAddMemberModal()" class="px-btn-primary hidden sm:inline-flex">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span>Add Member</span>
+        <!-- Digital Passport QR Code Quick Modal Trigger -->
+        <button onclick="openQrBadgeModal()" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition cursor-pointer" title="Passport QR Code">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
         </button>
 
-        <div class="relative hidden lg:block">
-          <input type="text" id="consultant-search" oninput="onSearchFilter(this.value)" placeholder="Search..." class="px-input pl-8 pr-3 py-1.5 w-36">
-          <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <!-- Notification Bell with Badge -->
+        <div class="relative">
+          <button class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </button>
+          <span class="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#5E4AE3] text-white text-[9px] font-bold flex items-center justify-center border-2 border-white dark:border-slate-900">
+            3
+          </span>
         </div>
 
-        <button onclick="openQrBadgeModal()" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-indigo-600 transition cursor-pointer relative" title="Notifications & Pass">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          <span class="w-2 h-2 rounded-full bg-indigo-600 absolute top-2 right-2 ring-2 ring-white dark:ring-slate-900"></span>
-        </button>
-
-        <!-- Consultant Avatar Icon -->
-        <div onclick="navigateRoster(1)" class="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-300 font-bold text-xs flex items-center justify-center cursor-pointer border border-indigo-200 dark:border-indigo-800 shrink-0" title="Next Consultant Profile">
-          <span id="sync-count-tag">47</span>
+        <!-- User Avatar Circle -->
+        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shadow-xs cursor-pointer" onclick="setMainTab('player')">
+          AM
         </div>
       </div>
-
     </div>
   </header>
 
@@ -365,451 +487,176 @@
     <!-- ========================================================= -->
     <div id="section-player" class="tab-panel space-y-8">
       
-      <!-- PEOPLEXIO WELCOME BANNER & STATS STRIP -->
-      <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6 pb-2">
-        <div class="space-y-3">
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Welcome in, <span id="card-consultant-name">Abir Marai</span>
-          </h2>
-          
-          <!-- 4 Segmented Progress Capsules (Interviews, Hired, Project time, Output) -->
-          <div class="flex flex-wrap items-center gap-2 text-xs">
-            <div class="px-capsule px-capsule-navy shadow-sm">
-              <span class="text-slate-400 font-medium">Project S1</span>
-              <span id="pill-height" class="font-bold">Hexacom</span>
-              <span class="bg-indigo-500/40 px-1.5 py-0.5 rounded-full text-[10px] font-mono">18%</span>
-            </div>
-            <div class="px-capsule px-capsule-purple shadow-sm">
-              <span class="text-indigo-200 font-medium">Hired</span>
-              <span class="font-bold">Mandate 26-27</span>
-              <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px] font-mono">24%</span>
-            </div>
-            <div class="px-capsule px-capsule-lilac">
-              <span class="font-medium">Project Time</span>
-              <span class="font-bold font-mono">65%</span>
-            </div>
-            <div class="px-capsule px-capsule-peach">
-              <span class="font-medium">Output</span>
-              <span class="font-bold font-mono" id="hero-stat-growth">+82%</span>
-            </div>
+      <!-- TOP ROSTER NAVIGATION TOOLBAR -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#1E283D]">
+        <div class="flex items-center gap-2">
+          <button onclick="navigateRoster(-1)" class="saas-btn-secondary py-1 px-2.5 text-xs cursor-pointer" title="Previous Consultant">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            <span class="hidden sm:inline">Prev</span>
+          </button>
+          <div class="px-3 py-1 rounded-md bg-[#111726] border border-[#1E283D] font-mono text-xs text-indigo-400 font-semibold" id="roster-index-tag">
+            01 / 47
           </div>
+          <button onclick="navigateRoster(1)" class="saas-btn-secondary py-1 px-2.5 text-xs cursor-pointer" title="Next Consultant">
+            <span class="hidden sm:inline">Next</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <span class="text-xs text-slate-500 font-mono ml-2 hidden md:inline">Jersey #<span id="big-jersey-number">01</span></span>
         </div>
 
-        <!-- 3 Top-Right Big Counters (Employees, Openings, Departments) -->
-        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            </div>
-            <div>
-              <span class="text-2xl font-extrabold text-slate-900 dark:text-white font-mono block leading-none">47</span>
-              <span class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Consultants</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            </div>
-            <div>
-              <span class="text-2xl font-extrabold text-slate-900 dark:text-white font-mono block leading-none">16</span>
-              <span class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Projects</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            </div>
-            <div>
-              <span class="text-2xl font-extrabold text-slate-900 dark:text-white font-mono block leading-none">38</span>
-              <span class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Studies</span>
-            </div>
-          </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openEditMemberModal(currentMemberId)" class="saas-btn-secondary py-1 px-3 text-xs cursor-pointer" title="Edit Member Profile">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            <span>Edit Profile</span>
+          </button>
+          <button onclick="copyCurrentLink()" id="btn-copy-consultant-link" class="saas-btn-secondary py-1 px-3 text-xs cursor-pointer" title="Share direct profile link">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <span>Copy Link</span>
+          </button>
         </div>
       </div>
 
-      <!-- PEOPLEXIO 4-COLUMN MAIN WORKSPACE GRID -->
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-6">
+      <!-- 3-COLUMN PROFILE GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <!-- ========================================== -->
-        <!-- COL 1 (xl:col-span-3): PROFILE & DRAWER    -->
-        <!-- ========================================== -->
-        <div class="xl:col-span-3 space-y-4">
-          <!-- Portrait Box with Purple Pill Overlay -->
-          <div class="relative w-full aspect-[4/5] rounded-[24px] overflow-hidden shadow-sm group bg-slate-100 dark:bg-slate-800 border border-black/5 dark:border-white/5" id="hero-photo-box">
-            <img id="hero-photo" src="" alt="Consultant" class="w-full h-full object-cover object-top transition duration-500 group-hover:scale-105">
+        <!-- LEFT: PORTRAIT & PROFESSIONAL IDENTITY -->
+        <div class="lg:col-span-3 flex flex-col items-center">
+          <div class="relative w-full max-w-[280px] aspect-[3/4] rounded-xl overflow-hidden border border-[#1E283D] bg-[#0E131F] group" id="hero-photo-box">
+            <img id="hero-photo" src="" alt="Consultant" class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-102">
             
-            <!-- Bottom Scrim & Identity -->
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-5">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h3 id="hero-name-overlay" class="text-xl font-extrabold text-white leading-tight">Abir Marai</h3>
-                  <p id="card-consultant-sub" class="text-xs font-semibold text-slate-200 mt-0.5">Junior Consultant</p>
-                </div>
-                
-                <!-- Purple Salary/Stat Pill Badge -->
-                <div class="px-3 py-1.5 rounded-full bg-indigo-600/90 text-white text-xs font-bold shadow-md backdrop-blur-xs text-right">
-                  <span id="hero-major-badge" class="block text-[11px] font-mono leading-none">Analytics</span>
-                  <span class="text-[9px] text-indigo-200 font-normal">Major</span>
-                </div>
-              </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#090D16] via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none">
+              <span id="hero-dept-tag" class="text-[10px] font-semibold uppercase tracking-wider text-indigo-400">Projects: Hexacom • Hexapro 3</span>
+              <h3 id="hero-name-overlay" class="text-lg font-semibold text-white leading-tight mt-0.5">Abir Marai</h3>
             </div>
 
-            <!-- Direct Upload Trigger -->
-            <label class="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-indigo-600 text-white cursor-pointer transition shadow-md backdrop-blur-xs" title="Change photo">
+            <!-- Direct Upload Overlay -->
+            <label class="absolute top-2.5 right-2.5 p-2 rounded-lg bg-black/75 hover:bg-indigo-600 text-white cursor-pointer transition border border-white/10 flex items-center gap-1.5 z-10" title="Change photo (click or drag an image)">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span class="text-[11px] font-medium hidden group-hover:inline">Change</span>
               <input type="file" accept="image/*" class="hidden" onchange="uploadDirectHeroPhoto(event)">
             </label>
 
             <!-- Drag hint -->
-            <div id="hero-drag-hint" class="absolute inset-0 bg-indigo-900/90 rounded-[24px] hidden flex flex-col items-center justify-center p-4 text-center z-20 pointer-events-none">
-              <span class="text-sm font-bold text-white">Drop photo here</span>
+            <div id="hero-drag-hint" class="absolute inset-0 bg-indigo-950/90 border-2 border-dashed border-indigo-500 rounded-xl hidden flex flex-col items-center justify-center p-4 text-center z-20 pointer-events-none">
+              <svg class="w-8 h-8 text-indigo-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              <span class="text-xs font-semibold text-white">Drop image here</span>
             </div>
           </div>
 
-          <!-- Profile Details Drawer (Peoplexio Accordion Style) -->
-          <div class="px-card p-4 space-y-1">
-            <!-- Roster Navigation Row -->
-            <div class="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 mb-2">
-              <span class="text-xs font-bold text-slate-500">Roster Index</span>
-              <div class="flex items-center gap-2">
-                <button onclick="navigateRoster(-1)" class="w-6 h-6 rounded-full bg-white dark:bg-slate-700 shadow-xs flex items-center justify-center text-xs font-bold hover:text-indigo-600 transition">‹</button>
-                <span id="roster-index-tag" class="font-mono text-xs font-extrabold text-indigo-600 dark:text-indigo-400">01 / 47</span>
-                <button onclick="navigateRoster(1)" class="w-6 h-6 rounded-full bg-white dark:bg-slate-700 shadow-xs flex items-center justify-center text-xs font-bold hover:text-indigo-600 transition">›</button>
-              </div>
-            </div>
+          <!-- Official LinkedIn Profile Button -->
+          <a id="hero-linkedin-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-3 w-full max-w-[280px] py-2 px-3 rounded-lg bg-[#0A66C2]/15 hover:bg-[#0A66C2]/25 text-[#70B5F9] border border-[#0A66C2]/30 text-xs font-medium transition flex items-center justify-center gap-2 cursor-pointer group" title="Open official LinkedIn profile">
+            <svg class="w-3.5 h-3.5 fill-current text-[#70B5F9] transition" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>LinkedIn Profile</span>
+            <svg class="w-3 h-3 text-[#70B5F9]/60 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
 
-            <!-- LinkedIn Profile Link Row -->
-            <a id="hero-linkedin-link" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-200 transition group">
-              <div class="flex items-center gap-2.5">
-                <span class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 flex items-center justify-center text-xs">in</span>
-                <span>LinkedIn Profile</span>
-              </div>
-              <svg class="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </a>
+        <!-- CENTER: COMPETENCY RADAR CHART -->
+        <div class="lg:col-span-4 saas-panel p-5 flex flex-col items-center justify-between">
+          <div class="w-full flex items-center justify-between pb-2 border-b border-[#1E283D]">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Competency Web</span>
+            <span class="text-[11px] font-mono text-indigo-400">360° Matrix</span>
+          </div>
 
-            <!-- Assigned Teams Row -->
-            <div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-200 transition">
-              <div class="flex items-center gap-2.5">
-                <span class="w-7 h-7 rounded-lg bg-purple-50 dark:bg-purple-950/50 text-purple-600 flex items-center justify-center text-xs">💼</span>
-                <span id="hero-dept-tag">Hexacom • Hexapro 3</span>
-              </div>
-              <span class="text-[10px] text-slate-400 font-mono">S1/S2</span>
-            </div>
+          <div class="my-3 flex justify-center w-full">
+            <canvas id="athleteSingleRadarCanvas" width="320" height="280" class="max-w-full"></canvas>
+          </div>
 
-            <!-- Director Endorsements Badge Row -->
-            <div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer" onclick="document.getElementById('player-project-experiences-container').scrollIntoView({behavior: 'smooth'})">
-              <div class="flex items-center gap-2.5">
-                <span class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 flex items-center justify-center text-xs">🏆</span>
-                <span>Honors & Badges</span>
-              </div>
-              <span id="player-badges-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400">3 Honors</span>
-            </div>
-            <!-- Badges Render Container -->
-            <div id="player-badges-container" class="flex flex-wrap gap-1.5 pt-2"></div>
-
-            <!-- Edit Profile Action Button -->
-            <div class="pt-2">
-              <button onclick="openEditMemberModal(currentMemberId)" class="w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-200 hover:text-indigo-600 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                <span>Edit Profile</span>
-              </button>
-            </div>
+          <div class="flex items-center justify-center gap-5 text-xs text-slate-400 pt-2 border-t border-[#1E283D] w-full">
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-1 bg-indigo-500 rounded-sm inline-block"></span> Assessed Profile</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-1 border-t-2 border-dashed border-slate-500 inline-block"></span> TBS JE Benchmark</span>
           </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- COL 2 (xl:col-span-3): HIRING PROGRESS     -->
-        <!-- ========================================== -->
-        <div class="xl:col-span-3 px-card flex flex-col justify-between">
+        <!-- RIGHT: PERFORMANCE METRICS & HONORS -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          
           <div>
             <div class="flex items-center justify-between">
-              <span class="text-sm font-extrabold text-slate-800 dark:text-white">Mission Progress</span>
-              <button onclick="setMainTab('board')" class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-indigo-600 transition cursor-pointer" title="View Detailed Analytics">
-                ↗
-              </button>
-            </div>
-
-            <div class="mt-4 flex items-baseline gap-2">
-              <span class="text-3xl font-black text-slate-900 dark:text-white font-mono" id="hero-stat-initiatives">12</span>
-              <span class="text-xs font-semibold text-slate-500">Initiatives</span>
-            </div>
-            <span class="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-0.5">
-              ↑ 20% vs cohort average
-            </span>
-          </div>
-
-          <!-- Vertical Bar Chart (Peoplexio S M T W T F S Style) -->
-          <div class="pt-6">
-            <div class="relative flex items-end justify-between gap-2 h-28 px-1">
-              <!-- Floating active badge over Thursday bar -->
-              <div class="absolute -top-3 right-6 px-2 py-0.5 rounded-full bg-indigo-600 text-white font-mono text-[10px] font-bold shadow-md">
-                12 Ideas
-              </div>
-
-              <!-- Bar 1 (Communication) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 75%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">S</span>
-              </div>
-              <!-- Bar 2 (Problem Solving) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 90%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">M</span>
-              </div>
-              <!-- Bar 3 (Data Analysis) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 60%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">T</span>
-              </div>
-              <!-- Bar 4 (Visual Design) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 80%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">W</span>
-              </div>
-              <!-- Bar 5 (Storytelling - Active High) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 95%;"></div></div>
-                <span class="text-[10px] font-bold text-indigo-600 font-extrabold">T</span>
-              </div>
-              <!-- Bar 6 (Negotiation) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 70%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">F</span>
-              </div>
-              <!-- Bar 7 (Missions Total) -->
-              <div class="flex flex-col items-center gap-1.5 flex-1">
-                <div class="px-bar-track"><div class="px-bar-fill" style="height: 100%;"></div></div>
-                <span class="text-[10px] font-bold text-slate-400">S</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- COL 3 (xl:col-span-3): TIME TRACKER DIAL   -->
-        <!-- ========================================== -->
-        <div class="xl:col-span-3 px-card flex flex-col justify-between">
-          <div class="flex items-center justify-between">
-            <span class="text-sm font-extrabold text-slate-800 dark:text-white">Competency Tracker</span>
-            <button onclick="toggleRadarCanvas()" class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-indigo-600 transition cursor-pointer" title="Toggle 360° Radar Canvas">
-              ↗
-            </button>
-          </div>
-
-          <!-- Circular Dial Widget (Peoplexio Clock Gauge) -->
-          <div class="my-2 flex flex-col items-center justify-center" id="dial-widget-container">
-            <div class="relative w-36 h-36 flex items-center justify-center">
-              <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <!-- Outer dashed/track circle -->
-                <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" class="text-slate-100 dark:text-slate-800" stroke-width="6" stroke-dasharray="2, 4"></circle>
-                <!-- Active purple arc (75% filled) -->
-                <circle cx="50" cy="50" r="42" fill="none" stroke="#5E4AE3" stroke-width="6" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="66"></circle>
-              </svg>
-              
-              <!-- Center Text -->
-              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span class="text-2xl font-black text-slate-900 dark:text-white font-mono leading-none" id="hero-stat-missions">3.8</span>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">Rating / 5</span>
-              </div>
-            </div>
-
-            <!-- Controls (Play / Pause / Mode) -->
-            <div class="flex items-center gap-4 mt-2">
-              <button onclick="navigateRoster(-1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition">‹</button>
-              <button onclick="setMainTab('skills')" class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm shadow-md hover:bg-indigo-700 transition" title="Calibrate Evaluation">▷</button>
-              <button onclick="navigateRoster(1)" class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition">›</button>
-            </div>
-          </div>
-
-          <!-- Hidden Canvas for 360 Radar (Toggleable) -->
-          <div id="radar-canvas-container" class="hidden flex justify-center py-2">
-            <canvas id="athleteSingleRadarCanvas" width="220" height="200" class="max-w-full"></canvas>
-          </div>
-
-          <div class="pt-2 text-center border-t border-slate-100 dark:border-slate-800">
-            <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">94% Core Competency Alignment</span>
-          </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- COL 4 (xl:col-span-3): TASKS & ONBOARDING  -->
-        <!-- ========================================== -->
-        <div class="xl:col-span-3 space-y-4">
-          <!-- Top Card: Onboarding Progress Capsules -->
-          <div class="px-card p-4 space-y-2">
-            <div class="flex items-center justify-between text-xs font-bold">
-              <span class="text-slate-800 dark:text-white">Mandate Progress</span>
-              <span class="font-mono text-indigo-600 font-extrabold">65%</span>
-            </div>
-            
-            <!-- Segmented Pill Strip (30% Task, 25%, 0%) -->
-            <div class="flex items-center gap-1.5 pt-1 text-xs">
-              <div class="px-capsule px-capsule-purple flex-1 justify-center py-1.5 text-[11px] shadow-sm">
-                <span>Task 30%</span>
-              </div>
-              <div class="px-capsule px-capsule-navy py-1.5 px-3 text-[11px]">
-                <span>25%</span>
-              </div>
-              <div class="px-capsule px-capsule-lilac py-1.5 px-3 text-[11px]">
-                <span>10%</span>
+              <div>
+                <h2 id="card-consultant-name" class="text-2xl font-semibold text-white tracking-tight">Abir Marai</h2>
+                <p id="card-consultant-sub" class="text-xs font-medium text-indigo-400 mt-0.5">Junior Consultant • Mandate 2026-2027</p>
               </div>
             </div>
           </div>
 
-          <!-- Signature Deep Navy Contrast Card: Onboarding Task 2/8 -->
-          <div class="px-dark-card space-y-3">
+          <!-- 3 KPI TILES -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="saas-card p-3.5 space-y-1">
+              <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Initiatives</span>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-2xl font-semibold text-white font-mono" id="hero-stat-initiatives">12</span>
+                <span class="text-[11px] text-slate-400">ideas</span>
+              </div>
+              <span class="inline-block text-[10px] font-medium text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">Top 5% Cohort</span>
+            </div>
+
+            <div class="saas-card p-3.5 space-y-1">
+              <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Missions</span>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-2xl font-semibold text-white font-mono" id="hero-stat-missions">08</span>
+                <span class="text-[11px] text-slate-400">studies</span>
+              </div>
+              <span class="inline-block text-[10px] font-medium text-indigo-300 bg-indigo-500/10 px-1.5 py-0.5 rounded border border-indigo-500/20">Quality Validated</span>
+            </div>
+
+            <div class="saas-card p-3.5 space-y-1">
+              <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Skill Growth</span>
+              <div class="flex items-baseline gap-1.5">
+                <span class="text-2xl font-semibold text-emerald-400 font-mono" id="hero-stat-growth">+82.3%</span>
+                <span class="text-[11px] text-slate-400">delta</span>
+              </div>
+              <span class="inline-block text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">Over Target</span>
+            </div>
+          </div>
+
+          <!-- 4 ATTRIBUTE TILES -->
+          <div class="grid grid-cols-4 gap-2">
+            <div class="saas-tile p-2 text-center">
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Project S1</span>
+              <span id="pill-height" class="text-xs font-semibold text-white block mt-0.5 truncate">Hexacom</span>
+            </div>
+            <div class="saas-tile p-2 text-center">
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Major</span>
+              <span id="hero-major-badge" class="text-xs font-semibold text-indigo-300 block mt-0.5 truncate">Analytics</span>
+            </div>
+            <div class="saas-tile p-2 text-center">
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Alignment</span>
+              <span class="text-xs font-semibold text-emerald-400 block mt-0.5 font-mono">94%</span>
+            </div>
+            <div class="saas-tile p-2 text-center">
+              <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Peer Kudos</span>
+              <span class="text-xs font-semibold text-amber-400 block mt-0.5 font-mono">★ 4.9</span>
+            </div>
+          </div>
+
+          <!-- DIRECTOR-ENDORSED ACHIEVEMENT BADGES -->
+          <div class="saas-panel p-4 space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-extrabold text-white">Mandate Tasks</span>
-              <span class="text-lg font-black font-mono text-indigo-300">2/8</span>
+              <span class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Director Endorsements & Achievement Honors</span>
+              <span id="player-badges-count" class="saas-badge font-mono">0 Honors</span>
             </div>
-
-            <!-- Task Items -->
-            <div class="space-y-2 pt-1 text-xs">
-              <!-- Item 1 (Done) -->
-              <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 hover:bg-white/10 transition">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs">🎓</span>
-                  <div>
-                    <span class="font-bold text-white block">Induction Seminar</span>
-                    <span class="text-[10px] text-slate-400 block">Sep 12, 09:30</span>
-                  </div>
-                </div>
-                <div class="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold">✓</div>
-              </div>
-
-              <!-- Item 2 (Done) -->
-              <div class="flex items-center justify-between p-2 rounded-xl bg-white/5 hover:bg-white/10 transition">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs">⚡</span>
-                  <div>
-                    <span class="font-bold text-white block">Team Sync & Kickoff</span>
-                    <span class="text-[10px] text-slate-400 block">Sep 13, 10:30</span>
-                  </div>
-                </div>
-                <div class="w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold">✓</div>
-              </div>
-
-              <!-- Item 3 (Upcoming) -->
-              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-white/5 transition opacity-80">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs">💼</span>
-                  <div>
-                    <span class="font-bold text-white block">Client Study Hexapro</span>
-                    <span class="text-[10px] text-slate-400 block">Sep 14, 12:00</span>
-                  </div>
-                </div>
-                <div class="w-5 h-5 rounded-full border border-white/40"></div>
-              </div>
-
-              <!-- Item 4 (Upcoming) -->
-              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-white/5 transition opacity-80">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs">📊</span>
-                  <div>
-                    <span class="font-bold text-white block">Mid-Mandate Review</span>
-                    <span class="text-[10px] text-slate-400 block">Sep 15, 14:45</span>
-                  </div>
-                </div>
-                <div class="w-5 h-5 rounded-full border border-white/40"></div>
-              </div>
+            <p class="text-xs text-slate-400">Official honors conferred by Executive Board Directors. Click any badge to inspect verification:</p>
+            <div id="player-badges-container" class="flex flex-wrap gap-2 pt-1">
+              <!-- Rendered via renderPlayerCard() -->
             </div>
           </div>
+
         </div>
 
       </div>
 
-      <!-- ======================================================== -->
-      <!-- PEOPLEXIO BOTTOM ROW: SCHEDULE & CALENDAR TIMELINE       -->
-      <!-- ======================================================== -->
-      <div class="px-card space-y-4">
-        <!-- Month Header & Days Navigation -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-          <div class="flex items-center gap-4">
-            <span class="text-xs font-bold text-slate-400 cursor-pointer">‹ August</span>
-            <span class="text-base font-extrabold text-slate-900 dark:text-white">September 2026</span>
-            <span class="text-xs font-bold text-slate-400 cursor-pointer">October ›</span>
-          </div>
-
-          <!-- Days selector pills (Mon 22, Tue 23, Wed 24, etc.) -->
-          <div class="flex items-center gap-2 text-xs font-bold">
-            <div class="flex flex-col items-center px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-500">
-              <span class="text-[10px]">Mon</span><span class="font-mono">22</span>
-            </div>
-            <div class="flex flex-col items-center px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-500">
-              <span class="text-[10px]">Tue</span><span class="font-mono">23</span>
-            </div>
-            <!-- Active Selected Day (Peoplexio Wed 24 Purple Pill) -->
-            <div class="flex flex-col items-center px-3.5 py-1.5 rounded-2xl bg-indigo-600 text-white shadow-sm cursor-pointer">
-              <span class="text-[10px] text-indigo-200">Wed</span><span class="font-mono font-bold">24</span>
-            </div>
-            <div class="flex flex-col items-center px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-500">
-              <span class="text-[10px]">Thu</span><span class="font-mono">25</span>
-            </div>
-            <div class="flex flex-col items-center px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-500">
-              <span class="text-[10px]">Fri</span><span class="font-mono">26</span>
-            </div>
-            <div class="flex flex-col items-center px-3 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-500">
-              <span class="text-[10px]">Sat</span><span class="font-mono">27</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Timeline Grid with Event Blocks & Avatar Stacks -->
-        <div class="space-y-3 pt-1">
-          <!-- 09:00 am - 11:00 am: Weekly Team Sync (Lilac Block with Avatar Stack) -->
-          <div class="flex items-start gap-4">
-            <span class="text-xs font-mono font-bold text-slate-400 w-16 pt-3">09:00 am</span>
-            <div class="flex-1 p-4 rounded-2xl bg-[#EEF0FF] dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-              <div>
-                <span class="text-xs font-extrabold text-indigo-950 dark:text-indigo-200 block">Weekly Team Sync</span>
-                <span class="text-[11px] text-indigo-700 dark:text-indigo-300">Discuss progress on Hexacom & Hexapro client studies</span>
-              </div>
-              
-              <!-- Avatar Stack with +2 Counter (Peoplexio Signature) -->
-              <div class="flex items-center -space-x-2 shrink-0">
-                <div class="w-7 h-7 rounded-full bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-slate-900">SK</div>
-                <div class="w-7 h-7 rounded-full bg-purple-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-slate-900">AM</div>
-                <div class="w-7 h-7 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-slate-900">MA</div>
-                <span class="pl-3 text-xs font-extrabold text-indigo-700 dark:text-indigo-300 font-mono">+2</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 12:00 pm - 01:00 pm: Onboarding & Steering (Peach Block with Avatar Stack) -->
-          <div class="flex items-start gap-4">
-            <span class="text-xs font-mono font-bold text-slate-400 w-16 pt-3">12:00 pm</span>
-            <div class="flex-1 p-4 rounded-2xl bg-[#FEF3EB] dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-              <div>
-                <span class="text-xs font-extrabold text-amber-950 dark:text-amber-200 block">Director Feedback & Reflection Session</span>
-                <span class="text-[11px] text-amber-800 dark:text-amber-300">Quarterly competency review and verification badges</span>
-              </div>
-              
-              <!-- Avatar Stack with +3 Counter -->
-              <div class="flex items-center -space-x-2 shrink-0">
-                <div class="w-7 h-7 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-slate-900">YB</div>
-                <div class="w-7 h-7 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-slate-900">CN</div>
-                <span class="pl-3 text-xs font-extrabold text-amber-800 dark:text-amber-300 font-mono">+3</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ======================================================== -->
-      <!-- STAFFED PROJECTS & COMPETENCIES (PEOPLEXIO CARDS)        -->
-      <!-- ======================================================== -->
-      <div class="space-y-4 pt-4">
+      <!-- STAFFED PROJECTS & COMPETENCIES SECTION -->
+      <div class="space-y-4 pt-4 border-t border-[#1E283D]">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Staffed Projects & Competencies</h3>
-              <span id="player-teams-count-badge" class="px-capsule px-capsule-purple font-mono">0 Projects</span>
+              <h3 class="text-base font-semibold text-white tracking-tight">Staffed Projects & Competencies</h3>
+              <span id="player-teams-count-badge" class="saas-badge font-mono">0 Projects</span>
             </div>
-            <p class="text-xs text-slate-500 mt-0.5">100% project-based organization (Mandate 2026–2027). Each project evaluated on its tailored competencies.</p>
+            <p class="text-xs text-slate-400 mt-0.5">100% project-based organization (Mandate 2026–2027). Each project evaluated on its tailored competencies.</p>
           </div>
-          <button onclick="openEditMemberModal(currentMemberId)" class="px-btn-secondary text-xs self-start sm:self-auto cursor-pointer">
+          <button onclick="openEditMemberModal(currentMemberId)" class="saas-btn-secondary text-xs self-start sm:self-auto cursor-pointer">
             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
             <span>Manage Staffing</span>
           </button>
@@ -820,22 +667,23 @@
         </div>
       </div>
 
-      <!-- DELIVERED CLIENT STUDIES TABLE -->
-      <div class="px-card p-6 space-y-4">
-        <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+      <!-- DELIVERED CLIENT MISSIONS & STUDIES TABLE -->
+      <div class="saas-panel p-5 space-y-3">
+        <div class="flex justify-between items-center pb-2 border-b border-[#1E283D]">
           <div>
-            <h4 class="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">Delivered Client Studies & Engagements</h4>
-            <span class="text-xs text-slate-500">Field audits, strategy reports, and deliverables validated by Studies & Quality Directors</span>
+            <h4 class="text-sm font-semibold text-white tracking-tight">Delivered Client Studies & Engagements</h4>
+            <span class="text-xs text-slate-400">Field audits, strategy reports, and deliverables validated by Studies & Quality Directors</span>
           </div>
-          <button onclick="openCurateModal()" class="px-btn-secondary py-1.5 px-3 text-xs cursor-pointer">
-            <span>+ Add Mission</span>
+          <button onclick="openCurateModal()" class="saas-btn-secondary py-1 px-2.5 text-xs cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add Mission</span>
           </button>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-slate-100 dark:border-slate-800 text-[11px] font-bold uppercase text-slate-400 tracking-wider">
+              <tr class="border-b border-[#1E283D] text-[11px] font-semibold uppercase text-slate-400 tracking-wider">
                 <th class="py-2.5 px-3">Date</th>
                 <th class="py-2.5 px-3">Client / Study</th>
                 <th class="py-2.5 px-3">Type</th>
@@ -846,7 +694,7 @@
                 <th class="py-2.5 px-3 text-right">Deliverable</th>
               </tr>
             </thead>
-            <tbody id="athlete-missions-tbody" class="divide-y divide-slate-100 dark:divide-slate-800">
+            <tbody id="athlete-missions-tbody" class="divide-y divide-[#1E283D]">
               <!-- Rendered via JS -->
             </tbody>
           </table>
@@ -854,14 +702,14 @@
       </div>
 
       <!-- THE JUNIOR CONSULTANTS & DIRECTORS WALL OF APPRECIATION -->
-      <div class="px-card p-6 space-y-4">
-        <div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div class="saas-panel p-5 space-y-4">
+        <div class="flex justify-between items-center pb-3 border-b border-[#1E283D]">
           <div>
             <div class="flex items-center gap-2">
-              <h4 class="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">Junior Consultants Wall of Appreciation</h4>
-              <span id="jc-peer-words-count" class="px-capsule px-capsule-peach font-mono">0 Tributes</span>
+              <h4 class="text-sm font-semibold text-white tracking-tight">Junior Consultants Wall of Appreciation</h4>
+              <span id="jc-peer-words-count" class="saas-badge font-mono">0 Tributes</span>
             </div>
-            <span class="text-xs text-slate-500">Peer recognition, director testimonials, and cross-project feedback</span>
+            <span class="text-xs text-slate-400">Peer recognition, director testimonials, and cross-project feedback</span>
           </div>
         </div>
 
@@ -871,18 +719,18 @@
         </div>
 
         <!-- FORM: LEAVE A WORD FOR THIS CONSULTANT -->
-        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-3">
-          <span class="text-xs font-bold text-slate-700 dark:text-slate-200 block">Leave a note of appreciation or project feedback:</span>
+        <div class="saas-card p-4 space-y-3">
+          <span class="text-xs font-semibold text-slate-300 block">Leave a note of appreciation or project feedback:</span>
           
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <input type="text" id="jc-peer-author-input" placeholder="Your Full Name (e.g. Salma Karouia)" class="px-input w-full">
-            <input type="text" id="jc-peer-role-input" placeholder="Your Role / Project (e.g. President / Hexapro 1 Lead)" class="px-input w-full">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+            <input type="text" id="jc-peer-author-input" placeholder="Your Full Name (e.g. Salma Karouia)" class="saas-input w-full">
+            <input type="text" id="jc-peer-role-input" placeholder="Your Role / Project (e.g. President / Hexapro 1 Lead)" class="saas-input w-full">
           </div>
 
-          <textarea id="jc-peer-text-input" rows="2" placeholder="Write your words of appreciation, collaboration feedback, or encouragement..." class="px-input w-full"></textarea>
+          <textarea id="jc-peer-text-input" rows="2" placeholder="Write your words of appreciation, collaboration feedback, or encouragement..." class="saas-input w-full"></textarea>
 
           <div class="flex justify-end">
-            <button onclick="submitJcPeerWord()" class="px-btn-primary cursor-pointer">
+            <button onclick="submitJcPeerWord()" class="saas-btn-primary cursor-pointer">
               <span>Post Appreciation</span>
             </button>
           </div>
@@ -1385,16 +1233,39 @@
   </div>
 
   <!-- QR CODE MODAL -->
+  <!-- MODAL: CONSULTANT PASSPORT QR CODE (PEOPLEXIO STYLE) -->
   <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-[#0E131F] border border-white/10 rounded-xl max-w-sm w-full p-6 text-center text-white space-y-4 shadow-2xl relative">
-      <button onclick="closeQrBadgeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    <div class="px-card max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative bg-white dark:bg-[#13192B] border border-slate-200/80 dark:border-slate-800/80">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1 font-mono">
+          Official Talent Passport • Mandate 2026–2027
+        </span>
+        <button onclick="closeQrBadgeModal()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center gap-2 pt-1">
+        <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-indigo-500/40 shadow-md bg-slate-100 dark:bg-slate-800">
+          <img id="modal-qr-avatar" src="" alt="Consultant" class="w-full h-full object-cover">
+        </div>
+        <h4 id="modal-name" class="text-base font-extrabold text-slate-900 dark:text-white">Consultant Name</h4>
+        <span id="modal-dept" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Major & Projects</span>
+      </div>
+
+      <!-- QR CODE CONTAINER -->
+      <div class="p-3 bg-white rounded-2xl flex items-center justify-center shadow-inner mx-auto w-52 h-52 border border-slate-100">
+        <div id="modal-qr-container"></div>
+      </div>
+
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+        Scan with any smartphone camera to open this consultant's official passport, verified skills, and project ratings.
+      </p>
+
+      <button onclick="copyJcQrLink()" id="jc-copy-link-btn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+        <svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        <span>Copy Passport Link</span>
       </button>
-      <span class="text-[10px] font-black uppercase tracking-widest text-indigo-400 block">Official Talent Passport</span>
-      <h3 id="modal-name" class="text-xl font-black">Nom</h3>
-      <p id="modal-dept" class="text-xs text-slate-400">Pôle</p>
-      <div class="p-4 bg-white rounded-2xl flex items-center justify-center my-4 mx-auto w-56 h-56 shadow-xl" id="modal-qr-container"></div>
-      <p class="text-[11px] text-slate-400">Scan with any smartphone camera to directly view this consultant's official passport.</p>
     </div>
   </div>
 
@@ -1459,8 +1330,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
   <!-- APPLICATION CORE LOGIC -->
   <script>
+
     // ==========================================
-    // UTILITY: ESCAPE HTML
+    // ESCAPE HTML UTILITY (GLOBAL)
     // ==========================================
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
@@ -1470,6 +1342,54 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+
+    // ==========================================
+    // THEME & RADAR SWITCHERS
+    // ==========================================
+    function togglePeoplexioTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        safeSetStorage('peoplexio_theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        safeSetStorage('peoplexio_theme', 'dark');
+      }
+      renderPlayerCard();
+    }
+
+    function initPeoplexioTheme() {
+      const saved = safeGetStorage('peoplexio_theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    }
+
+    function toggleRadarCanvas() {
+      const dial = document.getElementById('dial-widget-container');
+      const radar = document.getElementById('radar-canvas-container');
+      if (!dial || !radar) return;
+      if (radar.classList.contains('hidden')) {
+        radar.classList.remove('hidden');
+        dial.classList.add('hidden');
+        let m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
+        if (m) drawAthleteRadar(m, 'athleteSingleRadarCanvas');
+      } else {
+        radar.classList.add('hidden');
+        dial.classList.remove('hidden');
+      }
+    }
+
+    function viewMemberCard(id) {
+      if (id) {
+        currentMemberId = id;
+      }
+      setMainTab('player');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     const SUPABASE_URL = "https://bzbxulnfunmebcnlvxct.supabase.co";
@@ -11627,48 +11547,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
     }
 
-    
-    // ==========================================
-    // PEOPLEXIO THEME & RADAR TOGGLE
-    // ==========================================
-    function togglePeoplexioTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        html.removeAttribute('data-theme');
-        safeSetStorage('peoplexio_theme', 'light');
-      } else {
-        html.setAttribute('data-theme', 'dark');
-        safeSetStorage('peoplexio_theme', 'dark');
-      }
-      renderPlayerCard();
-    }
-
-    function initPeoplexioTheme() {
-      const saved = safeGetStorage('peoplexio_theme');
-      if (saved === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        // Default to Peoplexio Light Palette as in user reference image
-        document.documentElement.removeAttribute('data-theme');
-      }
-    }
-
-    function toggleRadarCanvas() {
-      const dial = document.getElementById('dial-widget-container');
-      const radar = document.getElementById('radar-canvas-container');
-      if (!dial || !radar) return;
-      if (radar.classList.contains('hidden')) {
-        radar.classList.remove('hidden');
-        dial.classList.add('hidden');
-        let m = appState.members.find(x => x.id === currentMemberId) || appState.members[0];
-        drawAthleteRadar(m, 'athleteSingleRadarCanvas');
-      } else {
-        radar.classList.add('hidden');
-        dial.classList.remove('hidden');
-      }
-    }
-
     function initData() {
       const saved = safeGetStorage(STORAGE_KEY);
       if (saved) {
@@ -11759,15 +11637,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     // ==========================================
     // TAB NAVIGATION SWITCHER
     // ==========================================
-    
-    function viewMemberCard(id) {
-      if (id) {
-        currentMemberId = id;
-      }
-      setMainTab('player');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
     function setMainTab(tab) {
       currentTab = tab;
       try {
@@ -12098,50 +11967,52 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       coreGrid.innerHTML = '';
       opsGrid.innerHTML = '';
 
-      // 1. President
+      // 1. President Spotlight
       const pres = EXECUTIVE_BOARD_DATA.find(m => m.category === 'Presidency') || EXECUTIVE_BOARD_DATA[0];
       if (pres) {
         presContainer.innerHTML = `
-          <div class="saas-panel p-6 sm:p-7 space-y-4">
+          <div class="px-card p-6 sm:p-8 space-y-5 border border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-[#13192B] shadow-sm">
             <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6">
-              <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-xl overflow-hidden border border-[#24314C] bg-slate-900 shrink-0">
-                <img src="${pres.photo_base64}" alt="${pres.name}" class="w-full h-full object-cover object-top">
-                <div class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-indigo-600 text-white shadow-xs">
+              <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 bg-slate-100 dark:bg-slate-900 shrink-0 shadow-md">
+                <img src="${pres.photo_base64}" alt="${escapeHtml(pres.name)}" class="w-full h-full object-cover object-top">
+                <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-indigo-600 text-white shadow-xs">
                   Presidency
                 </div>
               </div>
 
-              <div class="flex-1 space-y-3 text-center lg:text-left w-full">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2">
+              <div class="flex-1 space-y-3.5 text-center lg:text-left w-full">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                   <div>
-                    <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight">${pres.name}</h3>
-                    <span class="text-xs sm:text-sm font-medium text-slate-300 block mt-0.5">${pres.title} • ${pres.frenchTitle}</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">${escapeHtml(pres.name)}</h3>
+                    <span class="text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400 block mt-0.5">${escapeHtml(pres.title)} • ${escapeHtml(pres.frenchTitle)}</span>
                   </div>
                   <div class="flex items-center justify-center lg:justify-end gap-2">
-                    <span class="saas-badge font-mono">Mandate 2026-2027</span>
-                    <button onclick="openExecutiveQrModal('${pres.id}')" class="saas-btn-secondary py-1 px-2.5 text-xs cursor-pointer" title="QR Pass Mobile">
-                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                    <span class="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60">Mandate 2026-2027</span>
+                    <button onclick="openExecutiveQrModal('${pres.id}')" class="px-pill-btn py-1.5 px-3 text-xs flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold cursor-pointer transition shadow-xs" title="QR Pass Mobile">
+                      <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
                       <span>QR Pass</span>
                     </button>
                   </div>
                 </div>
 
-                <div class="p-3.5 rounded-lg bg-[#121828] border-l-2 border-indigo-500">
-                  <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">Mandate Vision & Strategic Commitment</span>
-                  <p class="text-xs sm:text-sm text-slate-300 italic leading-relaxed">
-                    "${pres.quote}"
+                <div class="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/40 border-l-4 border-[#5E4AE3]">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-1">Mandate Vision & Strategic Commitment</span>
+                  <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 italic leading-relaxed">
+                    "${escapeHtml(pres.quote)}"
                   </p>
                 </div>
 
-                <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#1E283D] text-xs">
+                <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800 text-xs">
                   <div class="flex flex-wrap items-center justify-center lg:justify-start gap-1.5">
-                    <span class="text-[11px] text-slate-400 font-medium mr-1">Oversight:</span>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">16 Projects</span>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">National JE Network</span>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">Strategic Partnerships</span>
+                    <span class="text-[11px] text-slate-400 font-semibold mr-1">Strategic Oversight:</span>
+                    ${(pres.supervisedProjects || []).map(p => `
+                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/60">
+                        ${escapeHtml(p)}
+                      </span>
+                    `).join('')}
                   </div>
 
-                  <button onclick="openExecBoardModal('${pres.id}')" class="saas-btn-primary w-full sm:w-auto justify-center cursor-pointer">
+                  <button onclick="openExecBoardModal('${pres.id}')" class="px-pill-btn py-2 px-4.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition">
                     <span>Profile & Tributes</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                   </button>
@@ -12152,78 +12023,78 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         `;
       }
 
-      // 2. Core Governance
+      // 2. Core Governance Row
       const coreMembers = EXECUTIVE_BOARD_DATA.filter(m => ['Governance', 'Finance', 'Human Resources'].includes(m.category));
       coreMembers.forEach(m => {
         const card = document.createElement('div');
-        card.className = "saas-card p-5 flex flex-col justify-between space-y-4";
+        card.className = "px-card p-5 flex flex-col justify-between space-y-4 hover:shadow-lg transition-all duration-200 border border-slate-200/80 dark:border-slate-800/80 relative group bg-white dark:bg-[#13192B]";
         card.innerHTML = `
-          <div class="space-y-3">
-            <div class="relative w-full h-48 rounded-lg overflow-hidden border border-[#1E283D] bg-slate-900">
-              <img src="${m.photo_base64}" alt="${m.name}" class="w-full h-full object-cover object-top">
-              <div class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-medium bg-[#0E131F]/90 text-slate-300 border border-[#1E283D]">
-                ${m.category}
+          <div class="space-y-3.5">
+            <div class="relative w-full h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 bg-slate-100 dark:bg-slate-900 shadow-sm">
+              <img src="${m.photo_base64}" alt="${escapeHtml(m.name)}" class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-105">
+              <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 border border-black/5 dark:border-white/10 shadow-xs backdrop-blur-xs">
+                ${escapeHtml(m.category)}
               </div>
             </div>
 
             <div>
-              <h4 class="text-base font-semibold text-white tracking-tight">${m.name}</h4>
-              <span class="text-xs text-indigo-400 font-medium block mt-0.5">${m.title}</span>
-              <span class="text-[11px] text-slate-400 block">${m.frenchTitle}</span>
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">${escapeHtml(m.name)}</h4>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block mt-0.5">${escapeHtml(m.title)}</span>
+              <span class="text-[11px] text-slate-400 block">${escapeHtml(m.frenchTitle)}</span>
             </div>
 
-            <div class="flex flex-wrap gap-1 pt-1">
+            <div class="flex flex-wrap gap-1.5 pt-1 min-h-[30px]">
               ${(m.supervisedProjects || []).map(p => `
-                <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">${escapeHtml(p)}</span>
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/60">${escapeHtml(p)}</span>
               `).join('')}
             </div>
           </div>
 
-          <div class="pt-3 border-t border-[#1E283D] flex items-center justify-between gap-2">
-            <button onclick="openExecBoardModal('${m.id}')" class="saas-btn-secondary text-xs flex-1 justify-center cursor-pointer">
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+            <button onclick="openExecBoardModal('${m.id}')" class="px-pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold cursor-pointer shadow-sm transition">
               <span>Profile & Tributes</span>
             </button>
-            <button onclick="openExecutiveQrModal('${m.id}')" class="p-2 rounded-lg border border-[#1E283D] hover:border-slate-600 text-slate-400 hover:text-white transition cursor-pointer" title="QR Pass">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+            <button onclick="openExecutiveQrModal('${m.id}')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer" title="QR Pass">
+              <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
             </button>
           </div>
         `;
         coreGrid.appendChild(card);
       });
 
-      // 3. Operational Directors
-      const opsMembers = EXECUTIVE_BOARD_DATA.filter(m => m.category === 'Operations');
+      // 3. Operational Directors Row
+      const opsMembers = EXECUTIVE_BOARD_DATA.filter(m => ['Operations', 'Marketing', 'Quality', 'Events'].includes(m.category));
       opsMembers.forEach(m => {
         const card = document.createElement('div');
-        card.className = "saas-card p-4 flex flex-col justify-between space-y-3.5";
+        card.className = "px-card p-5 flex flex-col justify-between space-y-4 hover:shadow-lg transition-all duration-200 border border-slate-200/80 dark:border-slate-800/80 relative group bg-white dark:bg-[#13192B]";
         card.innerHTML = `
-          <div class="space-y-3">
-            <div class="relative w-full h-44 rounded-lg overflow-hidden border border-[#1E283D] bg-slate-900">
-              <img src="${m.photo_base64}" alt="${m.name}" class="w-full h-full object-cover object-top">
-              <div class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-medium bg-[#0E131F]/90 text-slate-300 border border-[#1E283D]">
+          <div class="space-y-3.5">
+            <div class="relative w-full h-44 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 bg-slate-100 dark:bg-slate-900 shadow-sm">
+              <img src="${m.photo_base64}" alt="${escapeHtml(m.name)}" class="w-full h-full object-cover object-top transition duration-300 group-hover:scale-105">
+              <div class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-200 border border-black/5 dark:border-white/10 shadow-xs backdrop-blur-xs">
                 Directorship
               </div>
             </div>
 
             <div>
-              <h4 class="text-sm font-semibold text-white tracking-tight">${m.name}</h4>
-              <span class="text-xs text-indigo-400 font-medium block mt-0.5">${m.title}</span>
-              <span class="text-[11px] text-slate-400 block">${m.frenchTitle}</span>
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">${escapeHtml(m.name)}</h4>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block mt-0.5">${escapeHtml(m.title)}</span>
+              <span class="text-[11px] text-slate-400 block">${escapeHtml(m.frenchTitle)}</span>
             </div>
 
-            <div class="flex flex-wrap gap-1 pt-1">
+            <div class="flex flex-wrap gap-1.5 pt-1 min-h-[30px]">
               ${(m.supervisedProjects || []).map(p => `
-                <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">${escapeHtml(p)}</span>
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/60">${escapeHtml(p)}</span>
               `).join('')}
             </div>
           </div>
 
-          <div class="pt-3 border-t border-[#1E283D] flex items-center justify-between gap-2">
-            <button onclick="openExecBoardModal('${m.id}')" class="saas-btn-secondary text-xs flex-1 justify-center cursor-pointer">
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+            <button onclick="openExecBoardModal('${m.id}')" class="px-pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold cursor-pointer shadow-sm transition">
               <span>Profile & Tributes</span>
             </button>
-            <button onclick="openExecutiveQrModal('${m.id}')" class="p-2 rounded-lg border border-[#1E283D] hover:border-slate-600 text-slate-400 hover:text-white transition cursor-pointer" title="QR Pass">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+            <button onclick="openExecutiveQrModal('${m.id}')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer" title="QR Pass">
+              <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
             </button>
           </div>
         `;
@@ -12251,23 +12122,24 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       document.getElementById('exec-modal-title-en').innerText = m.title;
       document.getElementById('exec-modal-photo').src = m.photo_base64;
       document.getElementById('exec-modal-quote').innerText = m.quote;
-      document.getElementById('exec-modal-oversight').innerText = m.role_desc || 'Direct leadership and project oversight.';
+      document.getElementById('exec-modal-oversight').innerText = m.oversight || m.role_desc || 'Strategic leadership and project governance.';
 
       const chipsBox = document.getElementById('exec-modal-supervised-chips');
       chipsBox.innerHTML = (m.supervisedProjects || []).map(p => `
-        <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">
+        <span class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
           ${escapeHtml(p)}
         </span>
       `).join('');
 
-      renderJcWords(m);
+      renderJcWords(m.id);
 
       const modal = document.getElementById('execBoardModal');
       modal.classList.remove('hidden');
     }
 
     function closeExecBoardModal() {
-      document.getElementById('execBoardModal').classList.add('hidden');
+      const modal = document.getElementById('execBoardModal');
+      modal.classList.add('hidden');
       try {
         if (window.history && window.history.replaceState) {
           const u = new URL(window.location);
@@ -12277,12 +12149,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       } catch(e) {}
     }
 
-    // JC WORDS GUESTBOOK STREAM & SUBMIT
-    function renderJcWords(ebId) {
+    function renderJcWords(ebTarget) {
       const container = document.getElementById('exec-words-stream');
       const countTag = document.getElementById('exec-words-count');
       if (!container) return;
 
+      const ebId = (typeof ebTarget === 'object' && ebTarget && ebTarget.id) ? ebTarget.id : ebTarget;
       const m = EXECUTIVE_BOARD_DATA.find(x => x.id === ebId);
       if (!m) return;
 
@@ -12308,18 +12180,18 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         const roleVal = item.role || item.project || 'Junior Consultant';
         const initials = (item.author || 'JC').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
         return `
-        <div class="saas-card p-3.5 space-y-2">
+        <div class="px-card p-3.5 space-y-2 border border-slate-200/80 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-800/40">
           <div class="flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 font-mono text-[10px] font-semibold flex items-center justify-center shrink-0">
+              <div class="w-6 h-6 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-600 dark:text-indigo-300 font-mono text-[10px] font-bold flex items-center justify-center shrink-0">
                 ${initials}
               </div>
-              <span class="font-semibold text-white">${escapeHtml(item.author)}</span>
-              <span class="text-[10px] text-slate-400 bg-[#161F33] px-2 py-0.5 rounded border border-[#24314C]">${escapeHtml(roleVal)}</span>
+              <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(item.author)}</span>
+              <span class="text-[10px] text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full font-semibold border border-indigo-100 dark:border-indigo-800/60">${escapeHtml(roleVal)}</span>
             </div>
-            <span class="text-[10px] font-mono text-slate-500">${escapeHtml(item.date || 'Mandate 2026-2027')}</span>
+            <span class="text-[10px] font-mono text-slate-400">${escapeHtml(item.date || 'Mandate 2026-2027')}</span>
           </div>
-          <p class="text-xs text-slate-300 italic leading-relaxed pl-8">
+          <p class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed pl-8">
             "${escapeHtml(textVal)}"
           </p>
         </div>
@@ -12336,19 +12208,19 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const message = textInput ? textInput.value.trim() : '';
 
       if (!author) {
-        alert("Veuillez indiquer votre nom de Junior Consultant.");
+        showToast("Please enter your name as a Junior Consultant.");
         return;
       }
       if (!message) {
-        alert("Veuillez écrire votre message.");
+        showToast("Please write your tribute message.");
         return;
       }
 
       const newEntry = {
         author: author,
         project: project,
-        date: "Aujourd'hui",
-        message: message
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        text: message
       };
 
       let savedWords = [];
@@ -12363,12 +12235,14 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (textInput) textInput.value = '';
       renderJcWords(currentExecModalId);
 
-      // Toast feedback
-      alert("✨ Merci " + author + " ! Votre mot a été publié sur le profil officiel de l'administrateur.");
+      showToast("✨ Thank you " + author + "! Your tribute has been posted to this director's profile.");
     }
 
-    // EXECUTIVE QR CODE MODAL
+    // ==========================================
+    // QR CODE MODALS: EB & JC
+    // ==========================================
     let currentExecQrUrl = '';
+    let currentJcQrUrl = '';
 
     function openExecutiveQrModal(ebId) {
       let title = "Executive Board • Mandate 2026-2027";
@@ -12396,7 +12270,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       container.innerHTML = '';
 
       const shareUrl = getBaseAppUrl() + '?tab=execboard&exec=' + encodeURIComponent(ebId);
-      currentExecQrUrl = shareUrl;
+      currentExecQrUrl = shareUrl; window.currentExecQrUrl = shareUrl;
 
       new QRCode(container, {
         text: shareUrl,
@@ -12421,16 +12295,68 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (!currentExecQrUrl) return;
       navigator.clipboard.writeText(currentExecQrUrl).then(() => {
         const btn = document.getElementById('exec-copy-link-btn');
-        if (btn) btn.innerHTML = "<span>✓ Link Copied to Clipboard!</span>";
+        if (btn) btn.innerHTML = "<span>✓ Profile Link Copied!</span>";
         setTimeout(() => {
-          if (btn) btn.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Copy Profile Link</span>';
+          if (btn) btn.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Copy Profile Link</span>';
         }, 2000);
-      }).catch(err => {
-        prompt("Copiez le lien direct :", currentExecQrUrl);
+      }).catch(() => {
+        prompt("Copy direct link:", currentExecQrUrl);
       });
     }
 
-    // PROJECT FILTERING (NO DEPARTMENTS)
+    function openQrBadgeModal() {
+      let m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
+      if (!m) return;
+
+      const nameEl = document.getElementById('modal-name');
+      if (nameEl) nameEl.innerText = m.name;
+
+      const projectList = (m.teams && m.teams.length > 0) ? m.teams.join(' • ') : "Junior Consultant";
+      const deptEl = document.getElementById('modal-dept');
+      if (deptEl) deptEl.innerText = `${m.major || 'Business Analytics'} • ${projectList}`;
+
+      const avatarEl = document.getElementById('modal-qr-avatar');
+      if (avatarEl) {
+        avatarEl.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
+        avatarEl.src = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
+      }
+
+      const box = document.getElementById('modal-qr-container');
+      if (box) {
+        box.innerHTML = '';
+        const shareUrl = getBaseAppUrl() + '?tab=player&member=' + encodeURIComponent(m.id);
+        currentJcQrUrl = shareUrl; window.currentJcQrUrl = shareUrl;
+
+        new QRCode(box, {
+          text: shareUrl,
+          width: 170,
+          height: 170,
+          colorDark: "#0f0d24",
+          colorLight: "#ffffff"
+        });
+      }
+
+      document.getElementById('qrModal').classList.remove('hidden');
+    }
+
+    function closeQrBadgeModal() {
+      document.getElementById('qrModal').classList.add('hidden');
+    }
+
+    function copyJcQrLink() {
+      if (!currentJcQrUrl) return;
+      navigator.clipboard.writeText(currentJcQrUrl).then(() => {
+        const btn = document.getElementById('jc-copy-link-btn');
+        if (btn) btn.innerHTML = "<span>✓ Passport Link Copied!</span>";
+        setTimeout(() => {
+          if (btn) btn.innerHTML = '<svg class="w-3.5 h-3.5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Copy Passport Link</span>';
+        }, 2000);
+      }).catch(() => {
+        prompt("Copy direct link:", currentJcQrUrl);
+      });
+    }
+
+// PROJECT FILTERING (NO DEPARTMENTS)
     function filterAdminProject(pFilter) {
       adminProjectFilter = pFilter;
 
@@ -12461,7 +12387,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const idx = appState.members.findIndex(x => x.id === currentMemberId);
       const total = appState.members.length;
 
-      // Safe DOM helpers
       const setElText = (id, val) => {
         const el = document.getElementById(id);
         if (el) el.innerText = (val !== null && val !== undefined) ? String(val) : '';
@@ -12830,11 +12755,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
     
     // ==========================================
-    // DIRECTOR BADGE MODAL HANDLERS
+    // DIRECTOR BADGE MODALS
     // ==========================================
     function openBadgeDetailModal(badgeId, memberId) {
       const mid = memberId || currentMemberId;
-      let m = appState.members.find(x => x.id === mid) || appState.members[0];
+      let m = (appState && appState.members) ? (appState.members.find(x => x.id === mid) || appState.members[0]) : null;
+      if (!m) return;
       let b = (m.badges || []).find(x => x.id === badgeId);
       if (!b) return;
 
@@ -12847,7 +12773,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const titleEl = document.getElementById('modal-badge-director-title');
       if (titleEl) titleEl.innerText = b.directorTitle || 'Executive Board 2026-2027';
       const reasonEl = document.getElementById('modal-badge-reason');
-      if (reasonEl) reasonEl.innerText = `"${b.reason || 'Outstanding dedication and high consulting performance.'}"`;
+      if (reasonEl) reasonEl.innerText = `"${b.reason || 'Outstanding dedication and consulting performance.'}"`;
       const dateEl = document.getElementById('modal-badge-date');
       if (dateEl) dateEl.innerText = b.date || 'Mandate 2026-2027';
 
@@ -12861,14 +12787,14 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     // ==========================================
-    // PROJECT REFLECTION & COMPETENCY RATINGS
+    // PROJECT REFLECTION MODALS & RATINGS
     // ==========================================
     let currentReflectionProject = "";
     function openProjectReflectionModal(projectName) {
       currentReflectionProject = projectName;
-      let m = appState.members.find(x => x.id === currentMemberId) || appState.members[0];
-      const exp = (m.projectExperiences && m.projectExperiences[projectName]) ? m.projectExperiences[projectName] : {};
-      
+      let m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
+      const exp = (m && m.projectExperiences && m.projectExperiences[projectName]) ? m.projectExperiences[projectName] : {};
+
       const titleEl = document.getElementById('modal-reflection-project-name');
       if (titleEl) titleEl.innerText = `${projectName} — Key Learnings`;
       const ta = document.getElementById('modal-reflection-textarea');
@@ -12886,7 +12812,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     function saveProjectReflection() {
       const ta = document.getElementById('modal-reflection-textarea');
       const textVal = ta ? ta.value.trim() : '';
-      let m = appState.members.find(x => x.id === currentMemberId) || appState.members[0];
+      let m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
       if (m && currentReflectionProject) {
         if (!m.projectExperiences) m.projectExperiences = {};
         if (!m.projectExperiences[currentReflectionProject]) {
@@ -12901,7 +12827,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function rateProjectSkill(memberId, projectName, skillIdx, rating) {
-      let m = appState.members.find(x => x.id === memberId);
+      let m = (appState && appState.members) ? appState.members.find(x => x.id === memberId) : null;
       if (!m || !m.projectExperiences || !m.projectExperiences[projectName]) return;
 
       const exp = m.projectExperiences[projectName];
@@ -13865,29 +13791,41 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
 
   <!-- MODAL: EXECUTIVE QR CODE DIGITAL PASS -->
+  <!-- MODAL: EXECUTIVE BOARD QR CODE (PEOPLEXIO STYLE) -->
   <div id="execQrModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-[#0E131F] border border-[#1E283D] rounded-xl max-w-sm w-full p-6 text-white space-y-4 shadow-2xl relative text-center">
-      <div class="flex justify-between items-center pb-2 border-b border-white/10">
-        <span class="text-[10px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1">
+    <div class="px-card max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative bg-white dark:bg-[#13192B] border border-slate-200/80 dark:border-slate-800/80">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100 dark:border-slate-800">
+        <span class="text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1 font-mono">
           Official Executive Pass • Mandate 2026–2027
         </span>
-        <button onclick="closeExecQrModal()" class="text-slate-400 hover:text-white p-1 rounded-lg bg-white/5 hover:bg-white/10 transition cursor-pointer">
+        <button onclick="closeExecQrModal()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <div class="flex flex-col items-center gap-2 pt-2">
-        <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-md bg-slate-900">
+      <div class="flex flex-col items-center gap-2 pt-1">
+        <div class="w-16 h-16 rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-md bg-slate-100 dark:bg-slate-800">
           <img id="exec-qr-avatar" src="" alt="Executive" class="w-full h-full object-cover">
         </div>
-        <h4 id="exec-qr-name" class="text-base font-extrabold text-white">Nom</h4>
-        <span id="exec-qr-title" class="text-xs font-bold text-amber-300">Official Title</span>
+        <h4 id="exec-qr-name" class="text-base font-extrabold text-slate-900 dark:text-white">Director Name</h4>
+        <span id="exec-qr-title" class="text-xs font-bold text-amber-600 dark:text-amber-400">Official Title</span>
       </div>
 
       <!-- QR CODE CONTAINER -->
-      <div class="p-4 bg-white rounded-2xl flex items-center justify-center shadow-inner mx-auto w-48 h-48">
+      <div class="p-3 bg-white rounded-2xl flex items-center justify-center shadow-inner mx-auto w-52 h-52 border border-slate-100">
         <div id="exec-qr-container"></div>
       </div>
+
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+        Scan with any smartphone camera to open this director's profile directly and leave a tribute.
+      </p>
+
+      <button onclick="copyExecQrLink()" id="exec-copy-link-btn" class="w-full py-2.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        <span>Copy Profile Link</span>
+      </button>
+    </div>
+  </div>
 
       <p class="text-[11px] text-slate-400">Scan with any smartphone camera to open this executive profile directly and leave a tribute.</p>
 
