@@ -400,9 +400,9 @@
               <span class="font-bold">Mandate 26-27</span>
               <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px] font-mono">24%</span>
             </div>
-            <div class="px-capsule bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm flex items-center gap-2 cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})" title="Click to view full attendance breakdown">
+            <div class="px-capsule bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm flex items-center gap-2 cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})" title="Official Attendance Rate">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-slate-300 font-medium">Presence Rate</span>
+              <span class="text-slate-300 font-medium">Attendance Rate</span>
               <span id="hero-presence-rate-pill" class="font-extrabold font-mono text-white text-xs">77.78%</span>
               <span id="hero-presence-badge-pill" class="bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono uppercase">Standard</span>
             </div>
@@ -520,7 +520,7 @@
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#131C38] border border-white/5 text-xs font-bold text-slate-200 transition cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})">
               <div class="flex items-center gap-2.5">
                 <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs">📅</span>
-                <span>Presence Frequency</span>
+                <span>Attendance Rate</span>
               </div>
               <div class="flex items-center gap-2">
                 <span id="drawer-presence-rate" class="font-mono text-xs font-extrabold text-white">77.78%</span>
@@ -546,26 +546,25 @@
             </div>
           </div>
         
-          <!-- LIVE GOOGLE SHEETS PRESENCE FREQUENCY CARD -->
-          <div class="px-card p-4 space-y-3 border border-white/10 bg-[#0E142A]" id="live-attendance-card">
+          <!-- CONFIDENTIAL ATTENDANCE RATE CARD -->
+          <!-- CONFIDENTIAL ATTENDANCE RATE CARD -->
+          <div class="px-card p-4 space-y-3.5 border border-white/10 bg-[#0E142A]" id="live-attendance-card">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-xs font-bold text-white uppercase tracking-wider">Presence Frequency</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Attendance Rate</span>
               </div>
-              <button onclick="syncGoogleSheetsAttendance(true)" id="btn-sync-attendance" 
-                      class="text-[11px] font-mono text-indigo-400 hover:text-white flex items-center gap-1 transition cursor-pointer"
-                      title="Sync directly with TBS JE Attendance Google Sheet">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                <span>Live Sync</span>
-              </button>
+              <span class="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span>HR Verified</span>
+              </span>
             </div>
 
-            <!-- Primary Rate & Metric Pills -->
+            <!-- Primary Rate & Metric Pills (Only Attendance Rate is Shown) -->
             <div class="flex items-baseline justify-between pt-1">
               <div>
-                <span id="live-attendance-rate" class="text-2xl sm:text-3xl font-black text-white font-mono leading-none">77.8%</span>
-                <span class="text-[10px] text-slate-400 font-semibold block mt-1">Official Mandate Attendance</span>
+                <span id="live-attendance-rate" class="text-3xl font-black text-white font-mono leading-none">77.78%</span>
+                <span class="text-[10px] text-slate-400 font-semibold block mt-1">Official Mandate Attendance Rate</span>
               </div>
               <span id="live-attendance-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono">
                 Standard
@@ -573,47 +572,17 @@
             </div>
 
             <!-- Progress Bar -->
-            <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+            <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
               <div id="live-attendance-bar" class="h-full rounded-full bg-gradient-to-r from-[#5E4AE3] to-emerald-400 transition-all duration-500" style="width: 78%;"></div>
             </div>
 
-            <!-- Detailed Counts Breakdown -->
-            <div class="grid grid-cols-4 gap-1.5 pt-1 text-center font-mono">
-              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
-                <span class="text-[9px] text-slate-400 block">Present</span>
-                <span id="live-attended-count" class="text-xs font-bold text-white">7</span>
-              </div>
-              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
-                <span class="text-[9px] text-slate-400 block">Late</span>
-                <span id="live-late-count" class="text-xs font-bold text-amber-300">0</span>
-              </div>
-              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
-                <span class="text-[9px] text-slate-400 block">Excused</span>
-                <span id="live-excused-count" class="text-xs font-bold text-indigo-300">2</span>
-              </div>
-              <div class="p-1.5 rounded-xl bg-white/[0.04] border border-white/5">
-                <span class="text-[9px] text-slate-400 block">Total</span>
-                <span id="live-total-count" class="text-xs font-bold text-slate-300">9</span>
-              </div>
-            </div>
-
-            <!-- Recent Sessions History -->
-            <div class="pt-2 border-t border-white/5">
-              <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block mb-1.5">Recent Gatherings (GM & Training)</span>
-              <div id="live-sessions-strip" class="flex flex-wrap gap-1">
-                <!-- Injected dynamically via JavaScript -->
-              </div>
-            </div>
-
-            <!-- Real-time Source Footnote -->
-            <div class="pt-1 flex items-center justify-between text-[9px] text-slate-500">
-              <span class="flex items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>Google Sheets Live</span>
+            <!-- Confidentiality Notice (Strictly no external sheet link) -->
+            <div class="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400">
+              <span class="flex items-center gap-1.5 font-medium">
+                <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <span>Confidential Internal HR Directorate Record</span>
               </span>
-              <a href="https://docs.google.com/spreadsheets/d/1-ExaEn2F1k6swU3tp8R510hTa3LteLWEjdM_kYVxYuk/edit?gid=232275285#gid=232275285" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 underline transition">
-                Open Sheet ↗
-              </a>
+              <span class="font-mono text-[9px] text-slate-500">Mandate 2026–2027</span>
             </div>
           </div>
 
@@ -15066,27 +15035,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
             rate = Math.round(((present + 0.5 * (jai + jav)) / total) * 1000) / 10 + '%';
           }
 
-          const sessions = [];
-          for (let s = 2; s < 10; s++) {
-            const val = row[s] ? String(row[s].v || '') : '';
-            sessions.push({
-              date: sessionDates[s - 2],
-              type: sessionTypes[s - 2],
-              val: val
-            });
-          }
-
-          parsed[name.toLowerCase()] = {
-            num: num,
-            name: name,
-            present: present,
-            unexcused: unexcused,
-            late: late,
-            jai: jai,
-            jav: jav,
-            total: total,
-            rate: rate,
-            sessions: sessions
+          /* sessions omitted for confidentiality */
           };
         }
 
@@ -15277,95 +15226,59 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       // Render Radar
       
-      // UPDATE LIVE ATTENDANCE WIDGET
+      // UPDATE CONFIDENTIAL ATTENDANCE RATE WIDGET
       try {
         const att = (m && m.name) ? attendanceDataStore[m.name.toLowerCase()] : null;
         const rateEl = document.getElementById('live-attendance-rate');
         const badgeEl = document.getElementById('live-attendance-badge');
         const barEl = document.getElementById('live-attendance-bar');
-        const attendedEl = document.getElementById('live-attended-count');
-        const lateEl = document.getElementById('live-late-count');
-        const excusedEl = document.getElementById('live-excused-count');
-        const totalEl = document.getElementById('live-total-count');
-        const stripEl = document.getElementById('live-sessions-strip');
+        const heroRateEl = document.getElementById('hero-presence-rate-pill');
+        const heroBadgeEl = document.getElementById('hero-presence-badge-pill');
+        const drawerRateEl = document.getElementById('drawer-presence-rate');
+        const drawerBadgeEl = document.getElementById('drawer-presence-badge');
 
         if (att) {
           const rateNum = parseFloat(att.rate) || 0;
           if (rateEl) rateEl.innerText = att.rate || '0%';
-          const heroRateEl = document.getElementById('hero-presence-rate-pill');
-          const heroBadgeEl = document.getElementById('hero-presence-badge-pill');
-          const drawerRateEl = document.getElementById('drawer-presence-rate');
-          const drawerBadgeEl = document.getElementById('drawer-presence-badge');
-
+          if (barEl) barEl.style.width = Math.min(100, Math.max(5, rateNum)) + '%';
           if (heroRateEl) heroRateEl.innerText = att.rate || '0%';
           if (drawerRateEl) drawerRateEl.innerText = att.rate || '0%';
 
-          if (heroBadgeEl) {
-            heroBadgeEl.innerText = (parseFloat(att.rate) >= 90) ? "Honor Roll" : ((parseFloat(att.rate) >= 75) ? "Standard" : "Alert");
-            heroBadgeEl.className = (parseFloat(att.rate) >= 90) ? "bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : ((parseFloat(att.rate) >= 75) ? "bg-indigo-500/30 text-indigo-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : "bg-amber-500/30 text-amber-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono");
-          }
-          if (drawerBadgeEl) {
-            drawerBadgeEl.innerText = (parseFloat(att.rate) >= 90) ? "Honor Roll" : ((parseFloat(att.rate) >= 75) ? "Standard" : "Alert");
-            drawerBadgeEl.className = (parseFloat(att.rate) >= 90) ? "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono" : ((parseFloat(att.rate) >= 75) ? "px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono" : "px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono");
-          }
-          if (barEl) barEl.style.width = Math.min(100, Math.max(5, rateNum)) + '%';
-          if (attendedEl) attendedEl.innerText = att.present || '0';
-          if (lateEl) lateEl.innerText = att.late || '0';
-          if (excusedEl) excusedEl.innerText = ((att.jai || 0) + (att.jav || 0)) || '0';
-          if (totalEl) totalEl.innerText = att.total || '0';
+          const tierTitle = (rateNum >= 90) ? "Honor Roll" : ((rateNum >= 75) ? "Standard" : "Attendance Alert");
+          const tierPillClass = (rateNum >= 90) 
+            ? "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono"
+            : ((rateNum >= 75)
+              ? "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono"
+              : "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono");
 
           if (badgeEl) {
-            if (rateNum >= 90) {
-              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono";
-              badgeEl.innerText = "Honor Roll";
-            } else if (rateNum >= 75) {
-              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40 font-mono";
-              badgeEl.innerText = "Standard";
-            } else {
-              badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono";
-              badgeEl.innerText = "Attendance Alert";
-            }
+            badgeEl.className = tierPillClass;
+            badgeEl.innerText = tierTitle;
           }
-
-          if (stripEl && Array.isArray(att.sessions)) {
-            stripEl.innerHTML = '';
-            att.sessions.forEach(sess => {
-              let badgeStyle = "bg-white/[0.04] text-slate-400 border border-white/5";
-              let icon = sess.val || '-';
-              if (sess.val === 'P') {
-                badgeStyle = "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30";
-                icon = "✓ P";
-              } else if (sess.val === 'L') {
-                badgeStyle = "bg-amber-500/15 text-amber-300 border border-amber-500/30";
-                icon = "⏱ L";
-              } else if (sess.val === 'JAI' || sess.val === 'JAV') {
-                badgeStyle = "bg-indigo-500/15 text-indigo-300 border border-indigo-500/30";
-                icon = sess.val;
-              } else if (sess.val === 'A') {
-                badgeStyle = "bg-rose-500/15 text-rose-300 border border-rose-500/30";
-                icon = "✗ A";
-              }
-              stripEl.innerHTML += `
-                <div class="px-2 py-1 rounded-lg ${badgeStyle} text-[10px] font-mono flex items-center gap-1" title="${escapeHtml(sess.type)} (${escapeHtml(sess.date)})">
-                  <span class="text-slate-400 text-[9px]">${escapeHtml(sess.date)}:</span>
-                  <span class="font-bold">${escapeHtml(icon)}</span>
-                </div>
-              `;
-            });
+          if (heroBadgeEl) {
+            heroBadgeEl.className = (rateNum >= 90) ? "bg-emerald-500/30 text-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : ((rateNum >= 75) ? "bg-indigo-500/30 text-indigo-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono" : "bg-amber-500/30 text-amber-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono");
+            heroBadgeEl.innerText = tierTitle;
+          }
+          if (drawerBadgeEl) {
+            drawerBadgeEl.className = tierPillClass;
+            drawerBadgeEl.innerText = tierTitle;
           }
         } else {
           if (rateEl) rateEl.innerText = '100%';
           if (barEl) barEl.style.width = '100%';
-          if (attendedEl) attendedEl.innerText = '0';
-          if (lateEl) lateEl.innerText = '0';
-          if (excusedEl) excusedEl.innerText = '0';
-          if (totalEl) totalEl.innerText = '0';
+          if (heroRateEl) heroRateEl.innerText = '100%';
+          if (drawerRateEl) drawerRateEl.innerText = '100%';
           if (badgeEl) {
             badgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono";
             badgeEl.innerText = "New Member";
           }
-          if (stripEl) {
-            stripEl.innerHTML = '<span class="text-[10px] text-slate-500">Pending initial attendance logging by HR</span>';
+          if (heroBadgeEl) {
+            heroBadgeEl.className = "bg-indigo-500/30 text-indigo-200 px-1.5 py-0.5 rounded-full text-[9px] font-mono";
+            heroBadgeEl.innerText = "New Member";
+          }
+          if (drawerBadgeEl) {
+            drawerBadgeEl.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono";
+            drawerBadgeEl.innerText = "New Member";
           }
         }
       } catch(attErr) {
@@ -16011,6 +15924,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         card.className = "px-card p-5 flex flex-col justify-between space-y-4 hover:shadow-lg transition-all duration-200 border border-slate-200/80 dark:border-slate-800/80 relative group bg-[#0E142A] border border-white/10";
         
         const photoSrc = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
+        const att = attendanceDataStore[m.name.toLowerCase()];
+        const attBadge = att ? `<span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-full ${parseFloat(att.rate) >= 90 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : (parseFloat(att.rate) >= 75 ? 'bg-[#5E4AE3]/20 text-indigo-300 border border-[#5E4AE3]/40' : 'bg-amber-500/20 text-amber-300 border border-amber-500/40')}">${att.rate}</span>` : '';
 
         card.innerHTML = `
           <div class="flex items-start gap-3.5">
@@ -16025,7 +15940,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between gap-1">
                 <h4 class="text-sm font-bold text-white truncate">${escapeHtml(m.name)}</h4>
-                <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-full bg-[#131C38] text-slate-500">#${m.jerseyNum || '01'}</span>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  ${attBadge}
+                  <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-full bg-[#131C38] text-slate-500">#${m.jerseyNum || '01'}</span>
+                </div>
               </div>
               <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block truncate mt-0.5">${escapeHtml(m.major || 'Business Analytics')}</span>
               <span class="text-[11px] text-slate-400 block mt-0.5">Mandate 2026-2027</span>
