@@ -506,6 +506,8 @@
               </div>
               <span id="player-badges-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400">3 Honors</span>
             </div>
+            <!-- Badges Render Container -->
+            <div id="player-badges-container" class="flex flex-wrap gap-1.5 pt-2"></div>
 
             <!-- Edit Profile Action Button -->
             <div class="pt-2">
@@ -1457,6 +1459,19 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
   <!-- APPLICATION CORE LOGIC -->
   <script>
+    // ==========================================
+    // UTILITY: ESCAPE HTML
+    // ==========================================
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
     const SUPABASE_URL = "https://bzbxulnfunmebcnlvxct.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6Ynh1bG5mdW5tZWJjbmx2eGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMzIxMzgsImV4cCI6MjEwODcwODEzOH0.sw8uh1IrevXUREEUwMDYesKAfBdKzDmsL1kX9v-zUFg";
     const STORAGE_KEY = "tbs_talent_platform_mandate_26_27_en_v2";
@@ -11744,6 +11759,15 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     // ==========================================
     // TAB NAVIGATION SWITCHER
     // ==========================================
+    
+    function viewMemberCard(id) {
+      if (id) {
+        currentMemberId = id;
+      }
+      setMainTab('player');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function setMainTab(tab) {
       currentTab = tab;
       try {
@@ -12426,6 +12450,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     
 
     function renderPlayerCard() {
+      if (!appState || !Array.isArray(appState.members) || appState.members.length === 0) return;
+
       let m = appState.members.find(x => x.id === currentMemberId);
       if (!m) {
         currentMemberId = appState.members[0].id;
@@ -12434,47 +12460,76 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       const idx = appState.members.findIndex(x => x.id === currentMemberId);
       const total = appState.members.length;
-      document.getElementById('roster-index-tag').innerText = `${(idx+1).toString().padStart(2, '0')} / ${total}`;
-      document.getElementById('big-jersey-number').innerText = m.jerseyNum || `${(idx+1).toString().padStart(2, '0')}`;
 
-      const heroImg = document.getElementById('hero-photo');
-      heroImg.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
-      heroImg.src = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
+      // Safe DOM helpers
+      const setElText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = (val !== null && val !== undefined) ? String(val) : '';
+      };
 
-      document.getElementById('hero-name-overlay').innerText = m.name;
-            const teamDisplay = (m.teams && m.teams.length > 0) ? m.teams.slice(0, 3).join(' • ') : "Mandate 2026-2027";
-      document.getElementById('hero-dept-tag').innerText = "Projects: " + teamDisplay;
-      document.getElementById('hero-name-overlay').innerText = m.name;
-      document.getElementById('card-consultant-name').innerText = m.name;
+      setElText('roster-index-tag', `${(idx+1).toString().padStart(2, '0')} / ${total}`);
+      setElText('big-jersey-number', m.jerseyNum || `${(idx+1).toString().padStart(2, '0')}`);
+      setElText('hero-name-overlay', m.name);
+      setElText('card-consultant-name', m.name);
+
+      const teamDisplay = (m.teams && m.teams.length > 0) ? m.teams.slice(0, 3).join(' • ') : "Mandate 2026-2027";
+      setElText('hero-dept-tag', "Projects: " + teamDisplay);
+
       const subTeams = (m.teams && m.teams.length > 0) ? m.teams.join(' • ') : "Junior Consultant";
-      document.getElementById('card-consultant-sub').innerText = `Junior Consultant • ${subTeams}`;
-      document.getElementById('big-jersey-number').innerText = m.jerseyNum ? m.jerseyNum.toString().padStart(2, '0') : '01';
-      document.getElementById('pill-height').innerText = (m.teams && m.teams.length > 0) ? m.teams[0] : "Hexacom";
+      setElText('card-consultant-sub', `Junior Consultant • ${subTeams}`);
 
+      setElText('pill-height', (m.teams && m.teams.length > 0) ? m.teams[0] : (m.major || "Hexacom"));
+
+      // Photo
+      const heroImg = document.getElementById('hero-photo');
+      if (heroImg) {
+        heroImg.onerror = function() { this.onerror = null; this.src = DEFAULT_AVATAR; };
+        heroImg.src = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
+      }
+
+      // Stats
+      setElText('hero-stat-growth', '+24%');
+      setElText('hero-stat-initiatives', (m.teams || []).length || '2');
+      setElText('hero-stat-missions', (m.missions_list || []).length || '5');
+
+      // LinkedIn button
+      const linkedinBtn = document.getElementById('hero-linkedin-link');
+      if (linkedinBtn) {
+        linkedinBtn.href = m.linkedin || ('https://www.linkedin.com/search/results/all/?keywords=' + encodeURIComponent(m.name + ' Tunis Business School Junior Enterprise'));
+      }
+
+      // Major badge
+      const majorBadge = document.getElementById('hero-major-badge');
+      if (majorBadge) {
+        majorBadge.innerText = m.major ? m.major.split(' ')[0] : 'Analytics';
+        majorBadge.title = m.major || 'Business Analytics';
+      }
+
+      // Missions table
       const tbody = document.getElementById('athlete-missions-tbody');
-      tbody.innerHTML = '';
-      (m.missions_list || []).forEach(item => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-white/[0.04] transition border-b border-white/[0.03]">
-            <td class="py-2.5 px-3 font-mono text-slate-400 text-xs">${item.date}</td>
-            <td class="py-2.5 px-3 font-bold text-white text-xs">${item.client}</td>
-            <td class="py-2.5 px-3 text-slate-300 text-xs">${item.type}</td>
-            <td class="py-2.5 px-3 font-bold text-emerald-400 text-xs">${item.score}</td>
-            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">${item.result}</span></td>
-            <td class="py-2.5 px-3 font-mono text-slate-300 text-xs">${item.rendement || item.pts || '18.5'}</td>
-            <td class="py-2.5 px-3 font-mono text-slate-300 text-xs">${item.sample || item.reb || '450 Resp.'}</td>
-            <td class="py-2.5 px-3 text-right font-mono text-indigo-300 font-bold text-xs">${item.deliverable || item.ast || '42 p.'}</td>
-          </tr>
-        `;
-      });
+      if (tbody) {
+        tbody.innerHTML = '';
+        (m.missions_list || []).forEach(item => {
+          tbody.innerHTML += `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition border-b border-slate-100 dark:border-slate-800">
+              <td class="py-2.5 px-3 font-mono text-slate-500 text-xs">${escapeHtml(item.date)}</td>
+              <td class="py-2.5 px-3 font-bold text-slate-800 dark:text-white text-xs">${escapeHtml(item.client)}</td>
+              <td class="py-2.5 px-3 text-slate-600 dark:text-slate-300 text-xs">${escapeHtml(item.type)}</td>
+              <td class="py-2.5 px-3 font-bold text-emerald-600 dark:text-emerald-400 text-xs">${escapeHtml(item.score)}</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">${escapeHtml(item.result)}</span></td>
+              <td class="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-400 text-xs">${escapeHtml(item.rendement || item.pts || '18.5')}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-400 text-xs">${escapeHtml(item.sample || item.reb || '450 Resp.')}</td>
+              <td class="py-2.5 px-3 text-right font-mono text-indigo-600 dark:text-indigo-400 font-bold text-xs">${escapeHtml(item.deliverable || item.ast || '42 p.')}</td>
+            </tr>
+          `;
+        });
+      }
 
-
-      // Render S1 and S2 teams for the consultant
+      // S1 & S2 Teams if lists exist
       const s1Teams = (m.teams || []).filter(tName => {
         const t = PROJECT_TEAMS.find(x => x.name === tName);
         return t && t.semester === 'S1';
       });
-
       const s2Teams = (m.teams || []).filter(tName => {
         const t = PROJECT_TEAMS.find(x => x.name === tName);
         return t && t.semester === 'S2';
@@ -12486,19 +12541,19 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       if (countBadge) {
         const totalCount = (m.teams || []).length;
-        countBadge.innerText = `${totalCount} Équipe${totalCount > 1 ? 's' : ''}`;
+        countBadge.innerText = `${totalCount} Project${totalCount > 1 ? 's' : ''}`;
       }
 
       if (s1Container) {
         if (s1Teams.length === 0) {
-          s1Container.innerHTML = '<span class="text-[11px] text-slate-500 italic py-0.5">No assigned projects assignée au S1</span>';
+          s1Container.innerHTML = '<span class="text-[11px] text-slate-400 italic py-0.5">No assigned projects for S1</span>';
         } else {
           s1Container.innerHTML = s1Teams.map(tName => {
             const t = PROJECT_TEAMS.find(x => x.name === tName) || { icon: '💼', hrNeeded: '-' };
-            return `<span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-500/30 flex items-center gap-1.5 shadow-sm">
+            return `<span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center gap-1.5 shadow-sm">
               <span>${t.icon}</span>
-              <span>${tName}</span>
-              <span class="text-[9px] font-mono text-indigo-400 bg-indigo-500/20 px-1 py-0.2 rounded">${t.hrNeeded} HR</span>
+              <span>${escapeHtml(tName)}</span>
+              <span class="text-[9px] font-mono text-indigo-500 bg-white/40 dark:bg-black/40 px-1 py-0.2 rounded">${t.hrNeeded} HR</span>
             </span>`;
           }).join('');
         }
@@ -12506,42 +12561,41 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       if (s2Container) {
         if (s2Teams.length === 0) {
-          s2Container.innerHTML = '<span class="text-[11px] text-slate-500 italic py-0.5">No assigned projects assignée au S2</span>';
+          s2Container.innerHTML = '<span class="text-[11px] text-slate-400 italic py-0.5">No assigned projects for S2</span>';
         } else {
           s2Container.innerHTML = s2Teams.map(tName => {
             const t = PROJECT_TEAMS.find(x => x.name === tName) || { icon: '🚀', hrNeeded: '-' };
-            return `<span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-500/20 text-purple-200 border border-purple-500/30 flex items-center gap-1.5 shadow-sm">
+            return `<span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center gap-1.5 shadow-sm">
               <span>${t.icon}</span>
-              <span>${tName}</span>
-              <span class="text-[9px] font-mono text-purple-400 bg-purple-500/20 px-1 py-0.2 rounded">${t.hrNeeded} HR</span>
+              <span>${escapeHtml(tName)}</span>
+              <span class="text-[9px] font-mono text-purple-500 bg-white/40 dark:bg-black/40 px-1 py-0.2 rounded">${t.hrNeeded} HR</span>
             </span>`;
           }).join('');
         }
       }
 
-      // Update LinkedIn Profile button
-      const linkedinBtn = document.getElementById('hero-linkedin-link');
-      if (linkedinBtn) {
-        linkedinBtn.href = m.linkedin || ('https://www.linkedin.com/search/results/all/?keywords=' + encodeURIComponent(m.name + ' Tunis Business School Junior Enterprise'));
+      // Render Badges
+      if (typeof renderPlayerBadges === 'function') {
+        try { renderPlayerBadges(m); } catch(e) { console.error('Error in renderPlayerBadges:', e); }
       }
 
-      // Update Major badge
-      const majorBadge = document.getElementById('hero-major-badge');
-      if (majorBadge) {
-        majorBadge.innerText = m.major ? m.major.split(' ')[0] : 'Analytics';
-        majorBadge.title = m.major || 'Business Analytics';
+      // Render Project Experiences
+      if (typeof renderProjectExperiences === 'function') {
+        try { renderProjectExperiences(m); } catch(e) { console.error('Error in renderProjectExperiences:', e); }
       }
 
-      // Render Director Badges
-      renderPlayerBadges(m);
+      // Render Peer Words
+      if (typeof renderJcPeerWords === 'function') {
+        try { renderJcPeerWords(m.id); } catch(e) { console.error('Error in renderJcPeerWords:', e); }
+      }
 
-      // Render 100% Project Deep-Dive & Self-Ratings
-      renderProjectExperiences(m);
-
-      // Render Peer & Director Wall of Appreciation
-      renderJcPeerWords(m.id);
-
-      drawAthleteRadar(m, 'athleteRadarCanvas');
+      // Render Radar
+      if (typeof drawAthleteRadar === 'function') {
+        try {
+          drawAthleteRadar(m, 'athleteSingleRadarCanvas');
+          drawAthleteRadar(m, 'athleteRadarCanvas');
+        } catch(e) { console.error('Error in drawAthleteRadar:', e); }
+      }
     }
 
     // ==========================================
@@ -12772,6 +12826,93 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       renderJcPeerWords(currentMemberId);
       showToast("Thank you! Your appreciation message has been posted.");
+    }
+
+    
+    // ==========================================
+    // DIRECTOR BADGE MODAL HANDLERS
+    // ==========================================
+    function openBadgeDetailModal(badgeId, memberId) {
+      const mid = memberId || currentMemberId;
+      let m = appState.members.find(x => x.id === mid) || appState.members[0];
+      let b = (m.badges || []).find(x => x.id === badgeId);
+      if (!b) return;
+
+      const iconEl = document.getElementById('modal-badge-icon');
+      if (iconEl) iconEl.innerText = b.icon || '🏆';
+      const nameEl = document.getElementById('modal-badge-name');
+      if (nameEl) nameEl.innerText = b.name;
+      const dirEl = document.getElementById('modal-badge-director');
+      if (dirEl) dirEl.innerText = b.director || 'Executive Director';
+      const titleEl = document.getElementById('modal-badge-director-title');
+      if (titleEl) titleEl.innerText = b.directorTitle || 'Executive Board 2026-2027';
+      const reasonEl = document.getElementById('modal-badge-reason');
+      if (reasonEl) reasonEl.innerText = `"${b.reason || 'Outstanding dedication and high consulting performance.'}"`;
+      const dateEl = document.getElementById('modal-badge-date');
+      if (dateEl) dateEl.innerText = b.date || 'Mandate 2026-2027';
+
+      const modal = document.getElementById('badgeDetailModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeBadgeDetailModal() {
+      const modal = document.getElementById('badgeDetailModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // ==========================================
+    // PROJECT REFLECTION & COMPETENCY RATINGS
+    // ==========================================
+    let currentReflectionProject = "";
+    function openProjectReflectionModal(projectName) {
+      currentReflectionProject = projectName;
+      let m = appState.members.find(x => x.id === currentMemberId) || appState.members[0];
+      const exp = (m.projectExperiences && m.projectExperiences[projectName]) ? m.projectExperiences[projectName] : {};
+      
+      const titleEl = document.getElementById('modal-reflection-project-name');
+      if (titleEl) titleEl.innerText = `${projectName} — Key Learnings`;
+      const ta = document.getElementById('modal-reflection-textarea');
+      if (ta) ta.value = exp.learnings || "";
+
+      const modal = document.getElementById('projectReflectionModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeProjectReflectionModal() {
+      const modal = document.getElementById('projectReflectionModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveProjectReflection() {
+      const ta = document.getElementById('modal-reflection-textarea');
+      const textVal = ta ? ta.value.trim() : '';
+      let m = appState.members.find(x => x.id === currentMemberId) || appState.members[0];
+      if (m && currentReflectionProject) {
+        if (!m.projectExperiences) m.projectExperiences = {};
+        if (!m.projectExperiences[currentReflectionProject]) {
+          m.projectExperiences[currentReflectionProject] = { projectName: currentReflectionProject, skills: [], learnings: "" };
+        }
+        m.projectExperiences[currentReflectionProject].learnings = textVal;
+        safeSetStorage(STORAGE_KEY, JSON.stringify(appState));
+        renderProjectExperiences(m);
+        closeProjectReflectionModal();
+        showToast("Project reflection updated successfully!");
+      }
+    }
+
+    function rateProjectSkill(memberId, projectName, skillIdx, rating) {
+      let m = appState.members.find(x => x.id === memberId);
+      if (!m || !m.projectExperiences || !m.projectExperiences[projectName]) return;
+
+      const exp = m.projectExperiences[projectName];
+      if (exp.skills && exp.skills[skillIdx]) {
+        exp.skills[skillIdx].rating = rating;
+        const avg = exp.skills.reduce((sum, s) => sum + s.rating, 0) / exp.skills.length;
+        exp.overallRating = parseFloat(avg.toFixed(2));
+        safeSetStorage(STORAGE_KEY, JSON.stringify(appState));
+        renderProjectExperiences(m);
+        showToast(`Saved ${projectName} rating: ${rating} / 5`);
+      }
     }
 
     function renderSkillsTab() {
@@ -13040,8 +13181,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     // ==========================================
     function renderAdminTab() {
       const grid = document.getElementById('admin-members-grid');
+      if (!grid) return;
       grid.innerHTML = '';
 
+      if (!appState || !Array.isArray(appState.members)) return;
       let list = appState.members;
 
       if (adminProjectFilter !== 'all') {
@@ -13068,25 +13211,28 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (adminSearchQuery) {
         const q = adminSearchQuery.toLowerCase();
         list = list.filter(m => 
-          m.name.toLowerCase().includes(q) || 
-          m.roleTitle.toLowerCase().includes(q) || 
+          (m.name && m.name.toLowerCase().includes(q)) || 
+          (m.roleTitle && m.roleTitle.toLowerCase().includes(q)) || 
           (m.major && m.major.toLowerCase().includes(q)) ||
           (m.teams || []).some(t => t.toLowerCase().includes(q))
         );
       }
 
-      document.getElementById('count-all').innerText = appState.members.length;
+      const countAll = document.getElementById('count-all');
+      if (countAll) {
+        countAll.innerText = appState.members.length;
+      }
 
       list.forEach(m => {
         const card = document.createElement('div');
-        card.className = "saas-card p-4 flex flex-col justify-between space-y-3.5 hover:border-[#334260] transition duration-150 relative group";
+        card.className = "px-card p-5 flex flex-col justify-between space-y-4 hover:shadow-lg transition-all duration-200 border border-slate-200/80 dark:border-slate-800/80 relative group bg-white dark:bg-[#13192B]";
         
         const photoSrc = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
 
         card.innerHTML = `
           <div class="flex items-start gap-3.5">
-            <div class="relative w-14 h-14 rounded-lg overflow-hidden border border-[#1E283D] bg-slate-900 shrink-0 group/avatar">
-              <img src="${photoSrc}" onerror="this.onerror=null;this.src=DEFAULT_AVATAR" alt="${m.name}" class="w-full h-full object-cover">
+            <div class="relative w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 bg-slate-100 dark:bg-slate-900 shrink-0 group/avatar shadow-sm">
+              <img src="${photoSrc}" onerror="this.onerror=null;this.src=DEFAULT_AVATAR" alt="${escapeHtml(m.name)}" class="w-full h-full object-cover">
               <label class="absolute inset-0 bg-black/75 opacity-0 group-hover/avatar:opacity-100 transition flex flex-col items-center justify-center cursor-pointer text-center p-1" title="Change photo">
                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 <input type="file" accept="image/*" class="hidden" onchange="uploadMemberPhotoDirect(event, '${m.id}')">
@@ -13095,33 +13241,33 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between gap-1">
-                <h4 class="text-sm font-semibold text-white truncate">${m.name}</h4>
-                <span class="text-[10px] font-mono text-slate-500">#${m.jerseyNum || '00'}</span>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">${escapeHtml(m.name)}</h4>
+                <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">#${m.jerseyNum || '01'}</span>
               </div>
-              <span class="text-xs text-indigo-400 font-medium block truncate mt-0.5">${m.major || 'Business Analytics'}</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block truncate mt-0.5">${escapeHtml(m.major || 'Business Analytics')}</span>
               <span class="text-[11px] text-slate-400 block mt-0.5">Mandate 2026-2027</span>
             </div>
           </div>
 
           <!-- Assigned Project Teams -->
-          <div class="flex flex-wrap gap-1 min-h-[24px]">
+          <div class="flex flex-wrap gap-1.5 min-h-[26px]">
             ${(m.teams || []).map(t => `
-              <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">
+              <span class="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/60 shadow-sm">
                 ${escapeHtml(t)}
               </span>
             `).join('')}
           </div>
 
           <!-- Action Buttons -->
-          <div class="pt-2 border-t border-[#1E283D] flex items-center justify-between gap-2">
-            <button onclick="viewMemberCard('${m.id}')" class="saas-btn-secondary py-1 px-2.5 text-xs flex-1 justify-center cursor-pointer">
-              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
+            <button onclick="viewMemberCard('${m.id}')" class="px-pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold cursor-pointer shadow-sm transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               <span>View Passport</span>
             </button>
-            <button onclick="openEditMemberModal('${m.id}')" class="p-1.5 rounded-lg border border-[#1E283D] hover:border-slate-600 text-slate-400 hover:text-white transition cursor-pointer" title="Edit Member">
+            <button onclick="openEditMemberModal('${m.id}')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer" title="Edit Member">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </button>
-            <button onclick="deleteMember('${m.id}')" class="p-1.5 rounded-lg border border-transparent hover:border-rose-500/30 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer" title="Delete Member">
+            <button onclick="deleteMember('${m.id}')" class="p-2 rounded-xl border border-transparent hover:border-rose-200 dark:hover:border-rose-800 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer" title="Delete Member">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </div>
