@@ -11743,24 +11743,38 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
 
     // =========================================================================
-    // AUTHENTICATION, EMAIL ACTIVATION & ROLE-BASED ACCESS ENGINE
+    // AUTHENTICATION (EMAIL-ONLY PASSWORD DELIVERY) & SHARED CLOUD SYNC ENGINE
     // =========================================================================
-    const AUTH_ACCOUNTS_KEY = "tbs_auth_accounts_v1";
-    const AUTH_SESSION_KEY = "tbs_active_session_v1";
+    // Paste your deployed Google Apps Script Web App URL here when publishing so all 60 members connect automatically:
+    const DEFAULT_GAS_BACKEND_URL = "";
+    const AUTH_SESSION_KEY = "tbs_active_session_v2";
     const GAS_WEBHOOK_KEY = "tbs_gas_webhook_url_v1";
     const OFFICIAL_EVAL_PREFIX = "tbs_official_eval_v1_";
     let currentAuthUser = null;
-    let lastDispatchedCredentials = null;
 
-    function loadAuthAccounts() {
-      try {
-        const raw = safeGetStorage(AUTH_ACCOUNTS_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch(e) { return {}; }
+    function getEmailBackendUrl() {
+      const stored = safeGetStorage(GAS_WEBHOOK_KEY);
+      return ((stored && stored.trim()) ? stored.trim() : DEFAULT_GAS_BACKEND_URL).trim();
     }
 
-    function saveAuthAccounts(map) {
-      safeSetStorage(AUTH_ACCOUNTS_KEY, JSON.stringify(map));
+    async function callBackendApi(payload) {
+      const url = getEmailBackendUrl();
+      if (!url) {
+        return { ok: false, noBackend: true, error: "Email Server URL not configured yet." };
+      }
+      try {
+        // Use text/plain to avoid CORS preflight with Google Apps Script Web Apps while reading JSON response cleanly
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        const text = await resp.text();
+        return JSON.parse(text);
+      } catch(e) {
+        console.warn("Backend request error:", e);
+        return { ok: false, error: "Could not reach Email & Auth Server. Verify Web App deployment access is set to 'Anyone'." };
+      }
     }
 
     function loadActiveSession() {
@@ -11781,7 +11795,32 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function saveGasWebhookUrl(url) {
-      safeSetStorage(GAS_WEBHOOK_KEY, (url || '').trim());
+      const clean = (url || '').trim();
+      safeSetStorage(GAS_WEBHOOK_KEY, clean);
+      updateBackendStatusBadge();
+    }
+
+    function updateBackendStatusBadge() {
+      const badge = document.getElementById('auth-backend-status-pill');
+      if (!badge) return;
+      const connected = !!getEmailBackendUrl();
+      badge.className = connected
+        ? "text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+        : "text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+      badge.innerText = connected ? "● Email Server Connected" : "○ Server Setup Required";
+    }
+
+    async function testBackendConnection() {
+      const url = getEmailBackendUrl();
+      if (!url) return showToast("Paste your Google Apps Script Web App URL first.");
+      showToast("Checking server connection...");
+      const res = await callBackendApi({ action: 'fetch_state' });
+      if (res && res.ok) {
+        showToast("Connected cleanly to TBS JE Secure Auth & Sync Server!");
+        await fetchSharedStateFromBackend();
+      } else {
+        showToast(res.error || "Connection check failed.");
+      }
     }
 
     function isSignedIn() { return !!currentAuthUser; }
@@ -11808,9 +11847,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
       populateClaimMemberSelect(targetPreselect);
       const gasIn = document.getElementById('auth-gas-webhook-input');
-      if (gasIn) gasIn.value = safeGetStorage(GAS_WEBHOOK_KEY) || '';
-      const errEl = document.getElementById('auth-login-error');
-      if (errEl) errEl.classList.add('hidden');
+      if (gasIn) gasIn.value = getEmailBackendUrl();
+      updateBackendStatusBadge();
+
+      ['auth-login-error', 'auth-claim-error', 'auth-email-sent-status', 'auth-backend-warning'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
 
       if (currentAuthUser && tab === 'login') {
         switchAuthTab('account');
@@ -11878,11 +11921,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
     }
 
-    function generatePersonalPassword() {
-      const digits = Math.floor(1000 + Math.random() * 9000);
-      return `TBS-${digits}-JE`;
-    }
-
     function togglePasswordVis(inputId, btn) {
       const inp = document.getElementById(inputId);
       if (!inp) return;
@@ -11894,10 +11932,24 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const role = document.getElementById('auth-claim-role').value;
       const targetId = document.getElementById('auth-claim-member').value;
       const email = document.getElementById('auth-claim-email').value.trim().toLowerCase();
-      const customPass = document.getElementById('auth-claim-custom-pass').value.trim();
+      const errEl = document.getElementById('auth-claim-error');
+      const okBox = document.getElementById('auth-email-sent-status');
+      const warnBox = document.getElementById('auth-backend-warning');
+
+      if (errEl) errEl.classList.add('hidden');
+      if (okBox) okBox.classList.add('hidden');
+      if (warnBox) warnBox.classList.add('hidden');
 
       if (!email || !email.includes('@') || !email.includes('.')) {
-        return showToast("Please enter a valid email address.");
+        if (errEl) { errEl.innerText = "Please enter a valid email address."; errEl.classList.remove('hidden'); }
+        return;
+      }
+
+      if (!getEmailBackendUrl()) {
+        if (warnBox) warnBox.classList.remove('hidden');
+        const det = document.getElementById('auth-server-details');
+        if (det) det.open = true;
+        return;
       }
 
       let name = '', title = '';
@@ -11906,8 +11958,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         if (!m) return;
         name = m.name;
         title = 'Junior Consultant';
-        m.email = email;
-        safeSetStorage(STORAGE_KEY, JSON.stringify(appState));
       } else {
         const l = EXECUTIVE_BOARD_DATA.find(x => x.id === targetId);
         if (!l) return;
@@ -11915,115 +11965,173 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         title = l.title;
       }
 
-      const password = customPass.length >= 4 ? customPass : generatePersonalPassword();
-      const accounts = loadAuthAccounts();
+      const btn = document.getElementById('auth-send-mail-btn');
+      const prevTxt = btn ? btn.innerText : '';
+      if (btn) { btn.disabled = true; btn.innerText = "Sending private password to email..."; }
 
-      // Remove any previous email bound to this same identity so 1 member = 1 clean active email
-      Object.keys(accounts).forEach(k => {
-        if (accounts[k].role === role && accounts[k].targetId === targetId) {
-          delete accounts[k];
-        }
-      });
-
-      const acctRecord = {
-        email: email,
-        password: password,
+      const res = await callBackendApi({
+        action: 'send_password',
         role: role,
+        roleLabel: title,
         targetId: targetId,
         name: name,
-        title: title,
-        claimedAt: new Date().toISOString()
-      };
-      accounts[email] = acctRecord;
-      saveAuthAccounts(accounts);
+        email: email
+      });
 
-      // Optional live email webhook dispatch if user provided Google Apps Script URL
-      const webhookUrl = safeGetStorage(GAS_WEBHOOK_KEY);
-      if (webhookUrl && webhookUrl.startsWith('https://script.google.com/')) {
-        try {
-          fetch(webhookUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              action: 'send_password',
-              role: role,
-              roleLabel: title,
-              targetId: targetId,
-              name: name,
-              email: email,
-              password: password
-            })
-          });
-        } catch(e) { console.warn("Webhook notice:", e); }
+      if (btn) { btn.disabled = false; btn.innerText = prevTxt || "Send Password to My Email"; }
+
+      if (res && res.ok) {
+        const outEmail = document.getElementById('sent-status-email-out');
+        if (outEmail) outEmail.innerText = email;
+        if (okBox) okBox.classList.remove('hidden');
+        const loginEmail = document.getElementById('auth-login-email');
+        if (loginEmail) loginEmail.value = email;
+        showToast(`✉️ Personal password sent securely to ${email}!`);
+      } else {
+        if (errEl) {
+          errEl.innerText = (res && res.error) ? res.error : "Unable to send email. Verify Email Server setup.";
+          errEl.classList.remove('hidden');
+        }
       }
-
-      lastDispatchedCredentials = acctRecord;
-      document.getElementById('dispatch-email-out').innerText = email;
-      document.getElementById('dispatch-name-out').innerText = `${name} (${title})`;
-      document.getElementById('dispatch-pass-out').innerText = password;
-      document.getElementById('auth-dispatch-preview').classList.remove('hidden');
-      showToast(`✉️ Personal password generated & bound to ${email}!`);
     }
 
-    function copyDispatchedPassword() {
-      if (!lastDispatchedCredentials) return;
-      navigator.clipboard.writeText(lastDispatchedCredentials.password)
-        .then(() => showToast("Password copied to clipboard!"));
-    }
-
-    function autoFillLoginFromDispatch() {
-      if (!lastDispatchedCredentials) return;
-      document.getElementById('auth-login-email').value = lastDispatchedCredentials.email;
-      document.getElementById('auth-login-password').value = lastDispatchedCredentials.password;
-      switchAuthTab('login');
-      handleAuthLogin();
-    }
-
-    function handleAuthLogin() {
+    async function handleAuthLogin() {
       const email = document.getElementById('auth-login-email').value.trim().toLowerCase();
       const pass = document.getElementById('auth-login-password').value.trim();
       const errEl = document.getElementById('auth-login-error');
 
-      const accounts = loadAuthAccounts();
-      const found = accounts[email];
+      if (!email || !pass) {
+        if (errEl) { errEl.innerText = "Enter your email and the password sent to your inbox."; errEl.classList.remove('hidden'); }
+        return;
+      }
 
-      if (!found || found.password !== pass) {
+      if (!getEmailBackendUrl()) {
         if (errEl) {
-          errEl.innerText = !found
-            ? "No activated account matches that email yet. Click 'Send My Password' above to activate your profile."
-            : "Incorrect password. Check your password or use 'Send My Password' to reset.";
+          errEl.innerHTML = "Email Auth Server URL is not configured yet. Open <strong>Send My Password ➔ Server Setup</strong> to connect your Google Apps Script URL.";
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const btn = document.getElementById('auth-login-submit-btn');
+      const prevTxt = btn ? btn.innerText : '';
+      if (btn) { btn.disabled = true; btn.innerText = "Verifying with Server..."; }
+
+      const res = await callBackendApi({ action: 'login', email: email, password: pass });
+
+      if (btn) { btn.disabled = false; btn.innerText = prevTxt || "Sign In to My Account"; }
+
+      if (!res || !res.ok || !res.user) {
+        if (errEl) {
+          errEl.innerText = (res && res.error) ? res.error : "Invalid email or password.";
           errEl.classList.remove('hidden');
         }
         return;
       }
 
       if (errEl) errEl.classList.add('hidden');
-      saveActiveSession(found);
+      const sessionUser = {
+        email: res.user.email,
+        role: res.user.role,
+        targetId: res.user.targetId,
+        name: res.user.name,
+        title: res.user.title,
+        token: res.token
+      };
+      saveActiveSession(sessionUser);
+      document.getElementById('auth-login-password').value = '';
       closeAuthModal();
-      showToast(`🔓 Welcome ${found.name}! Signed in (${found.title}).`);
+      showToast(`🔓 Welcome ${sessionUser.name}! Signed in (${sessionUser.title}).`);
 
-      if (found.role === 'jc') {
-        currentMemberId = found.targetId;
+      if (sessionUser.role === 'jc') {
+        currentMemberId = sessionUser.targetId;
         setMainTab('player');
       } else {
         setMainTab(currentTab || 'player');
       }
     }
 
-    function handleChangeOwnPassword() {
-      if (!currentAuthUser) return;
+    async function handleChangeOwnPassword() {
+      if (!currentAuthUser || !currentAuthUser.token) return showToast("Sign in first.");
+      const curPass = document.getElementById('acct-cur-password').value.trim();
       const newPass = document.getElementById('acct-new-password').value.trim();
-      if (newPass.length < 4) return showToast("Password must be at least 4 characters.");
-      const accounts = loadAuthAccounts();
-      if (accounts[currentAuthUser.email]) {
-        accounts[currentAuthUser.email].password = newPass;
-        saveAuthAccounts(accounts);
+      if (!curPass || newPass.length < 4) return showToast("Enter current password and a new password (min 4 chars).");
+
+      const res = await callBackendApi({
+        action: 'change_password',
+        token: currentAuthUser.token,
+        currentPassword: curPass,
+        newPassword: newPass
+      });
+      if (res && res.ok) {
+        document.getElementById('acct-cur-password').value = '';
+        document.getElementById('acct-new-password').value = '';
+        showToast("Personal password updated securely on server!");
+      } else {
+        showToast((res && res.error) ? res.error : "Failed to update password.");
       }
-      currentAuthUser.password = newPass;
-      saveActiveSession(currentAuthUser);
-      document.getElementById('acct-new-password').value = '';
-      showToast("Personal password updated securely!");
+    }
+
+    async function fetchSharedStateFromBackend() {
+      const url = getEmailBackendUrl();
+      if (!url) return;
+      try {
+        const resp = await fetch(`${url}${url.includes('?') ? '&' : '?'}action=fetch_state`);
+        const res = await resp.json();
+        if (!res || !res.ok) return;
+
+        // Merge shared member updates (photos, selfScores, teams, major, linkedin, reflections, missions)
+        if (res.members && appState && Array.isArray(appState.members)) {
+          Object.keys(res.members).forEach(mid => {
+            const m = appState.members.find(x => x.id === mid);
+            const patch = res.members[mid];
+            if (m && patch) {
+              if (patch.photo) m.photo = patch.photo;
+              if (patch.major) m.major = patch.major;
+              if (patch.linkedin !== undefined) m.linkedin = patch.linkedin;
+              if (Array.isArray(patch.teams)) m.teams = patch.teams;
+              if (patch.selfScores) m.selfScores = patch.selfScores;
+              if (patch.managerScores) m.managerScores = patch.managerScores;
+              if (patch.projectExperiences) m.projectExperiences = patch.projectExperiences;
+              if (Array.isArray(patch.missions_list)) m.missions_list = patch.missions_list;
+            }
+          });
+          safeSetStorage(STORAGE_KEY, JSON.stringify(appState));
+        }
+
+        // Merge Official Evaluations
+        if (res.evals) {
+          Object.keys(res.evals).forEach(mid => {
+            safeSetStorage(OFFICIAL_EVAL_PREFIX + mid, JSON.stringify(res.evals[mid]));
+          });
+        }
+
+        // Merge comments
+        if (res.comments) {
+          if (res.comments.manager_review) {
+            Object.keys(res.comments.manager_review).forEach(mid => {
+              safeSetStorage('tbs_mgr_comments_for_' + mid, JSON.stringify(res.comments.manager_review[mid]));
+            });
+          }
+          if (res.comments.jc_peer_word) {
+            Object.keys(res.comments.jc_peer_word).forEach(mid => {
+              safeSetStorage('tbs_jc_peer_words_' + mid, JSON.stringify(res.comments.jc_peer_word[mid]));
+            });
+          }
+          if (res.comments.exec_word) {
+            Object.keys(res.comments.exec_word).forEach(ebId => {
+              safeSetStorage('tbs_jc_words_' + ebId, JSON.stringify(res.comments.exec_word[ebId]));
+            });
+          }
+        }
+
+        if (currentTab === 'player') renderPlayerCard();
+        else if (currentTab === 'skills') renderSkillsTab();
+        else if (currentTab === 'manager') renderManagerTab();
+        else if (currentTab === 'admin') renderAdminTab();
+      } catch(e) {
+        console.warn("Shared backend fetch notice:", e);
+      }
     }
 
     function navigateToMySpace() {
@@ -12479,6 +12587,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       safeSetStorage(OFFICIAL_EVAL_PREFIX + m.id, JSON.stringify(record));
       m.officialRating = record.rating;
       saveState();
+      if (getEmailBackendUrl() && currentAuthUser && currentAuthUser.token) {
+        callBackendApi({ action: 'save_official_eval', token: currentAuthUser.token, memberId: m.id, evalRecord: record });
+      }
       renderDualEvaluationPanel(m);
       showToast(`★ Official Final Rate (${record.rating.toFixed(1)} / 5.0) published for ${m.name}!`);
     }
@@ -12561,6 +12672,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       handleUrlRouting();
       updateGlobalCounts();
       renderAuthUiState();
+      if (getEmailBackendUrl()) {
+        fetchSharedStateFromBackend();
+      }
     }
 
     function updateGlobalCounts() {
@@ -12593,25 +12707,25 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     async function syncMemberToSupabase(member) {
+      if (!member || !getEmailBackendUrl() || !currentAuthUser || !currentAuthUser.token) return;
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/members?id=eq.${member.id}`, {
-          method: 'PATCH',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            name: member.name,
-            department: member.department,
-            role_title: member.roleTitle,
-            photo_url: member.photo,
-            jersey_num: member.jerseyNum
-          })
+        await callBackendApi({
+          action: 'save_own_profile',
+          token: currentAuthUser.token,
+          memberId: member.id,
+          payload: {
+            photo: member.photo,
+            major: member.major,
+            linkedin: member.linkedin,
+            teams: member.teams,
+            selfScores: member.selfScores,
+            managerScores: member.managerScores,
+            projectExperiences: member.projectExperiences,
+            missions_list: member.missions_list
+          }
         });
       } catch(e) {
-        console.log("Supabase notice: offline/local sync mode active.");
+        console.warn("Cloud member sync notice:", e);
       }
     }
 
@@ -13397,6 +13511,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       savedWords.unshift(newEntry);
       safeSetStorage('tbs_jc_words_' + currentExecModalId, JSON.stringify(savedWords));
+      if (getEmailBackendUrl()) {
+        callBackendApi({ action: 'save_public_comment', kind: 'exec_word', targetId: currentExecModalId, comment: newEntry });
+      }
 
       if (textInput) textInput.value = '';
       renderJcWords(currentExecModalId);
@@ -16770,6 +16887,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       stored.unshift(newEntry);
       safeSetStorage('tbs_mgr_comments_for_' + currentMemberId, JSON.stringify(stored));
+      if (getEmailBackendUrl() && currentAuthUser && currentAuthUser.token) {
+        callBackendApi({ action: 'save_manager_comment', token: currentAuthUser.token, memberId: currentMemberId, comment: newEntry });
+      }
 
       if (input) input.value = '';
 
@@ -17098,6 +17218,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       stored.unshift(newEntry);
       safeSetStorage('tbs_jc_peer_words_' + currentMemberId, JSON.stringify(stored));
+      if (getEmailBackendUrl()) {
+        callBackendApi({ action: 'save_public_comment', kind: 'jc_peer_word', targetId: currentMemberId, comment: newEntry });
+      }
 
       document.getElementById('jc-peer-author-input').value = '';
       document.getElementById('jc-peer-role-input').value = '';
@@ -18352,13 +18475,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   </div>
 
 
-  <!-- MODAL: AUTHENTICATION, EMAIL ACTIVATION & PASSWORD MANAGEMENT -->
+  <!-- MODAL: AUTHENTICATION, EMAIL-ONLY PASSWORD DISPATCH & ACCOUNT SECURITY -->
   <div id="authModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 z-50">
     <div class="bg-[#0E142A] border border-indigo-500/30 rounded-2xl max-w-lg w-full p-5 sm:p-6 text-white space-y-4 shadow-2xl relative max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-white/10">
         <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 font-mono">TBS Junior Enterprise • Secure Access</span>
-          <h3 class="text-lg font-extrabold text-white mt-0.5">Member Portal Sign In &amp; Activation</h3>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 font-mono">TBS Junior Enterprise • Private Email Security</span>
+          <h3 class="text-lg font-extrabold text-white mt-0.5">Member Sign In &amp; Email Verification</h3>
         </div>
         <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 cursor-pointer">✕</button>
       </div>
@@ -18366,41 +18489,46 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       <!-- AUTH NAVIGATION TABS -->
       <div class="flex items-center gap-1.5 p-1 rounded-xl bg-[#080C1D] border border-white/10 text-xs font-bold">
         <button id="auth-tab-btn-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg bg-[#5E4AE3] text-white cursor-pointer transition">Sign In</button>
-        <button id="auth-tab-btn-claim" onclick="switchAuthTab('claim')" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition">Send My Password</button>
+        <button id="auth-tab-btn-claim" onclick="switchAuthTab('claim')" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition">Send Password to Mail</button>
         <button id="auth-tab-btn-account" onclick="switchAuthTab('account')" class="hidden flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition">My Account</button>
       </div>
 
       <!-- TAB 1: SIGN IN WITH EMAIL & PASSWORD -->
       <div id="auth-panel-login" class="space-y-3.5 text-xs">
         <div class="p-3 rounded-xl bg-indigo-950/40 border border-indigo-500/20 text-slate-300 leading-relaxed">
-          Log in with your activated email &amp; personal password to manage your own photo, self-assessment scores, or evaluate JCs (Managers &amp; EB).
+          Enter your email and the personal password sent to your inbox to edit your own photo, self-assess competencies, or assess JCs (Managers &amp; EB).
         </div>
 
         <div class="space-y-2">
-          <label class="font-bold text-slate-300 block">Registered Email Address</label>
-          <input type="email" id="auth-login-email" placeholder="e.g. abir.marai@tbs-je.org" class="px-input w-full bg-[#080C1D] text-white">
+          <label class="font-bold text-slate-300 block">Email Address</label>
+          <input type="email" id="auth-login-email" placeholder="your.name@gmail.com" class="px-input w-full bg-[#080C1D] text-white">
         </div>
 
         <div class="space-y-2">
           <div class="flex justify-between items-center">
-            <label class="font-bold text-slate-300 block">Password</label>
+            <label class="font-bold text-slate-300 block">Password (from your Email)</label>
             <button onclick="switchAuthTab('claim')" class="text-[11px] text-indigo-400 hover:text-indigo-300 underline cursor-pointer">First time or forgot password?</button>
           </div>
           <div class="relative">
-            <input type="password" id="auth-login-password" placeholder="Enter your password" class="px-input w-full bg-[#080C1D] text-white pr-14">
+            <input type="password" id="auth-login-password" placeholder="Enter your private password" class="px-input w-full bg-[#080C1D] text-white pr-14">
             <button type="button" onclick="togglePasswordVis('auth-login-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 hover:text-white cursor-pointer">Show</button>
           </div>
         </div>
 
         <div id="auth-login-error" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px]"></div>
 
-        <button onclick="handleAuthLogin()" class="w-full py-2.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
+        <button id="auth-login-submit-btn" onclick="handleAuthLogin()" class="w-full py-2.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
           Sign In to My Account
         </button>
       </div>
 
-      <!-- TAB 2: CLAIM PROFILE, BIND EMAIL & SEND PASSWORD -->
+      <!-- TAB 2: SEND PRIVATE PASSWORD STRICTLY TO EMAIL (NEVER DISPLAYED ON WEB) -->
       <div id="auth-panel-claim" class="hidden space-y-3.5 text-xs">
+        <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-start gap-2.5 text-emerald-200 leading-relaxed">
+          <span class="text-sm shrink-0">🛡️</span>
+          <span>For your security, personal passwords are generated on the server and <strong>sent exclusively to your email inbox</strong> — never shown on the website.</span>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="space-y-1.5">
             <label class="font-bold text-slate-300 block">Your Role</label>
@@ -18417,46 +18545,52 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         </div>
 
         <div class="space-y-1.5">
-          <label class="font-bold text-slate-300 block">Your Email Address (Where Password is Sent)</label>
+          <label class="font-bold text-slate-300 block">Your Email Address (Receives Private Password)</label>
           <input type="email" id="auth-claim-email" placeholder="your.name@gmail.com" class="px-input w-full bg-[#080C1D] text-white">
         </div>
 
-        <div class="space-y-1.5">
-          <label class="font-bold text-slate-300 block">Custom Password (Optional — leave blank to auto-generate)</label>
-          <input type="text" id="auth-claim-custom-pass" placeholder="Leave blank to receive generated password (e.g. TBS-XXXX-JE)" class="px-input w-full bg-[#080C1D] text-white">
-        </div>
+        <div id="auth-claim-error" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px]"></div>
 
-        <!-- COLLAPSIBLE OPTIONAL GOOGLE APPS SCRIPT WEBHOOK -->
-        <details class="p-2.5 rounded-xl bg-[#080C1D] border border-white/10 text-[11px]">
-          <summary class="cursor-pointer font-semibold text-slate-400 hover:text-indigo-300">⚙️ Optional: Connect Live Email Server Webhook (Google Apps Script)</summary>
-          <div class="mt-2 space-y-1.5">
-            <p class="text-slate-400 text-[10px]">By default, Preview Mode displays your dispatched password on screen. To send actual Gmail emails across devices, deploy <code>google_apps_script_template.gs</code> and paste the Web App URL:</p>
-            <input type="url" id="auth-gas-webhook-input" placeholder="https://script.google.com/macros/s/.../exec" class="px-input w-full text-[11px] bg-[#131C38] text-white" onchange="saveGasWebhookUrl(this.value)">
-          </div>
-        </details>
-
-        <button onclick="handleClaimAndSendPassword()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
-          Activate Account &amp; Send Password
+        <button id="auth-send-mail-btn" onclick="handleClaimAndSendPassword()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
+          ✉️ Send Password to My Email
         </button>
 
-        <!-- SIMULATED EMAIL DISPATCH PREVIEW -->
-        <div id="auth-dispatch-preview" class="hidden p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 space-y-2.5">
+        <!-- STRICT EMAIL-ONLY CONFIRMATION (NO PASSWORD SHOWN) -->
+        <div id="auth-email-sent-status" class="hidden p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 space-y-2.5">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">✉️ Password Dispatched (Preview Inbox)</span>
-            <span class="text-[9px] font-mono text-emerald-200 bg-emerald-500/20 px-1.5 py-0.5 rounded">Active</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">✉️ Check Your Email Inbox</span>
+            <span class="text-[9px] font-mono text-emerald-200 bg-emerald-500/20 px-1.5 py-0.5 rounded">Email Sent</span>
           </div>
-          <div class="p-3 rounded-lg bg-[#080C1D] border border-white/10 space-y-1 font-mono text-[11px]">
-            <div><span class="text-slate-400">To:</span> <span id="dispatch-email-out" class="text-white"></span></div>
-            <div><span class="text-slate-400">Member:</span> <span id="dispatch-name-out" class="text-indigo-300"></span></div>
-            <div class="pt-1 flex items-center justify-between">
-              <span><span class="text-slate-400">Password:</span> <span id="dispatch-pass-out" class="text-amber-300 font-black text-sm"></span></span>
-              <button onclick="copyDispatchedPassword()" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] cursor-pointer">Copy</button>
-            </div>
-          </div>
-          <button onclick="autoFillLoginFromDispatch()" class="w-full py-2 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-xs cursor-pointer transition">
-            Use Password &amp; Sign In Now ➔
+          <p class="text-xs text-slate-200 leading-relaxed">
+            Your private password was sent strictly to <strong id="sent-status-email-out" class="text-white font-mono"></strong>. Check your inbox (and Spam/Promotions), then sign in cleanly without your password ever appearing on the web.
+          </p>
+          <button onclick="switchAuthTab('login')" class="w-full py-2 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-xs cursor-pointer transition">
+            Proceed to Sign In ➔
           </button>
         </div>
+
+        <!-- SETUP WARNING IF BACKEND URL NOT CONNECTED YET -->
+        <div id="auth-backend-warning" class="hidden p-3.5 rounded-xl bg-amber-950/50 border border-amber-500/40 space-y-1.5 text-amber-200 text-[11px]">
+          <span class="font-bold block">⚙️ Admin Setup Needed to Dispatch Real Emails</span>
+          <p class="text-amber-100/90 leading-relaxed">
+            Static GitHub Pages cannot send emails directly without a server endpoint, and passwords are never revealed on screen. Deploy <code>google_apps_script_template.gs</code> on Google Apps Script and paste the Web App URL below.
+          </p>
+        </div>
+
+        <!-- ADMIN SERVER CONNECTION SETTINGS -->
+        <details id="auth-server-details" class="p-3 rounded-xl bg-[#080C1D] border border-white/10 text-[11px] space-y-2">
+          <summary class="cursor-pointer font-semibold text-slate-300 flex items-center justify-between">
+            <span>⚙️ Admin Email Server Config (Google Apps Script)</span>
+            <span id="auth-backend-status-pill" class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">○ Server Setup Required</span>
+          </summary>
+          <div class="pt-2 space-y-2">
+            <p class="text-slate-400 text-[10px] leading-relaxed">Deploy <code>google_apps_script_template.gs</code> in Google Sheets &rarr; Extensions &rarr; Apps Script (Who has access: <strong>Anyone</strong>) and paste the <code>/exec</code> Web App URL:</p>
+            <div class="flex gap-2">
+              <input type="url" id="auth-gas-webhook-input" placeholder="https://script.google.com/macros/s/.../exec" class="px-input flex-1 text-[11px] bg-[#131C38] text-white" oninput="saveGasWebhookUrl(this.value)">
+              <button onclick="testBackendConnection()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] cursor-pointer shrink-0">Test Sync</button>
+            </div>
+          </div>
+        </details>
       </div>
 
       <!-- TAB 3: LOGGED IN ACCOUNT SECURITY & PASSWORD UPDATE -->
@@ -18472,7 +18606,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
         <div class="p-3.5 rounded-xl bg-[#080C1D] border border-white/10 space-y-2.5">
           <span class="font-bold text-slate-200 block">Change My Password</span>
-          <input type="password" id="acct-new-password" placeholder="Enter new personal password (min 4 chars)" class="px-input w-full bg-[#131C38] text-white">
+          <input type="password" id="acct-cur-password" placeholder="Current password (from email)" class="px-input w-full bg-[#131C38] text-white">
+          <input type="password" id="acct-new-password" placeholder="New private password (min 4 chars)" class="px-input w-full bg-[#131C38] text-white">
           <button onclick="handleChangeOwnPassword()" class="px-btn-secondary w-full justify-center py-1.5 text-xs cursor-pointer">Update Password</button>
         </div>
 
