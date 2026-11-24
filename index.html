@@ -11756,16 +11756,19 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     // =========================================================================
     // AUTHENTICATION (EMAIL-ONLY PASSWORD DELIVERY) & SHARED CLOUD SYNC ENGINE
     // =========================================================================
-    // Paste your deployed Google Apps Script Web App URL here when publishing so all 60 members connect automatically:
-    const DEFAULT_GAS_BACKEND_URL = "";
+    // Live Google Apps Script Web App URL (TBS JE Secure Auth & Evaluation Sync Server):
+    const DEFAULT_GAS_BACKEND_URL = "https://script.google.com/macros/s/AKfycbxEB0DubrOFXk5mnNvSOcSjUgPMz8YTL84uRZtVrpo5kWZ0Vr7gj9N45isW79Rgdtc_JQ/exec";
     const AUTH_SESSION_KEY = "tbs_active_session_v2";
     const GAS_WEBHOOK_KEY = "tbs_gas_webhook_url_v1";
     const OFFICIAL_EVAL_PREFIX = "tbs_official_eval_v1_";
     let currentAuthUser = null;
 
     function getEmailBackendUrl() {
+      if (DEFAULT_GAS_BACKEND_URL && DEFAULT_GAS_BACKEND_URL.trim()) {
+        return DEFAULT_GAS_BACKEND_URL.trim();
+      }
       const stored = safeGetStorage(GAS_WEBHOOK_KEY);
-      return ((stored && stored.trim()) ? stored.trim() : DEFAULT_GAS_BACKEND_URL).trim();
+      return (stored || "").trim();
     }
 
     async function callBackendApi(payload) {
@@ -18581,8 +18584,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           </p>
         </div>
 
-        <!-- ADMIN SERVER CONNECTION SETTINGS -->
-        <details id="auth-server-details" class="p-3 rounded-xl bg-[#080C1D] border border-white/10 text-[11px] space-y-2">
+        <!-- ADMIN SERVER CONNECTION SETTINGS (HIDDEN WHEN DEFAULT BACKEND CONFIGURED) -->
+        <details id="auth-server-details" class="hidden p-3 rounded-xl bg-[#080C1D] border border-white/10 text-[11px] space-y-2">
           <summary class="cursor-pointer font-semibold text-slate-300 flex items-center justify-between">
             <span>⚙️ Admin Email Server Config (Google Apps Script)</span>
             <span id="auth-backend-status-pill" class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">○ Server Setup Required</span>
