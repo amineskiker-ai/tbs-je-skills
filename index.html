@@ -295,6 +295,17 @@
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
     }
+
+    /* Fix white browser autofill background on dark inputs */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill {
+      -webkit-text-fill-color: #f8fafc !important;
+      -webkit-box-shadow: 0 0 0px 1000px #080C1D inset !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
   </style>
 </head>
 <body class="bg-[#090D16] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
@@ -11841,13 +11852,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       loadActiveSession();
       const modal = document.getElementById('authModal');
       if (!modal) return;
-      if (rolePreselect) {
-        const rSel = document.getElementById('auth-claim-role');
-        if (rSel) rSel.value = rolePreselect;
-      }
       populateClaimMemberSelect(targetPreselect);
       const gasIn = document.getElementById('auth-gas-webhook-input');
       if (gasIn) gasIn.value = getEmailBackendUrl();
+      const srvDet = document.getElementById('auth-server-details');
+      if (srvDet) srvDet.classList.toggle('hidden', !!DEFAULT_GAS_BACKEND_URL);
       updateBackendStatusBadge();
 
       ['auth-login-error', 'auth-claim-error', 'auth-email-sent-status', 'auth-backend-warning'].forEach(id => {
@@ -11901,23 +11910,26 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function populateClaimMemberSelect(preselectId = null) {
-      const roleEl = document.getElementById('auth-claim-role');
       const selEl = document.getElementById('auth-claim-member');
-      if (!roleEl || !selEl) return;
-      const role = roleEl.value;
-      let items = [];
-      if (role === 'jc' && appState && appState.members) {
-        items = appState.members.map(m => ({ id: m.id, label: `${m.name} (#${m.jerseyNum || '00'})` }));
-      } else if (role === 'manager') {
-        items = EXECUTIVE_BOARD_DATA.filter(x => x.category === 'Middle Management')
-          .map(x => ({ id: x.id, label: `${x.name} — ${x.title} (${x.team || ''})` }));
-      } else {
-        items = EXECUTIVE_BOARD_DATA.filter(x => x.category !== 'Middle Management')
-          .map(x => ({ id: x.id, label: `${x.name} — ${x.title}` }));
-      }
-      selEl.innerHTML = items.map(it => `<option value="${escapeHtml(it.id)}">${escapeHtml(it.label)}</option>`).join('');
-      if (preselectId && items.some(it => it.id === preselectId)) {
-        selEl.value = preselectId;
+      if (!selEl) return;
+
+      const ebItems = EXECUTIVE_BOARD_DATA.filter(x => x.category !== 'Middle Management')
+        .map(x => `<option value="eb|${escapeHtml(x.id)}">${escapeHtml(x.name)} (${escapeHtml(x.title)})</option>`).join('');
+      const mgrItems = EXECUTIVE_BOARD_DATA.filter(x => x.category === 'Middle Management')
+        .map(x => `<option value="manager|${escapeHtml(x.id)}">${escapeHtml(x.name)} (${escapeHtml(x.team || x.title)})</option>`).join('');
+      const jcItems = (appState && appState.members)
+        ? appState.members.map(m => `<option value="jc|${escapeHtml(m.id)}">${escapeHtml(m.name)} (#${m.jerseyNum || '00'})</option>`).join('')
+        : '';
+
+      selEl.innerHTML = `
+        <optgroup label="Executive Board (8)">${ebItems}</optgroup>
+        <optgroup label="Middle Management (5)">${mgrItems}</optgroup>
+        <optgroup label="Junior Consultants (47)">${jcItems}</optgroup>
+      `;
+
+      if (preselectId) {
+        const matchOpt = Array.from(selEl.options).find(o => o.value.endsWith('|' + preselectId));
+        if (matchOpt) selEl.value = matchOpt.value;
       }
     }
 
@@ -11929,8 +11941,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     async function handleClaimAndSendPassword() {
-      const role = document.getElementById('auth-claim-role').value;
-      const targetId = document.getElementById('auth-claim-member').value;
+      const rawChoice = document.getElementById('auth-claim-member').value || '';
+      const parts = rawChoice.split('|');
+      const role = parts[0] || 'jc';
+      const targetId = parts[1] || '';
       const email = document.getElementById('auth-claim-email').value.trim().toLowerCase();
       const errEl = document.getElementById('auth-claim-error');
       const okBox = document.getElementById('auth-email-sent-status');
@@ -18529,23 +18543,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           <span>For your security, personal passwords are generated on the server and <strong>sent exclusively to your email inbox</strong> — never shown on the website.</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="space-y-1.5">
-            <label class="font-bold text-slate-300 block">Your Role</label>
-            <select id="auth-claim-role" onchange="populateClaimMemberSelect()" class="px-input w-full bg-[#080C1D] text-white cursor-pointer">
-              <option value="jc">Junior Consultant (47)</option>
-              <option value="manager">Middle Manager (5)</option>
-              <option value="eb">Executive Board (8)</option>
-            </select>
-          </div>
-          <div class="space-y-1.5">
-            <label class="font-bold text-slate-300 block">Select Your Name</label>
-            <select id="auth-claim-member" class="px-input w-full bg-[#080C1D] text-white cursor-pointer"></select>
-          </div>
+        <div class="space-y-1.5">
+          <label class="font-bold text-slate-300 block">Select Your Name</label>
+          <select id="auth-claim-member" class="px-input w-full bg-[#080C1D] text-white cursor-pointer"></select>
         </div>
 
         <div class="space-y-1.5">
-          <label class="font-bold text-slate-300 block">Your Email Address (Receives Private Password)</label>
+          <label class="font-bold text-slate-300 block">Your Email Address (Receives Password Directly)</label>
           <input type="email" id="auth-claim-email" placeholder="your.name@gmail.com" class="px-input w-full bg-[#080C1D] text-white">
         </div>
 
