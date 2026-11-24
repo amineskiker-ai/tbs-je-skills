@@ -365,9 +365,12 @@
           </span>
         </div>
 
-        <!-- User Avatar Circle -->
-        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-[#5E4AE3] to-indigo-500 text-white font-extrabold text-xs flex items-center justify-center shadow-md border border-white/20 cursor-pointer" onclick="setMainTab('player')" title="Current Consultant Passport">
-          AM
+        <!-- Interactive Auth & Session Controls -->
+        <div id="auth-header-controls" class="flex items-center gap-2">
+          <button onclick="openAuthModal('login')" class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#5E4AE3] to-indigo-600 hover:from-[#4F3CC9] hover:to-indigo-500 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-md border border-indigo-400/40 cursor-pointer transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Sign In / Claim</span>
+          </button>
         </div>
       </div>
     </div>
@@ -379,8 +382,13 @@
     <!-- ========================================================= -->
     <!-- TAB 1: CARTE CONSULTANT (DRIBBLE HERO ATHLETE STYLE)       -->
     <!-- ========================================================= -->
-    <div id="section-player" class="tab-panel space-y-8">
+    <div id="section-player" class="tab-panel space-y-6">
       
+      <!-- OWNERSHIP & VISIBILITY STATUS BAR -->
+      <div id="jc-access-banner" class="p-3.5 rounded-2xl bg-[#0E142A]/95 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-sm">
+        <!-- Populated dynamically by renderAuthUiState() -->
+      </div>
+
       <!-- PEOPLEXIO WELCOME BANNER & STATS STRIP -->
       <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-6 pb-2">
         <div class="space-y-3">
@@ -471,8 +479,8 @@
               </div>
             </div>
 
-            <!-- Direct Upload Trigger -->
-            <label class="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-indigo-600 text-white cursor-pointer transition shadow-md backdrop-blur-xs" title="Change photo">
+            <!-- Direct Upload Trigger (Owner Only) -->
+            <label id="hero-photo-upload-label" class="absolute top-3 right-3 p-2 rounded-full bg-black/60 hover:bg-indigo-600 text-white cursor-pointer transition shadow-md backdrop-blur-xs" title="Change your profile photo">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               <input type="file" accept="image/*" class="hidden" onchange="uploadDirectHeroPhoto(event)">
             </label>
@@ -534,11 +542,11 @@
               <span id="player-badges-count" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400">3 Honors</span>
             </div>
 
-            <!-- Edit Profile Action Button -->
-            <div class="pt-2">
-              <button onclick="openEditMemberModal(currentMemberId)" class="w-full py-2 bg-[#131C38] hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-200 hover:text-indigo-600 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <!-- Edit Profile Action Button (Owner Only) -->
+            <div id="hero-edit-profile-wrap" class="pt-2">
+              <button id="hero-edit-profile-btn" onclick="openEditMemberModal(currentMemberId)" class="w-full py-2 bg-[#131C38] hover:bg-indigo-500/20 text-slate-200 hover:text-indigo-300 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer border border-white/10">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                <span>Edit Profile</span>
+                <span>Edit Own Profile</span>
               </button>
             </div>
           </div>
@@ -768,8 +776,151 @@
               </div>
             </div>
           </div>
+
+          <!-- DEDICATED ALWAYS-VISIBLE QR CODE PLACE ON EVERY JC PROFILE -->
+          <div class="px-card p-4 space-y-2.5 border border-indigo-500/30 bg-[#0E142A]">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
+                <span class="text-xs font-bold text-white uppercase tracking-wider">Personal QR Code</span>
+              </div>
+              <span class="text-[10px] font-mono text-indigo-300 bg-indigo-500/15 px-2 py-0.5 rounded-full border border-indigo-500/30" id="inline-qr-id-tag">m_1</span>
+            </div>
+
+            <div class="flex items-center gap-3.5">
+              <div class="p-1.5 bg-white rounded-xl shadow-inner border border-slate-200 shrink-0">
+                <div id="jc-inline-qr-container" class="w-[88px] h-[88px] flex items-center justify-center"></div>
+              </div>
+              <div class="space-y-2 min-w-0 flex-1">
+                <p class="text-[11px] text-slate-300 leading-snug">
+                  Scan to open <span id="inline-qr-owner-name" class="font-bold text-white">Consultant</span>'s visible profile &amp; ratings.
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <button onclick="copyCurrentLink()" class="px-2.5 py-1 rounded-lg bg-[#131C38] hover:bg-indigo-600 text-slate-200 hover:text-white border border-white/10 text-[10px] font-bold transition cursor-pointer">
+                    Copy Link
+                  </button>
+                  <button onclick="openQrBadgeModal()" class="px-2.5 py-1 rounded-lg bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/30 text-[10px] font-bold transition cursor-pointer">
+                    Zoom QR
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- SIDE-BY-SIDE PERFORMANCE ASSESSMENT & OFFICIAL FINAL RATE -->
+      <!-- ======================================================== -->
+      <div id="jc-dual-evaluation-section" class="px-card p-6 space-y-5 border border-indigo-500/30 bg-[#0E142A]">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/10">
+          <div>
+            <div id="admin-eb-action-bar" class="flex flex-wrap items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <h4 class="text-base sm:text-lg font-extrabold text-white tracking-tight">Performance Evaluation &amp; Official Final Rating</h4>
+              <span class="px-capsule px-capsule-purple font-mono">Side-by-Side Comparison</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">JC Self-Score sits alongside the Official Final Rating, Achievements, Improvements &amp; Project Progress evaluated by Managers &amp; Executive Board.</p>
+          </div>
+          <span id="dual-alignment-badge" class="px-3 py-1 rounded-xl text-[11px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shrink-0">Alignment: Tracked Live</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <!-- LEFT SIDE: SCORE FROM JUNIOR CONSULTANT (SELF-ASSESSMENT) -->
+          <div class="lg:col-span-5 p-5 rounded-2xl bg-[#131C38]/80 border border-indigo-500/30 flex flex-col justify-between space-y-4">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300">Score From Junior Consultant</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-400/30">Self-Tracked</span>
+              </div>
+
+              <div class="flex items-baseline justify-between p-4 rounded-xl bg-[#0B1022] border border-indigo-500/25">
+                <div>
+                  <span class="text-[10px] uppercase tracking-wider text-slate-400 block">JC Self-Assessment Score</span>
+                  <div class="flex items-baseline gap-1.5 mt-1">
+                    <span id="dual-jc-self-score" class="text-3xl sm:text-4xl font-black font-mono text-indigo-300">4.0</span>
+                    <span class="text-sm font-mono text-slate-400">/ 5.0</span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-slate-400 block">Attendance Rate</span>
+                  <span id="dual-jc-attendance-tag" class="text-sm font-mono font-extrabold text-emerald-300">77.78%</span>
+                </div>
+              </div>
+
+              <!-- Key Self-Scored Competencies -->
+              <div id="dual-jc-self-breakdown" class="space-y-2.5 text-xs">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2 text-xs">
+              <span class="text-[11px] text-slate-400" id="dual-jc-self-lock-note">Sign in as owner to update self-score</span>
+              <button id="dual-jc-self-edit-btn" onclick="setMainTab('skills')" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] cursor-pointer transition shrink-0">
+                Calibrate Self-Score
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE: OFFICIAL RATING, ACHIEVEMENTS, IMPROVEMENTS & PROJECT PROGRESS (FROM MANAGERS & EB) -->
+          <div class="lg:col-span-7 p-5 rounded-2xl bg-[#131C38]/80 border border-amber-500/30 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
+              <div>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300 block">Official Rating • Middle Managers &amp; Executive Board</span>
+                <span id="dual-evaluator-meta" class="text-[11px] text-slate-400 block mt-0.5">Evaluated by Supervising Manager &amp; Directorate</span>
+              </div>
+              <div class="px-4 py-2 rounded-xl bg-amber-500/15 border border-amber-400/40 flex items-baseline gap-1.5 shrink-0">
+                <span class="text-amber-400 text-base">★</span>
+                <span id="dual-official-final-rate" class="text-2xl sm:text-3xl font-black font-mono text-white">4.5</span>
+                <span class="text-xs font-mono text-amber-300">/ 5.0</span>
+                <span class="ml-1 text-[9px] font-mono uppercase text-amber-200 bg-amber-500/20 px-1.5 py-0.5 rounded">Final Rate</span>
+              </div>
+            </div>
+
+            <!-- ACHIEVEMENTS & IMPROVEMENTS GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div class="p-3.5 rounded-xl bg-emerald-950/35 border border-emerald-500/30 space-y-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs">🏆</span>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Achievements Highlighted</span>
+                </div>
+                <ul id="dual-achievements-list" class="space-y-1.5 text-xs text-slate-200">
+                  <!-- Populated dynamically -->
+                </ul>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-amber-950/35 border border-amber-500/30 space-y-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs">🎯</span>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-amber-300">Areas for Improvement</span>
+                </div>
+                <ul id="dual-improvements-list" class="space-y-1.5 text-xs text-slate-200">
+                  <!-- Populated dynamically -->
+                </ul>
+              </div>
+            </div>
+
+            <!-- HOW THEY PROGRESS & HOW THE PROJECT WORKS -->
+            <div class="p-3.5 rounded-xl bg-[#0B1022] border border-cyan-500/25 space-y-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-300">How You Progress &amp; How Your Project Works</span>
+                <span id="dual-workflow-stage-pill" class="text-[10px] font-mono text-cyan-200 bg-cyan-500/15 px-2 py-0.5 rounded border border-cyan-500/30">Active Sprint</span>
+              </div>
+              <div id="dual-project-workflow-steps" class="flex flex-wrap items-center gap-2 text-[11px]">
+                <!-- Populated dynamically based on team (Hexacom / Quality / Hexapro) -->
+              </div>
+              <p id="dual-progress-note-text" class="text-xs text-slate-300 italic leading-relaxed border-t border-white/5 pt-2">
+                "Consistent progression across S1 sprint milestones."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVALUATOR FORM (ONLY UNLOCKED FOR SIGNED-IN MIDDLE MANAGERS & EXECUTIVE BOARD) -->
+        <div id="dual-evaluator-form-container" class="p-4 rounded-2xl bg-[#131C38] border border-amber-500/30">
+          <!-- Dynamically switched between interactive Evaluator Rate Form vs Lock Banner -->
+        </div>
       </div>
 
       <!-- ======================================================== -->
@@ -795,8 +946,8 @@
           <!-- Populated dynamically based on consultant's project (Hexacom vs Hexapro vs Quality) -->
         </div>
 
-        <!-- INTERACTIVE MANAGER COMMENT FORM -->
-        <div class="p-4 rounded-2xl bg-[#131C38] border border-cyan-500/30 space-y-3">
+        <!-- INTERACTIVE MANAGER COMMENT FORM (AUTH-LOCKED FOR MANAGERS & EB) -->
+        <div id="jc-mgr-form-box" class="p-4 rounded-2xl bg-[#131C38] border border-cyan-500/30 space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-slate-200 block">Middle Manager Assessment & Direct Feedback:</span>
             <span class="text-[10px] text-cyan-400 font-mono font-bold">Authorized Manager Access</span>
@@ -842,7 +993,7 @@
             </div>
             <p class="text-xs text-slate-500 mt-0.5">100% project-based organization (Mandate 2026–2027). Each project evaluated on its tailored competencies.</p>
           </div>
-          <button onclick="openEditMemberModal(currentMemberId)" class="px-btn-secondary text-xs self-start sm:self-auto cursor-pointer">
+          <button id="hero-manage-staffing-btn" onclick="openEditMemberModal(currentMemberId)" class="px-btn-secondary text-xs self-start sm:self-auto cursor-pointer">
             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
             <span>Manage Staffing</span>
           </button>
@@ -860,7 +1011,7 @@
             <h4 class="text-base font-extrabold text-white tracking-tight">Delivered Team Engagements & Deliverables</h4>
             <span class="text-xs text-slate-500">Social media campaigns, ISO 9001 quality audits, and studies (survey to final report) validated by Directors & Middle Managers</span>
           </div>
-          <button onclick="openCurateModal()" class="px-btn-secondary py-1.5 px-3 text-xs cursor-pointer">
+          <button id="hero-add-mission-btn" onclick="openCurateModal()" class="px-btn-secondary py-1.5 px-3 text-xs cursor-pointer">
             <span>+ Add Mission</span>
           </button>
         </div>
@@ -926,13 +1077,14 @@
 
     <!-- ========================================================= -->
     <div id="section-skills" class="tab-panel hidden space-y-6">
+      <div id="skills-auth-banner" class="p-3.5 rounded-2xl bg-[#0E142A] border border-indigo-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs"></div>
       <div class="saas-panel p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Assessment Matrix</span>
           <h3 class="text-lg font-semibold text-white mt-0.5">Consultant Self-Evaluation</h3>
           <p class="text-xs text-slate-400">Calibrate competencies from 1 (Novice) to 5 (Master / Trainer). Real-time autosave.</p>
         </div>
-        <button onclick="saveState()" class="saas-btn-primary cursor-pointer">
+        <button id="skills-save-btn" onclick="saveState()" class="saas-btn-primary cursor-pointer">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
           <span>Save Evaluation</span>
         </button>
@@ -959,6 +1111,7 @@
     <!-- TAB 3: REVUE MANAGER (SIDE-BY-SIDE MATRIX)                -->
     <!-- ========================================================= -->
     <div id="section-manager" class="tab-panel hidden space-y-6">
+      <div id="mgr-auth-banner" class="p-3.5 rounded-2xl bg-[#0E142A] border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs"></div>
       <div class="saas-panel p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Leadership & Project Governance</span>
@@ -11588,6 +11741,768 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
     }
 
+
+    // =========================================================================
+    // AUTHENTICATION, EMAIL ACTIVATION & ROLE-BASED ACCESS ENGINE
+    // =========================================================================
+    const AUTH_ACCOUNTS_KEY = "tbs_auth_accounts_v1";
+    const AUTH_SESSION_KEY = "tbs_active_session_v1";
+    const GAS_WEBHOOK_KEY = "tbs_gas_webhook_url_v1";
+    const OFFICIAL_EVAL_PREFIX = "tbs_official_eval_v1_";
+    let currentAuthUser = null;
+    let lastDispatchedCredentials = null;
+
+    function loadAuthAccounts() {
+      try {
+        const raw = safeGetStorage(AUTH_ACCOUNTS_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch(e) { return {}; }
+    }
+
+    function saveAuthAccounts(map) {
+      safeSetStorage(AUTH_ACCOUNTS_KEY, JSON.stringify(map));
+    }
+
+    function loadActiveSession() {
+      try {
+        const raw = safeGetStorage(AUTH_SESSION_KEY);
+        currentAuthUser = raw ? JSON.parse(raw) : null;
+      } catch(e) { currentAuthUser = null; }
+      return currentAuthUser;
+    }
+
+    function saveActiveSession(userObj) {
+      currentAuthUser = userObj;
+      if (userObj) safeSetStorage(AUTH_SESSION_KEY, JSON.stringify(userObj));
+      else {
+        try { localStorage.removeItem(AUTH_SESSION_KEY); } catch(e) {}
+      }
+      renderAuthUiState();
+    }
+
+    function saveGasWebhookUrl(url) {
+      safeSetStorage(GAS_WEBHOOK_KEY, (url || '').trim());
+    }
+
+    function isSignedIn() { return !!currentAuthUser; }
+    function isJcOwner(memberId) {
+      return !!(currentAuthUser && currentAuthUser.role === 'jc' && currentAuthUser.targetId === memberId);
+    }
+    function isEvaluator() {
+      return !!(currentAuthUser && (currentAuthUser.role === 'manager' || currentAuthUser.role === 'eb'));
+    }
+    function isEbAdmin() {
+      return !!(currentAuthUser && currentAuthUser.role === 'eb');
+    }
+    function canEditMemberProfile(memberId) {
+      return isJcOwner(memberId) || isEbAdmin();
+    }
+
+    function openAuthModal(tab = 'login', rolePreselect = null, targetPreselect = null) {
+      loadActiveSession();
+      const modal = document.getElementById('authModal');
+      if (!modal) return;
+      if (rolePreselect) {
+        const rSel = document.getElementById('auth-claim-role');
+        if (rSel) rSel.value = rolePreselect;
+      }
+      populateClaimMemberSelect(targetPreselect);
+      const gasIn = document.getElementById('auth-gas-webhook-input');
+      if (gasIn) gasIn.value = safeGetStorage(GAS_WEBHOOK_KEY) || '';
+      const errEl = document.getElementById('auth-login-error');
+      if (errEl) errEl.classList.add('hidden');
+
+      if (currentAuthUser && tab === 'login') {
+        switchAuthTab('account');
+      } else {
+        switchAuthTab(tab);
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      const modal = document.getElementById('authModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchAuthTab(tab) {
+      ['login', 'claim', 'account'].forEach(t => {
+        const p = document.getElementById('auth-panel-' + t);
+        const b = document.getElementById('auth-tab-btn-' + t);
+        if (p) p.classList.toggle('hidden', t !== tab);
+        if (b) {
+          b.className = (t === tab)
+            ? "flex-1 py-2 rounded-lg bg-[#5E4AE3] text-white cursor-pointer transition font-bold"
+            : "flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition";
+          if (t === 'account') b.classList.toggle('hidden', !currentAuthUser);
+        }
+      });
+      if (tab === 'account' && currentAuthUser) {
+        document.getElementById('acct-name').innerText = currentAuthUser.name;
+        document.getElementById('acct-email').innerText = currentAuthUser.email;
+        document.getElementById('acct-role-badge').innerText =
+          currentAuthUser.role === 'jc' ? 'Junior Consultant (Owner)' :
+          (currentAuthUser.role === 'manager' ? `Middle Manager • ${currentAuthUser.title || ''}` : `Executive Board • ${currentAuthUser.title || ''}`);
+        document.getElementById('acct-avatar').src = getUserPhotoForAuth(currentAuthUser);
+      }
+    }
+
+    function getUserPhotoForAuth(user) {
+      if (!user) return DEFAULT_AVATAR;
+      if (user.role === 'jc' && appState && appState.members) {
+        const jm = appState.members.find(x => x.id === user.targetId);
+        return (jm && jm.photo) ? jm.photo : DEFAULT_AVATAR;
+      }
+      const lm = EXECUTIVE_BOARD_DATA.find(x => x.id === user.targetId);
+      return (lm && lm.photo_base64) ? lm.photo_base64 : DEFAULT_AVATAR;
+    }
+
+    function populateClaimMemberSelect(preselectId = null) {
+      const roleEl = document.getElementById('auth-claim-role');
+      const selEl = document.getElementById('auth-claim-member');
+      if (!roleEl || !selEl) return;
+      const role = roleEl.value;
+      let items = [];
+      if (role === 'jc' && appState && appState.members) {
+        items = appState.members.map(m => ({ id: m.id, label: `${m.name} (#${m.jerseyNum || '00'})` }));
+      } else if (role === 'manager') {
+        items = EXECUTIVE_BOARD_DATA.filter(x => x.category === 'Middle Management')
+          .map(x => ({ id: x.id, label: `${x.name} — ${x.title} (${x.team || ''})` }));
+      } else {
+        items = EXECUTIVE_BOARD_DATA.filter(x => x.category !== 'Middle Management')
+          .map(x => ({ id: x.id, label: `${x.name} — ${x.title}` }));
+      }
+      selEl.innerHTML = items.map(it => `<option value="${escapeHtml(it.id)}">${escapeHtml(it.label)}</option>`).join('');
+      if (preselectId && items.some(it => it.id === preselectId)) {
+        selEl.value = preselectId;
+      }
+    }
+
+    function generatePersonalPassword() {
+      const digits = Math.floor(1000 + Math.random() * 9000);
+      return `TBS-${digits}-JE`;
+    }
+
+    function togglePasswordVis(inputId, btn) {
+      const inp = document.getElementById(inputId);
+      if (!inp) return;
+      if (inp.type === 'password') { inp.type = 'text'; btn.innerText = 'Hide'; }
+      else { inp.type = 'password'; btn.innerText = 'Show'; }
+    }
+
+    async function handleClaimAndSendPassword() {
+      const role = document.getElementById('auth-claim-role').value;
+      const targetId = document.getElementById('auth-claim-member').value;
+      const email = document.getElementById('auth-claim-email').value.trim().toLowerCase();
+      const customPass = document.getElementById('auth-claim-custom-pass').value.trim();
+
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        return showToast("Please enter a valid email address.");
+      }
+
+      let name = '', title = '';
+      if (role === 'jc') {
+        const m = appState.members.find(x => x.id === targetId);
+        if (!m) return;
+        name = m.name;
+        title = 'Junior Consultant';
+        m.email = email;
+        safeSetStorage(STORAGE_KEY, JSON.stringify(appState));
+      } else {
+        const l = EXECUTIVE_BOARD_DATA.find(x => x.id === targetId);
+        if (!l) return;
+        name = l.name;
+        title = l.title;
+      }
+
+      const password = customPass.length >= 4 ? customPass : generatePersonalPassword();
+      const accounts = loadAuthAccounts();
+
+      // Remove any previous email bound to this same identity so 1 member = 1 clean active email
+      Object.keys(accounts).forEach(k => {
+        if (accounts[k].role === role && accounts[k].targetId === targetId) {
+          delete accounts[k];
+        }
+      });
+
+      const acctRecord = {
+        email: email,
+        password: password,
+        role: role,
+        targetId: targetId,
+        name: name,
+        title: title,
+        claimedAt: new Date().toISOString()
+      };
+      accounts[email] = acctRecord;
+      saveAuthAccounts(accounts);
+
+      // Optional live email webhook dispatch if user provided Google Apps Script URL
+      const webhookUrl = safeGetStorage(GAS_WEBHOOK_KEY);
+      if (webhookUrl && webhookUrl.startsWith('https://script.google.com/')) {
+        try {
+          fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'send_password',
+              role: role,
+              roleLabel: title,
+              targetId: targetId,
+              name: name,
+              email: email,
+              password: password
+            })
+          });
+        } catch(e) { console.warn("Webhook notice:", e); }
+      }
+
+      lastDispatchedCredentials = acctRecord;
+      document.getElementById('dispatch-email-out').innerText = email;
+      document.getElementById('dispatch-name-out').innerText = `${name} (${title})`;
+      document.getElementById('dispatch-pass-out').innerText = password;
+      document.getElementById('auth-dispatch-preview').classList.remove('hidden');
+      showToast(`✉️ Personal password generated & bound to ${email}!`);
+    }
+
+    function copyDispatchedPassword() {
+      if (!lastDispatchedCredentials) return;
+      navigator.clipboard.writeText(lastDispatchedCredentials.password)
+        .then(() => showToast("Password copied to clipboard!"));
+    }
+
+    function autoFillLoginFromDispatch() {
+      if (!lastDispatchedCredentials) return;
+      document.getElementById('auth-login-email').value = lastDispatchedCredentials.email;
+      document.getElementById('auth-login-password').value = lastDispatchedCredentials.password;
+      switchAuthTab('login');
+      handleAuthLogin();
+    }
+
+    function handleAuthLogin() {
+      const email = document.getElementById('auth-login-email').value.trim().toLowerCase();
+      const pass = document.getElementById('auth-login-password').value.trim();
+      const errEl = document.getElementById('auth-login-error');
+
+      const accounts = loadAuthAccounts();
+      const found = accounts[email];
+
+      if (!found || found.password !== pass) {
+        if (errEl) {
+          errEl.innerText = !found
+            ? "No activated account matches that email yet. Click 'Send My Password' above to activate your profile."
+            : "Incorrect password. Check your password or use 'Send My Password' to reset.";
+          errEl.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (errEl) errEl.classList.add('hidden');
+      saveActiveSession(found);
+      closeAuthModal();
+      showToast(`🔓 Welcome ${found.name}! Signed in (${found.title}).`);
+
+      if (found.role === 'jc') {
+        currentMemberId = found.targetId;
+        setMainTab('player');
+      } else {
+        setMainTab(currentTab || 'player');
+      }
+    }
+
+    function handleChangeOwnPassword() {
+      if (!currentAuthUser) return;
+      const newPass = document.getElementById('acct-new-password').value.trim();
+      if (newPass.length < 4) return showToast("Password must be at least 4 characters.");
+      const accounts = loadAuthAccounts();
+      if (accounts[currentAuthUser.email]) {
+        accounts[currentAuthUser.email].password = newPass;
+        saveAuthAccounts(accounts);
+      }
+      currentAuthUser.password = newPass;
+      saveActiveSession(currentAuthUser);
+      document.getElementById('acct-new-password').value = '';
+      showToast("Personal password updated securely!");
+    }
+
+    function navigateToMySpace() {
+      closeAuthModal();
+      if (!currentAuthUser) return;
+      if (currentAuthUser.role === 'jc') {
+        currentMemberId = currentAuthUser.targetId;
+        setMainTab('player');
+      } else {
+        setMainTab('player');
+      }
+    }
+
+    function handleLogout() {
+      saveActiveSession(null);
+      closeAuthModal();
+      showToast("Signed out — Viewing Public Visible Profiles.");
+      if (currentTab === 'player') renderPlayerCard();
+      else if (currentTab === 'skills') renderSkillsTab();
+      else if (currentTab === 'manager') renderManagerTab();
+      else if (currentTab === 'admin') renderAdminTab();
+    }
+
+    function renderAuthUiState() {
+      loadActiveSession();
+      const hdr = document.getElementById('auth-header-controls');
+      if (hdr) {
+        if (currentAuthUser) {
+          const photo = getUserPhotoForAuth(currentAuthUser);
+          const roleChip = currentAuthUser.role === 'jc' ? 'JC Owner' : (currentAuthUser.role === 'manager' ? 'Manager' : 'EB');
+          const roleCls = currentAuthUser.role === 'jc'
+            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+            : (currentAuthUser.role === 'manager' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-amber-500/20 text-amber-300 border-amber-500/40');
+          hdr.innerHTML = `
+            <button onclick="openAuthModal('account')" class="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-[#131C38] hover:bg-[#1B274C] border border-indigo-500/40 text-white text-xs font-bold cursor-pointer transition shadow-sm" title="Manage Account & Password">
+              <img src="${photo}" onerror="this.onerror=null;this.src=DEFAULT_AVATAR" class="w-7 h-7 rounded-full object-cover object-top border border-white/20">
+              <span class="hidden sm:inline max-w-[115px] truncate">${escapeHtml(currentAuthUser.name)}</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[9px] font-mono border ${roleCls}">${roleChip}</span>
+            </button>
+          `;
+        } else {
+          hdr.innerHTML = `
+            <button onclick="openAuthModal('login')" class="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#5E4AE3] to-indigo-600 hover:from-[#4F3CC9] hover:to-indigo-500 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-md border border-indigo-400/40 cursor-pointer transition whitespace-nowrap">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Sign In</span>
+            </button>
+          `;
+        }
+      }
+
+      // Update section banners if active member exists
+      const m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
+      if (!m) return;
+
+      const owner = isJcOwner(m.id);
+      const evalMode = isEvaluator();
+
+      // 1. Section-player banner & owner edit button visibility
+      const jcBanner = document.getElementById('jc-access-banner');
+      if (jcBanner) {
+        if (owner) {
+          jcBanner.innerHTML = `
+            <div class="flex items-center gap-2.5 text-emerald-200">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+              <span><strong>Your Own Page:</strong> Signed in as <strong>${escapeHtml(m.name)}</strong> — You can update your photo, self-assess competencies, track projects, and view official EB/Manager feedback.</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="setMainTab('skills')" class="px-3 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 border border-emerald-500/40 font-bold text-[11px] cursor-pointer">Self-Assess Skills</button>
+              <button onclick="openAuthModal('account')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 font-bold text-[11px] cursor-pointer">Account</button>
+            </div>
+          `;
+        } else if (evalMode) {
+          jcBanner.innerHTML = `
+            <div class="flex items-center gap-2.5 text-cyan-200">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shrink-0"></span>
+              <span><strong>Evaluator Access:</strong> Signed in as <strong>${escapeHtml(currentAuthUser.name)}</strong> (${escapeHtml(currentAuthUser.title)}) — Rate <strong>${escapeHtml(m.name)}</strong> below, add Achievements &amp; Improvements, or post comments.</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="document.getElementById('jc-dual-evaluation-section').scrollIntoView({behavior:'smooth'})" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 font-bold text-[11px] cursor-pointer">Rate This JC</button>
+              <button onclick="openAuthModal('account')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 font-bold text-[11px] cursor-pointer">Account</button>
+            </div>
+          `;
+        } else {
+          const quickAction = currentAuthUser && currentAuthUser.role === 'jc'
+            ? `<button onclick="navigateToMySpace()" class="px-3 py-1 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-[11px] cursor-pointer">Go to My Own Page</button>`
+            : `<button onclick="openAuthModal('claim', 'jc', '${escapeHtml(m.id)}')" class="px-3 py-1 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-[11px] cursor-pointer">Is this you? Activate with Email</button>`;
+          jcBanner.innerHTML = `
+            <div class="flex items-center gap-2.5 text-slate-300">
+              <span class="text-sm">👁️</span>
+              <span><strong>Public Visible Profile:</strong> Viewing <strong>${escapeHtml(m.name)}</strong> in read-only visitor mode. Editing &amp; self-assessment are locked to the owner; you can post comments below.</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              ${quickAction}
+            </div>
+          `;
+        }
+      }
+
+      // Toggle Owner-only controls inside section-player
+      const camLabel = document.getElementById('hero-photo-upload-label');
+      if (camLabel) camLabel.classList.toggle('hidden', !owner);
+      const editWrap = document.getElementById('hero-edit-profile-wrap');
+      if (editWrap) editWrap.classList.toggle('hidden', !canEditMemberProfile(m.id));
+      const staffBtn = document.getElementById('hero-manage-staffing-btn');
+      if (staffBtn) staffBtn.classList.toggle('hidden', !canEditMemberProfile(m.id));
+      const addMissBtn = document.getElementById('hero-add-mission-btn');
+      if (addMissBtn) addMissBtn.classList.toggle('hidden', !(owner || evalMode));
+
+      // Lock or unlock Middle Manager direct comment box
+      const mgrFormBox = document.getElementById('jc-mgr-form-box');
+      if (mgrFormBox) {
+        if (evalMode) {
+          mgrFormBox.classList.remove('hidden');
+          const authSel = document.getElementById('jc-mgr-author-select');
+          if (authSel) {
+            if (!Array.from(authSel.options).some(o => o.value === currentAuthUser.targetId)) {
+              const opt = document.createElement('option');
+              opt.value = currentAuthUser.targetId;
+              opt.text = `${currentAuthUser.name} — ${currentAuthUser.title} (Executive Board)`;
+              authSel.appendChild(opt);
+            }
+            authSel.value = currentAuthUser.targetId;
+            authSel.disabled = true;
+          }
+        } else {
+          // Replace with subtle lock note so public users know they can still post in Wall of Appreciation below
+          mgrFormBox.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-slate-300">
+                <span>🔐</span>
+                <span><strong>Official Manager &amp; EB Commentary Locked:</strong> Sign in with a Middle Manager or EB account to post official sprint directives. Public visitors &amp; JCs can leave comments in the Wall of Appreciation below.</span>
+              </div>
+              <button onclick="openAuthModal('login', 'manager')" class="px-3 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 border border-cyan-500/40 font-bold text-[11px] shrink-0 cursor-pointer">Manager / EB Sign In</button>
+            </div>
+          `;
+          // Restore full markup next time if user logs in without reload by tagging a flag or reloading - even cleaner: render dynamically in renderMiddleManagerCase!
+        }
+      }
+
+      // Admin action buttons visibility
+      const adminBar = document.getElementById('admin-eb-action-bar');
+      if (adminBar) adminBar.classList.toggle('hidden', !isEbAdmin());
+    }
+
+    // =========================================================================
+    // OFFICIAL EVALUATION, ACHIEVEMENTS, IMPROVEMENTS & DUAL RATING ENGINE
+    // =========================================================================
+    function getDefaultOfficialEval(m) {
+      const teams = (m.teams || []).join(' ').toLowerCase();
+      const mgrVals = m.managerScores ? Object.values(m.managerScores) : [4];
+      const baseRate = mgrVals.length ? (mgrVals.reduce((a,b) => a + b, 0) / mgrVals.length) : 4.2;
+      const cleanRate = Math.min(5.0, Math.max(3.2, parseFloat((baseRate + 0.6).toFixed(1))));
+
+      if (teams.includes('hexacom')) {
+        return {
+          rating: cleanRate,
+          evaluatorName: "Khalil Abassi",
+          evaluatorTitle: "Communications Manager • Hexacom Team",
+          date: "Mandate 2026–2027",
+          achievements: [
+            "Delivered creative social media campaign visuals & engaging post copy.",
+            "Strong visual brand consistency across Hexacom client sprints."
+          ],
+          improvements: [
+            "Deepen social KPI attribution & post reach analytics in sprint reviews."
+          ],
+          progressNote: "Progressing strongly through social media campaign planning, visual design, and scheduling deliverables."
+        };
+      } else if (teams.includes('quality')) {
+        return {
+          rating: cleanRate,
+          evaluatorName: "Amina Sellami",
+          evaluatorTitle: "Quality Manager • ISO 9001 & CQM",
+          date: "Mandate 2026–2027",
+          achievements: [
+            "Maintained strict alignment with ISO 9001 audit checklists & deliverable templates.",
+            "Proactive support for Continuous Quality Management (PDCA & CAPA) reviews."
+          ],
+          improvements: [
+            "Streamline turnaround time on pre-delivery micro-quality corrective actions."
+          ],
+          progressNote: "Steady progression executing ISO 9001 process audits and Continuous Quality Management validations."
+        };
+      } else if (teams.includes('hexapro')) {
+        return {
+          rating: cleanRate,
+          evaluatorName: "Belkiss Tbessi & Hiba Tlili",
+          evaluatorTitle: "Studies Directorate • Hexapro",
+          date: "Mandate 2026–2027",
+          achievements: [
+            "Structured quantitative survey elaboration & coordinated primary data collection.",
+            "Clean statistical analysis & executive synthesis contribution for final report."
+          ],
+          improvements: [
+            "Sharpen advanced Sphinx cross-tabulations and executive presentation storytelling."
+          ],
+          progressNote: "Advancing cleanly across consulting study stages: survey design, data collection, analysis, and final report."
+        };
+      }
+      return {
+        rating: cleanRate,
+        evaluatorName: "Executive Board & Project Leads",
+        evaluatorTitle: "Mandate 2026–2027 Governance",
+        date: "Mandate 2026–2027",
+        achievements: [
+          "Consistent team participation and adherence to TBS JE operational guidelines."
+        ],
+        improvements: [
+          "Continue strengthening cross-team delivery rigor and ISO quality documentation."
+        ],
+        progressNote: "Active participation in semester sprint tasks and mandate milestones."
+      };
+    }
+
+    function getOfficialEval(memberId) {
+      const m = appState.members.find(x => x.id === memberId);
+      try {
+        const raw = safeGetStorage(OFFICIAL_EVAL_PREFIX + memberId);
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return m ? getDefaultOfficialEval(m) : null;
+    }
+
+    function setElText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = (val !== null && val !== undefined) ? String(val) : '';
+    }
+
+    function renderDualEvaluationPanel(m) {
+      if (!m) return;
+      const pData = (m && m.name && typeof projectsDataStore !== 'undefined') ? projectsDataStore[m.name.toLowerCase()] : null;
+      const activeProj = pData ? pData.project : ((m.teams && m.teams[0]) || "Hexacom");
+      const att = (m && m.name) ? attendanceDataStore[m.name.toLowerCase()] : null;
+
+      // 1. LEFT SIDE: JC SELF SCORE
+      const selfObj = m.selfScores || {};
+      const allSelfVals = Object.values(selfObj);
+      const selfAvg = allSelfVals.length ? (allSelfVals.reduce((a, b) => a + Number(b), 0) / allSelfVals.length) : 3.5;
+      const selfScoreEl = document.getElementById('dual-jc-self-score');
+      if (selfScoreEl) selfScoreEl.innerText = selfAvg.toFixed(1);
+
+      const attEl = document.getElementById('dual-jc-attendance-tag');
+      if (attEl) attEl.innerText = att ? att.rate : '100%';
+
+      // Pick 4 representative competencies from appState.skills for visual breakdown
+      const projL = (activeProj + ' ' + (m.teams || []).join(' ')).toLowerCase();
+      let preferredIds = ['s_comm', 's_team', 's_prob', 's_time'];
+      if (projL.includes('hexacom')) preferredIds = ['s_graphic', 's_content_creat', 's_digimkt', 's_story'];
+      else if (projL.includes('quality')) preferredIds = ['s_iso', 's_qms', 's_qtools', 's_writing'];
+      else if (projL.includes('hexapro')) preferredIds = ['s_survey', 's_data', 's_sphinx', 's_report'];
+
+      const breakdownEl = document.getElementById('dual-jc-self-breakdown');
+      if (breakdownEl && appState.skills) {
+        breakdownEl.innerHTML = preferredIds.map(sid => {
+          const sk = appState.skills.find(s => s.id === sid) || { name: sid };
+          const val = Number(selfObj[sid] || 3);
+          const pct = Math.round((val / 5) * 100);
+          return `
+            <div class="space-y-1">
+              <div class="flex justify-between text-[11px]">
+                <span class="text-slate-300 font-medium">${escapeHtml(sk.name)}</span>
+                <span class="font-mono text-indigo-300 font-bold">${val.toFixed(1)} / 5</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div class="h-full rounded-full bg-indigo-500" style="width:${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const selfBtn = document.getElementById('dual-jc-self-edit-btn');
+      const selfLockNote = document.getElementById('dual-jc-self-lock-note');
+      const owner = isJcOwner(m.id);
+      if (selfBtn) selfBtn.classList.toggle('hidden', !owner);
+      if (selfLockNote) {
+        selfLockNote.innerText = owner
+          ? "Unlocked: You can calibrate your self-scores anytime."
+          : "Only logged-in consultant can modify own self-score.";
+      }
+
+      // 2. RIGHT SIDE: MANAGERS & EB OFFICIAL FINAL RATING, ACHIEVEMENTS, IMPROVEMENTS & PROJECT PROGRESS
+      const evalRec = getOfficialEval(m.id);
+      if (evalRec) {
+        const finalRate = Number(evalRec.rating || 4.5);
+        setElText('dual-official-final-rate', finalRate.toFixed(1));
+        setElText('dual-evaluator-meta', `Assessed by ${evalRec.evaluatorName} (${evalRec.evaluatorTitle}) • ${evalRec.date}`);
+
+        const diff = (finalRate - selfAvg).toFixed(1);
+        const alignEl = document.getElementById('dual-alignment-badge');
+        if (alignEl) {
+          if (parseFloat(diff) >= 0.3) alignEl.innerText = `Final vs Self: +${diff} (Exceeding Expectations)`;
+          else if (parseFloat(diff) <= -0.3) alignEl.innerText = `Final vs Self: ${diff} (Calibration Needed)`;
+          else alignEl.innerText = `Final vs Self: Strong Alignment (${finalRate.toFixed(1)} ★)`;
+        }
+
+        const achList = document.getElementById('dual-achievements-list');
+        if (achList) {
+          achList.innerHTML = (evalRec.achievements || []).map(a => `
+            <li class="flex items-start gap-2">
+              <span class="text-emerald-400 font-bold mt-0.5">✓</span>
+              <span>${escapeHtml(a)}</span>
+            </li>
+          `).join('') || '<li class="text-slate-400 italic">No achievements recorded yet.</li>';
+        }
+
+        const impList = document.getElementById('dual-improvements-list');
+        if (impList) {
+          impList.innerHTML = (evalRec.improvements || []).map(im => `
+            <li class="flex items-start gap-2">
+              <span class="text-amber-400 font-bold mt-0.5">➔</span>
+              <span>${escapeHtml(im)}</span>
+            </li>
+          `).join('') || '<li class="text-slate-400 italic">No improvement areas flagged yet.</li>';
+        }
+
+        setElText('dual-progress-note-text', `"${evalRec.progressNote || 'Consistent progression tracked across project sprints.'}"`);
+      }
+
+      // Project Workflow Stepper ("How the Project Works")
+      const stepsBox = document.getElementById('dual-project-workflow-steps');
+      const stagePill = document.getElementById('dual-workflow-stage-pill');
+      if (stepsBox) {
+        let workflow = [
+          { label: "1. Project Scoping", state: "done" },
+          { label: "2. Core Sprint Execution", state: "active" },
+          { label: "3. ISO Quality Verification", state: "pending" }
+        ];
+        if (projL.includes('hexacom')) {
+          if (stagePill) stagePill.innerText = "Hexacom • Social Media, Posts & Design";
+          workflow = [
+            { label: "1. Campaign Brief & Calendar", state: "done" },
+            { label: "2. Post Copy & Visual Design", state: "active" },
+            { label: "3. Social Rollout & KPIs", state: "pending" }
+          ];
+        } else if (projL.includes('quality')) {
+          if (stagePill) stagePill.innerText = "Quality Team • ISO 9001 & CQM";
+          workflow = [
+            { label: "1. ISO 9001 Scope & Standards", state: "done" },
+            { label: "2. Internal Process Audits", state: "active" },
+            { label: "3. Continuous Quality (CAPA)", state: "pending" }
+          ];
+        } else if (projL.includes('hexapro')) {
+          if (stagePill) stagePill.innerText = "Hexapro • Study (Survey → Report)";
+          workflow = [
+            { label: "1. Survey Elaboration", state: "done" },
+            { label: "2. Data Collection", state: "done" },
+            { label: "3. Data Analysis", state: "active" },
+            { label: "4. Final Client Report", state: "pending" }
+          ];
+        } else {
+          if (stagePill) stagePill.innerText = `${activeProj} • Active Workflow`;
+        }
+
+        stepsBox.innerHTML = workflow.map((st, idx) => {
+          const cls = st.state === 'done'
+            ? "bg-emerald-500/20 text-emerald-200 border-emerald-500/40"
+            : (st.state === 'active'
+              ? "bg-cyan-500/20 text-cyan-200 border-cyan-400/50 ring-1 ring-cyan-400/30 font-bold"
+              : "bg-white/5 text-slate-400 border-white/10");
+          const icon = st.state === 'done' ? '✓' : (st.state === 'active' ? '⚡' : '○');
+          const arrow = idx < workflow.length - 1 ? '<span class="text-slate-600">➔</span>' : '';
+          return `<span class="px-2.5 py-1 rounded-lg border ${cls}">${icon} ${escapeHtml(st.label)}</span>${arrow}`;
+        }).join('');
+      }
+
+      // 3. EVALUATOR FORM (MIDDLE MANAGERS & EXECUTIVE BOARD ONLY)
+      const formBox = document.getElementById('dual-evaluator-form-container');
+      if (formBox) {
+        if (isEvaluator()) {
+          const curRate = evalRec ? Number(evalRec.rating || 4.5).toFixed(1) : '4.5';
+          const curAch = evalRec && evalRec.achievements ? evalRec.achievements.join('\n') : '';
+          const curImp = evalRec && evalRec.improvements ? evalRec.improvements.join('\n') : '';
+          const curNote = evalRec ? (evalRec.progressNote || '') : '';
+          formBox.innerHTML = `
+            <div class="space-y-3 text-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-white/10">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span class="font-bold text-white uppercase tracking-wider">Assess JC &amp; Publish Official Final Rating</span>
+                </div>
+                <span class="text-[11px] font-mono text-amber-300">Evaluating as: ${escapeHtml(currentAuthUser.name)} (${escapeHtml(currentAuthUser.title)})</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl bg-[#0B1022] border border-amber-500/30 space-y-2">
+                  <div class="flex justify-between items-center">
+                    <label class="font-bold text-amber-300">Official Final Rating</label>
+                    <span id="eval-input-rate-val" class="text-base font-black font-mono text-white">★ ${curRate}</span>
+                  </div>
+                  <input type="range" id="eval-input-rate" min="1.0" max="5.0" step="0.1" value="${curRate}" oninput="document.getElementById('eval-input-rate-val').innerText = '★ ' + parseFloat(this.value).toFixed(1)" class="w-full h-1.5 bg-white/10 rounded cursor-pointer">
+                  <span class="text-[10px] text-slate-400 block">Rated independently from JC self-score (1.0 to 5.0).</span>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="font-bold text-emerald-300 block">🏆 Achievements (1 per line)</label>
+                  <textarea id="eval-input-achievements" rows="3" class="px-input w-full bg-[#0B1022] text-white" placeholder="e.g. Delivered visual assets ahead of sprint deadline...">${escapeHtml(curAch)}</textarea>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="font-bold text-amber-300 block">🎯 Areas for Improvement (1 per line)</label>
+                  <textarea id="eval-input-improvements" rows="3" class="px-input w-full bg-[#0B1022] text-white" placeholder="e.g. Strengthen Sphinx analysis & reporting precision...">${escapeHtml(curImp)}</textarea>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                <input type="text" id="eval-input-progress-note" value="${escapeHtml(curNote)}" placeholder="Progress & Project Workflow summary for the JC..." class="px-input flex-1 bg-[#0B1022] text-white">
+                <button onclick="submitOfficialEvaluation()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold cursor-pointer transition shrink-0 shadow-sm">
+                  Publish Official Rate &amp; Feedback
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          formBox.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-slate-300">
+                <span>🔐</span>
+                <span><strong>Official Rating, Achievements &amp; Improvements Control:</strong> Reserved for signed-in <strong>Middle Managers</strong> &amp; <strong>Executive Board</strong>.</span>
+              </div>
+              <button onclick="openAuthModal('login', 'eb')" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 font-bold text-[11px] shrink-0 cursor-pointer">
+                EB / Manager Sign In to Assess
+              </button>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function submitOfficialEvaluation() {
+      if (!isEvaluator()) {
+        showToast("Only signed-in Middle Managers or Executive Board members can publish official ratings.");
+        return openAuthModal('login', 'manager');
+      }
+      const m = appState.members.find(x => x.id === currentMemberId);
+      if (!m) return;
+
+      const rateVal = parseFloat(document.getElementById('eval-input-rate').value || '4.5');
+      const achRaw = document.getElementById('eval-input-achievements').value.trim();
+      const impRaw = document.getElementById('eval-input-improvements').value.trim();
+      const noteRaw = document.getElementById('eval-input-progress-note').value.trim();
+
+      const record = {
+        rating: parseFloat(rateVal.toFixed(1)),
+        evaluatorName: currentAuthUser.name,
+        evaluatorTitle: currentAuthUser.title || (currentAuthUser.role === 'eb' ? 'Executive Board' : 'Middle Manager'),
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        achievements: achRaw ? achRaw.split('\n').map(s => s.trim()).filter(Boolean) : ["Strong engagement on assigned project deliverables."],
+        improvements: impRaw ? impRaw.split('\n').map(s => s.trim()).filter(Boolean) : ["Continue proactive cross-team communication."],
+        progressNote: noteRaw || "Progression assessed by supervising management."
+      };
+
+      safeSetStorage(OFFICIAL_EVAL_PREFIX + m.id, JSON.stringify(record));
+      m.officialRating = record.rating;
+      saveState();
+      renderDualEvaluationPanel(m);
+      showToast(`★ Official Final Rate (${record.rating.toFixed(1)} / 5.0) published for ${m.name}!`);
+    }
+
+    function renderInlineJcQr(m) {
+      if (!m) return;
+      const box = document.getElementById('jc-inline-qr-container');
+      const tag = document.getElementById('inline-qr-id-tag');
+      const ownerEl = document.getElementById('inline-qr-owner-name');
+      if (tag) tag.innerText = m.id;
+      if (ownerEl) ownerEl.innerText = m.name;
+      if (box && typeof QRCode !== 'undefined') {
+        box.innerHTML = '';
+        const url = getBaseAppUrl() + '?member=' + encodeURIComponent(m.id);
+        new QRCode(box, {
+          text: url,
+          width: 88,
+          height: 88,
+          colorDark: "#0f0d24",
+          colorLight: "#ffffff"
+        });
+      }
+    }
+
     function initData() {
       const saved = safeGetStorage(STORAGE_KEY);
       if (saved) {
@@ -11641,9 +12556,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         });
       }
 
+      loadActiveSession();
       setupDragAndDrop();
       handleUrlRouting();
       updateGlobalCounts();
+      renderAuthUiState();
     }
 
     function updateGlobalCounts() {
@@ -12375,6 +13292,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         }
         if (commentEl) commentEl.innerText = `"${comment}"`;
         if (inputEl) inputEl.value = comment;
+        const editWrap = document.getElementById('exec-modal-mgr-edit-wrap');
+        if (editWrap) {
+          const canEditDir = !!(currentAuthUser && (isEbAdmin() || currentAuthUser.targetId === id));
+          editWrap.classList.toggle('hidden', !canEditDir);
+        }
       }
 
       const modal = document.getElementById('execBoardModal');
@@ -15564,10 +16486,28 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         } catch(e) { console.error('Error in drawAthleteRadar:', e); }
       }
 
+      if (typeof renderDualEvaluationPanel === 'function') {
+        try {
+          renderDualEvaluationPanel(m);
+        } catch(e) { console.error('Error in renderDualEvaluationPanel:', e); }
+      }
+
       if (typeof renderMiddleManagerCase === 'function') {
         try {
           renderMiddleManagerCase(m);
         } catch(e) { console.error('Error in renderMiddleManagerCase:', e); }
+      }
+
+      if (typeof renderInlineJcQr === 'function') {
+        try {
+          renderInlineJcQr(m);
+        } catch(e) { console.error('Error in renderInlineJcQr:', e); }
+      }
+
+      if (typeof renderAuthUiState === 'function') {
+        try {
+          renderAuthUiState();
+        } catch(e) { console.error('Error in renderAuthUiState:', e); }
       }
     }
 
@@ -15591,6 +16531,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function saveManagerOfficialComment() {
+      if (!currentAuthUser || (!isEbAdmin() && currentAuthUser.targetId !== currentExecModalId)) {
+        showToast("Only the signed-in officer or Executive Board can update this official directive.");
+        return openAuthModal('login', 'manager', currentExecModalId);
+      }
       const inputEl = document.getElementById('exec-modal-mgr-input');
       const text = inputEl ? inputEl.value.trim() : '';
       if (!text) {
@@ -15747,14 +16691,56 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }).join('');
 
       container.innerHTML = html;
+
+      // Ensure Manager comment form dynamically reflects current evaluator vs visitor state
+      const mgrFormBox = document.getElementById('jc-mgr-form-box');
+      if (mgrFormBox) {
+        if (isEvaluator()) {
+          mgrFormBox.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200 block">Official Manager / EB Project Feedback:</span>
+              <span class="text-[10px] text-cyan-300 font-mono font-bold">Verified: ${escapeHtml(currentAuthUser.name)}</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <input type="text" readonly value="${escapeHtml(currentAuthUser.name)} — ${escapeHtml(currentAuthUser.title || '')}" class="px-input w-full bg-[#080C1D] text-cyan-200 font-semibold cursor-not-allowed">
+              <select id="jc-mgr-category-select" class="px-input w-full cursor-pointer bg-[#0E142A] text-white">
+                <option value="Social Media & Design">Social Media Campaign, Post & Design Review</option>
+                <option value="ISO 9001 & CQM Audit">ISO 9001 Alignment & Continuous Quality Review</option>
+                <option value="Study Lifecycle Review">Study Review: Survey, Collection, Analysis & Report</option>
+                <option value="Sprint Appraisal">Sprint Appraisal & Pacing</option>
+                <option value="Strategic Recommendation">Strategic Recommendation</option>
+              </select>
+            </div>
+            <textarea id="jc-mgr-comment-input" rows="2" placeholder="Write official managerial feedback or recommendations for ${escapeHtml(m.name)}..." class="px-input w-full bg-[#0E142A] text-white"></textarea>
+            <div class="flex justify-end">
+              <button onclick="submitJcManagerComment()" class="px-btn-primary cursor-pointer flex items-center gap-1.5 py-1.5 px-4 text-xs font-bold bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white rounded-xl shadow-xs transition">
+                <span>Post Verified Manager Review</span>
+              </button>
+            </div>
+          `;
+        } else {
+          mgrFormBox.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 text-slate-300">
+                <span>🔐</span>
+                <span><strong>Managers &amp; Executive Board Only:</strong> Sign in with a Manager/EB account to post verified supervision reviews. Visitors &amp; JCs can post comments in the Wall of Appreciation below.</span>
+              </div>
+              <button onclick="openAuthModal('login', 'manager')" class="px-3 py-1.5 rounded-xl bg-cyan-600/25 hover:bg-cyan-600/40 text-cyan-200 border border-cyan-500/40 font-bold text-[11px] shrink-0 cursor-pointer">Manager / EB Sign In</button>
+            </div>
+          `;
+        }
+      }
     }
 
     function submitJcManagerComment() {
-      const authorSelect = document.getElementById('jc-mgr-author-select');
+      if (!isEvaluator()) {
+        showToast("Please sign in as a Middle Manager or Executive Board member to post an official review.");
+        return openAuthModal('login', 'manager');
+      }
       const catSelect = document.getElementById('jc-mgr-category-select');
       const input = document.getElementById('jc-mgr-comment-input');
 
-      const mgrId = authorSelect ? authorSelect.value : 'mm_khalil';
+      const mgrId = currentAuthUser.targetId;
       const cat = catSelect ? catSelect.value : 'Sprint Appraisal';
       const text = input ? input.value.trim() : '';
 
@@ -15763,7 +16749,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         return;
       }
 
-      const mgr = EXECUTIVE_BOARD_DATA.find(x => x.id === mgrId) || { name: "Middle Manager", title: "Project Manager", photo_base64: DEFAULT_AVATAR };
+      const mgr = EXECUTIVE_BOARD_DATA.find(x => x.id === mgrId) || { name: currentAuthUser.name, title: currentAuthUser.title || "Evaluator", photo_base64: DEFAULT_AVATAR };
 
       const newEntry = {
         id: 'mc_' + Date.now(),
@@ -15982,10 +16968,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
             <div class="p-3.5 rounded-lg bg-[#121828] border-l-2 border-indigo-500 space-y-1.5">
               <div class="flex items-center justify-between">
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">What I Learned & Key Takeaways</span>
-                <button onclick="openProjectReflectionModal('${escapeHtml(teamName)}')" class="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 cursor-pointer">
+                ${isJcOwner(m.id) ? `<button onclick="openProjectReflectionModal('${escapeHtml(teamName)}')" class="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 cursor-pointer">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                   <span>Edit Reflection</span>
-                </button>
+                </button>` : '<span class="text-[10px] font-mono text-slate-500">Consultant Reflection</span>'}
               </div>
               <p class="text-xs text-slate-300 italic leading-relaxed">
                 "${escapeHtml(exp.learnings)}"
@@ -15996,7 +16982,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
             <div class="space-y-2">
               <div class="flex items-center justify-between text-[11px]">
                 <span class="font-semibold uppercase tracking-wider text-slate-400">Project Competencies Self-Rating (1 to 5 Stars)</span>
-                <span class="text-slate-500">Click a star to calibrate rating</span>
+                <span class="text-slate-500">${isJcOwner(m.id) ? 'Click a star to calibrate rating' : 'Visible self-rating (Owner edits only)'}</span>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -16004,7 +16990,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
                   const starsHtml = [1, 2, 3, 4, 5].map(starNum => {
                     const filled = starNum <= Math.round(sk.rating);
                     return `
-                      <button onclick="rateProjectSkill('${escapeHtml(teamName)}', ${sIdx}, ${starNum})"
+                      <button onclick="rateProjectSkill('${m.id}', '${escapeHtml(teamName)}', ${sIdx}, ${starNum})"
                               class="star-btn cursor-pointer p-0.5 text-base leading-none transition ${filled ? 'text-amber-400' : 'text-slate-600 hover:text-amber-300'}"
                               title="Rate ${starNum} / 5">
                         ★
@@ -16030,6 +17016,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function renderJcPeerWords(memberId) {
+      if (currentAuthUser) {
+        const aInp = document.getElementById('jc-peer-author-input');
+        const rInp = document.getElementById('jc-peer-role-input');
+        if (aInp && !aInp.value) aInp.value = currentAuthUser.name || '';
+        if (rInp && !rInp.value) rInp.value = currentAuthUser.title || '';
+      }
       const container = document.getElementById('jc-peer-words-stream');
       const countTag = document.getElementById('jc-peer-words-count');
       if (!container) return;
@@ -16153,8 +17145,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     // ==========================================
     let currentReflectionProject = "";
     function openProjectReflectionModal(projectName) {
-      currentReflectionProject = projectName;
       let m = (appState && appState.members) ? (appState.members.find(x => x.id === currentMemberId) || appState.members[0]) : null;
+      if (!m) return;
+      if (!isJcOwner(m.id)) {
+        showToast(`Sign in as ${m.name} to edit your project reflection.`);
+        return openAuthModal('login', 'jc', m.id);
+      }
+      currentReflectionProject = projectName;
       const exp = (m && m.projectExperiences && m.projectExperiences[projectName]) ? m.projectExperiences[projectName] : {};
 
       const titleEl = document.getElementById('modal-reflection-project-name');
@@ -16190,7 +17187,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
     function rateProjectSkill(memberId, projectName, skillIdx, rating) {
       let m = (appState && appState.members) ? appState.members.find(x => x.id === memberId) : null;
-      if (!m || !m.projectExperiences || !m.projectExperiences[projectName]) return;
+      if (!m) return;
+      if (!isJcOwner(m.id)) {
+        showToast(`Sign in as ${m.name} to rate your own project competencies.`);
+        return openAuthModal('login', 'jc', m.id);
+      }
+      if (!m.projectExperiences || !m.projectExperiences[projectName]) return;
 
       const exp = m.projectExperiences[projectName];
       if (exp.skills && exp.skills[skillIdx]) {
@@ -16206,6 +17208,17 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     function renderSkillsTab() {
       let m = appState.members.find(x => x.id === currentMemberId);
       if (!m) m = appState.members[0];
+
+      const owner = isJcOwner(m.id);
+      const banner = document.getElementById('skills-auth-banner');
+      if (banner) {
+        banner.innerHTML = owner
+          ? `<div class="flex items-center gap-2 text-emerald-200"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span><strong>Self-Assessment Unlocked for ${escapeHtml(m.name)}:</strong> Slide to rate your own competencies and save.</span></div>`
+          : `<div class="flex items-center gap-2 text-slate-300"><span>🔒</span><span><strong>Read-Only Visible Self-Scores for ${escapeHtml(m.name)}:</strong> Only the signed-in JC owner can edit their self-assessment.</span></div>
+             <button onclick="openAuthModal('claim', 'jc', '${escapeHtml(m.id)}')" class="px-3 py-1 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-[11px] cursor-pointer shrink-0">Sign In as ${escapeHtml(m.name)}</button>`;
+      }
+      const saveBtn = document.getElementById('skills-save-btn');
+      if (saveBtn) saveBtn.classList.toggle('hidden', !owner);
 
       const cont = document.getElementById('skills-eval-container');
       cont.innerHTML = '';
@@ -16230,7 +17243,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs p-2 rounded-xl hover:bg-white/5 transition">
               <span class="font-medium text-slate-200 sm:w-2/5">${skill.name}</span>
               <div class="flex items-center gap-3 w-full sm:w-3/5">
-                <input type="range" min="1" max="5" value="${val}" oninput="onSelfScoreChange('${skill.id}', this.value)" class="w-full h-1.5 bg-white/10 rounded cursor-pointer">
+                <input type="range" min="1" max="5" value="${val}" ${owner ? '' : 'disabled'} oninput="onSelfScoreChange('${skill.id}', this.value)" class="w-full h-1.5 bg-white/10 rounded ${owner ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}">
                 <span id="self-val-${skill.id}" class="font-black text-indigo-400 text-sm w-6 text-center">${val}</span>
               </div>
             </div>
@@ -16246,9 +17259,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function onSelfScoreChange(skillId, val) {
-      const v = parseInt(val, 10);
       let m = appState.members.find(x => x.id === currentMemberId);
       if (!m) m = appState.members[0];
+      if (!isJcOwner(m.id)) {
+        showToast("Please sign in as " + m.name + " to modify your self-evaluation.");
+        return renderSkillsTab();
+      }
+      const v = parseInt(val, 10);
       if (!m.selfScores) m.selfScores = {};
       m.selfScores[skillId] = v;
       document.getElementById('self-val-' + skillId).innerText = v;
@@ -16262,7 +17279,20 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       let m = appState.members.find(x => x.id === currentMemberId);
       if (!m) m = appState.members[0];
 
-      document.getElementById('mgr-notes-textarea').value = m.managerNotes || '';
+      const canEval = isEvaluator();
+      const mgrBanner = document.getElementById('mgr-auth-banner');
+      if (mgrBanner) {
+        mgrBanner.innerHTML = canEval
+          ? `<div class="flex items-center gap-2 text-emerald-200"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span><strong>Evaluator Mode (${escapeHtml(currentAuthUser.name)} • ${escapeHtml(currentAuthUser.title)}):</strong> Assessing ${escapeHtml(m.name)}'s competency matrix.</span></div>`
+          : `<div class="flex items-center gap-2 text-slate-300"><span>🔒</span><span><strong>Managers &amp; Executive Board Only:</strong> Viewing alignment matrix read-only. Sign in with an EB or Middle Manager account to rate JCs.</span></div>
+             <button onclick="openAuthModal('login', 'manager')" class="px-3 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 border border-emerald-500/40 font-bold text-[11px] cursor-pointer shrink-0">Manager / EB Sign In</button>`;
+      }
+
+      const notesArea = document.getElementById('mgr-notes-textarea');
+      if (notesArea) {
+        notesArea.value = m.managerNotes || '';
+        notesArea.disabled = !canEval;
+      }
 
       const cont = document.getElementById('manager-matrix-rows');
       cont.innerHTML = '';
@@ -16282,7 +17312,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           <div class="col-span-5 text-slate-200 font-medium">${skill.name}</div>
           <div class="col-span-2 text-center font-bold text-indigo-400">${selfVal} / 5</div>
           <div class="col-span-3 flex items-center justify-center gap-2">
-            <input type="range" min="1" max="5" value="${mgrVal}" oninput="onMgrScoreChange('${skill.id}', this.value)" class="w-16 h-1 bg-white/10 rounded cursor-pointer">
+            <input type="range" min="1" max="5" value="${mgrVal}" ${canEval ? '' : 'disabled'} oninput="onMgrScoreChange('${skill.id}', this.value)" class="w-16 h-1 bg-white/10 rounded ${canEval ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}">
             <span id="mgr-val-${skill.id}" class="font-bold text-emerald-400 w-4 text-center">${mgrVal}</span>
           </div>
           <div class="col-span-2 text-right">${badge}</div>
@@ -16294,6 +17324,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function onMgrScoreChange(skillId, val) {
+      if (!isEvaluator()) {
+        showToast("Only Middle Managers & Executive Board can modify manager evaluations.");
+        return renderManagerTab();
+      }
       const v = parseInt(val, 10);
       let m = appState.members.find(x => x.id === currentMemberId);
       if (!m) m = appState.members[0];
@@ -16523,10 +17557,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           <div class="flex items-start gap-3.5">
             <div class="relative w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 bg-[#131C38] shrink-0 group/avatar shadow-sm">
               <img src="${photoSrc}" onerror="this.onerror=null;this.src=DEFAULT_AVATAR" alt="${escapeHtml(m.name)}" class="w-full h-full object-cover">
+              ${canEditMemberProfile(m.id) ? `
               <label class="absolute inset-0 bg-black/75 opacity-0 group-hover/avatar:opacity-100 transition flex flex-col items-center justify-center cursor-pointer text-center p-1" title="Change photo">
                 <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <input type="file" accept="image/*" class="hidden" onchange="uploadMemberPhotoDirect(event, '${m.id}')">
-              </label>
+                <input type="file" accept="image/*" class="hidden" onchange="uploadMemberPhotoDirect('${m.id}', event)">
+              </label>` : ''}
             </div>
 
             <div class="flex-1 min-w-0">
@@ -16557,12 +17592,14 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               <span>View Passport</span>
             </button>
-            <button onclick="openEditMemberModal('${m.id}')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:text-white dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer" title="Edit Member">
+            ${canEditMemberProfile(m.id) ? `
+            <button onclick="openEditMemberModal('${m.id}')" class="p-2 rounded-xl border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer" title="Edit Profile">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-            </button>
-            <button onclick="deleteMember('${m.id}')" class="p-2 rounded-xl border border-transparent hover:border-rose-200 dark:hover:border-rose-800 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer" title="Delete Member">
+            </button>` : ''}
+            ${isEbAdmin() ? `
+            <button onclick="deleteMember('${m.id}')" class="p-2 rounded-xl border border-transparent hover:border-rose-800 text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 transition cursor-pointer" title="Delete Member">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            </button>
+            </button>` : ''}
           </div>
         `;
         grid.appendChild(card);
@@ -16621,6 +17658,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function openAddMemberModal() {
+      if (!isEbAdmin()) {
+        showToast("Executive Board sign-in required to add members.");
+        return openAuthModal('login', 'eb');
+      }
       editingMemberId = null;
       document.getElementById('member-form-title').innerText = "Add New Member";
       document.getElementById('member-form-subtitle').innerText = "Nouveau Profil Consultant";
@@ -16641,6 +17682,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function openEditMemberModal(id) {
+      if (!canEditMemberProfile(id)) {
+        showToast("Only the profile owner or Executive Board can edit this profile.");
+        return openAuthModal('login', 'jc', id);
+      }
       const m = appState.members.find(x => x.id === id);
       if (!m) return;
       editingMemberId = id;
@@ -16731,6 +17776,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function deleteMember(id) {
+      if (!isEbAdmin()) {
+        showToast("Executive Board sign-in required.");
+        return openAuthModal('login', 'eb');
+      }
       const m = appState.members.find(x => x.id === id);
       if (!m) return;
       if (!confirm(`Supprimer définitivement ${m.name} de l'équipe ?`)) return;
@@ -16745,6 +17794,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
     // DIRECT PHOTO UPLOADS
     function uploadMemberPhotoDirect(id, e) {
+      if (!canEditMemberProfile(id)) {
+        showToast("Sign in as the member owner to change photo.");
+        return;
+      }
       const file = e.target.files[0];
       if (!file) return;
       compressAndProcessImage(file, (dataUrl) => {
@@ -16758,6 +17811,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function uploadDirectHeroPhoto(e) {
+      if (!isJcOwner(currentMemberId)) {
+        showToast("Only the logged-in owner of this profile can change their photo.");
+        return openAuthModal('login', 'jc', currentMemberId);
+      }
       const file = e.target.files[0];
       if (!file) return;
       compressAndProcessImage(file, (dataUrl) => {
@@ -16776,6 +17833,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (!dropzone) return;
 
       dropzone.addEventListener('dragover', (e) => {
+        if (!isJcOwner(currentMemberId)) return;
         e.preventDefault();
         e.stopPropagation();
         if (hint) hint.classList.remove('hidden');
@@ -16788,6 +17846,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       });
 
       dropzone.addEventListener('drop', (e) => {
+        if (!isJcOwner(currentMemberId)) return;
         e.preventDefault();
         e.stopPropagation();
         if (hint) hint.classList.add('hidden');
@@ -17136,8 +18195,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           </p>
         </div>
         
-        <!-- EDIT / UPDATE COMMENT FORM -->
-        <div class="space-y-2 pt-1 border-t border-cyan-500/20">
+        <!-- EDIT / UPDATE COMMENT FORM (LOGGED-IN OFFICER / EB ONLY) -->
+        <div id="exec-modal-mgr-edit-wrap" class="space-y-2 pt-1 border-t border-cyan-500/20">
           <label class="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">Update Official Commentary for Supervised Team:</label>
           <textarea id="exec-modal-mgr-input" rows="2" class="px-input w-full text-xs bg-[#0E142A] text-white border border-cyan-500/30 rounded-lg p-2" placeholder="Write new evaluation, sprint directive, or quality guidance..."></textarea>
           <div class="flex justify-end">
@@ -17236,15 +18295,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     </div>
   </div>
 
-      <p class="text-[11px] text-slate-400">Scan with any smartphone camera to open this executive profile directly and leave a tribute.</p>
-
-      <button onclick="copyExecQrLink()" id="exec-copy-link-btn" class="w-full py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
-        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-        <span>Copy Profile Link</span>
-      </button>
-    </div>
-  </div>
-
   <!-- MODAL: BADGE ENDORSEMENT DETAIL -->
   <div id="badgeDetailModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4 z-50">
     <div class="bg-[#0E142A] border border-white/10 rounded-xl max-w-sm w-full p-6 text-white space-y-4 shadow-2xl relative text-center">
@@ -17301,5 +18351,137 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     </div>
   </div>
 
+
+  <!-- MODAL: AUTHENTICATION, EMAIL ACTIVATION & PASSWORD MANAGEMENT -->
+  <div id="authModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 z-50">
+    <div class="bg-[#0E142A] border border-indigo-500/30 rounded-2xl max-w-lg w-full p-5 sm:p-6 text-white space-y-4 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 font-mono">TBS Junior Enterprise • Secure Access</span>
+          <h3 class="text-lg font-extrabold text-white mt-0.5">Member Portal Sign In &amp; Activation</h3>
+        </div>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 cursor-pointer">✕</button>
+      </div>
+
+      <!-- AUTH NAVIGATION TABS -->
+      <div class="flex items-center gap-1.5 p-1 rounded-xl bg-[#080C1D] border border-white/10 text-xs font-bold">
+        <button id="auth-tab-btn-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg bg-[#5E4AE3] text-white cursor-pointer transition">Sign In</button>
+        <button id="auth-tab-btn-claim" onclick="switchAuthTab('claim')" class="flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition">Send My Password</button>
+        <button id="auth-tab-btn-account" onclick="switchAuthTab('account')" class="hidden flex-1 py-2 rounded-lg text-slate-400 hover:text-white cursor-pointer transition">My Account</button>
+      </div>
+
+      <!-- TAB 1: SIGN IN WITH EMAIL & PASSWORD -->
+      <div id="auth-panel-login" class="space-y-3.5 text-xs">
+        <div class="p-3 rounded-xl bg-indigo-950/40 border border-indigo-500/20 text-slate-300 leading-relaxed">
+          Log in with your activated email &amp; personal password to manage your own photo, self-assessment scores, or evaluate JCs (Managers &amp; EB).
+        </div>
+
+        <div class="space-y-2">
+          <label class="font-bold text-slate-300 block">Registered Email Address</label>
+          <input type="email" id="auth-login-email" placeholder="e.g. abir.marai@tbs-je.org" class="px-input w-full bg-[#080C1D] text-white">
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="font-bold text-slate-300 block">Password</label>
+            <button onclick="switchAuthTab('claim')" class="text-[11px] text-indigo-400 hover:text-indigo-300 underline cursor-pointer">First time or forgot password?</button>
+          </div>
+          <div class="relative">
+            <input type="password" id="auth-login-password" placeholder="Enter your password" class="px-input w-full bg-[#080C1D] text-white pr-14">
+            <button type="button" onclick="togglePasswordVis('auth-login-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 hover:text-white cursor-pointer">Show</button>
+          </div>
+        </div>
+
+        <div id="auth-login-error" class="hidden p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-200 text-[11px]"></div>
+
+        <button onclick="handleAuthLogin()" class="w-full py-2.5 bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
+          Sign In to My Account
+        </button>
+      </div>
+
+      <!-- TAB 2: CLAIM PROFILE, BIND EMAIL & SEND PASSWORD -->
+      <div id="auth-panel-claim" class="hidden space-y-3.5 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1.5">
+            <label class="font-bold text-slate-300 block">Your Role</label>
+            <select id="auth-claim-role" onchange="populateClaimMemberSelect()" class="px-input w-full bg-[#080C1D] text-white cursor-pointer">
+              <option value="jc">Junior Consultant (47)</option>
+              <option value="manager">Middle Manager (5)</option>
+              <option value="eb">Executive Board (8)</option>
+            </select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="font-bold text-slate-300 block">Select Your Name</label>
+            <select id="auth-claim-member" class="px-input w-full bg-[#080C1D] text-white cursor-pointer"></select>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="font-bold text-slate-300 block">Your Email Address (Where Password is Sent)</label>
+          <input type="email" id="auth-claim-email" placeholder="your.name@gmail.com" class="px-input w-full bg-[#080C1D] text-white">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="font-bold text-slate-300 block">Custom Password (Optional — leave blank to auto-generate)</label>
+          <input type="text" id="auth-claim-custom-pass" placeholder="Leave blank to receive generated password (e.g. TBS-XXXX-JE)" class="px-input w-full bg-[#080C1D] text-white">
+        </div>
+
+        <!-- COLLAPSIBLE OPTIONAL GOOGLE APPS SCRIPT WEBHOOK -->
+        <details class="p-2.5 rounded-xl bg-[#080C1D] border border-white/10 text-[11px]">
+          <summary class="cursor-pointer font-semibold text-slate-400 hover:text-indigo-300">⚙️ Optional: Connect Live Email Server Webhook (Google Apps Script)</summary>
+          <div class="mt-2 space-y-1.5">
+            <p class="text-slate-400 text-[10px]">By default, Preview Mode displays your dispatched password on screen. To send actual Gmail emails across devices, deploy <code>google_apps_script_template.gs</code> and paste the Web App URL:</p>
+            <input type="url" id="auth-gas-webhook-input" placeholder="https://script.google.com/macros/s/.../exec" class="px-input w-full text-[11px] bg-[#131C38] text-white" onchange="saveGasWebhookUrl(this.value)">
+          </div>
+        </details>
+
+        <button onclick="handleClaimAndSendPassword()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold rounded-xl shadow-md transition cursor-pointer">
+          Activate Account &amp; Send Password
+        </button>
+
+        <!-- SIMULATED EMAIL DISPATCH PREVIEW -->
+        <div id="auth-dispatch-preview" class="hidden p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/40 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">✉️ Password Dispatched (Preview Inbox)</span>
+            <span class="text-[9px] font-mono text-emerald-200 bg-emerald-500/20 px-1.5 py-0.5 rounded">Active</span>
+          </div>
+          <div class="p-3 rounded-lg bg-[#080C1D] border border-white/10 space-y-1 font-mono text-[11px]">
+            <div><span class="text-slate-400">To:</span> <span id="dispatch-email-out" class="text-white"></span></div>
+            <div><span class="text-slate-400">Member:</span> <span id="dispatch-name-out" class="text-indigo-300"></span></div>
+            <div class="pt-1 flex items-center justify-between">
+              <span><span class="text-slate-400">Password:</span> <span id="dispatch-pass-out" class="text-amber-300 font-black text-sm"></span></span>
+              <button onclick="copyDispatchedPassword()" class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white text-[10px] cursor-pointer">Copy</button>
+            </div>
+          </div>
+          <button onclick="autoFillLoginFromDispatch()" class="w-full py-2 rounded-lg bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold text-xs cursor-pointer transition">
+            Use Password &amp; Sign In Now ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 3: LOGGED IN ACCOUNT SECURITY & PASSWORD UPDATE -->
+      <div id="auth-panel-account" class="hidden space-y-4 text-xs">
+        <div class="p-4 rounded-xl bg-[#131C38] border border-white/10 flex items-center gap-3.5">
+          <img id="acct-avatar" src="" alt="User" class="w-12 h-12 rounded-xl object-cover border border-indigo-400/50 bg-slate-900">
+          <div class="min-w-0 flex-1">
+            <h4 id="acct-name" class="text-sm font-extrabold text-white truncate">Member</h4>
+            <span id="acct-email" class="text-[11px] text-indigo-300 block truncate">email</span>
+            <span id="acct-role-badge" class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-500/40">Role</span>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[#080C1D] border border-white/10 space-y-2.5">
+          <span class="font-bold text-slate-200 block">Change My Password</span>
+          <input type="password" id="acct-new-password" placeholder="Enter new personal password (min 4 chars)" class="px-input w-full bg-[#131C38] text-white">
+          <button onclick="handleChangeOwnPassword()" class="px-btn-secondary w-full justify-center py-1.5 text-xs cursor-pointer">Update Password</button>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="navigateToMySpace()" class="flex-1 py-2.5 rounded-xl bg-[#5E4AE3] hover:bg-[#4F3CC9] text-white font-bold cursor-pointer transition">Go to My Workspace</button>
+          <button onclick="handleLogout()" class="py-2.5 px-4 rounded-xl bg-rose-950/70 hover:bg-rose-800 text-rose-200 border border-rose-500/40 font-bold cursor-pointer transition">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
