@@ -11815,7 +11815,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function updateBackendStatusBadge() {
-      const badge = document.getElementById('auth-backend-status-pill');
       if (!badge) return;
       const connected = !!getEmailBackendUrl();
       badge.className = connected
@@ -11856,13 +11855,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const modal = document.getElementById('authModal');
       if (!modal) return;
       populateClaimMemberSelect(targetPreselect);
-      const gasIn = document.getElementById('auth-gas-webhook-input');
       if (gasIn) gasIn.value = getEmailBackendUrl();
-      const srvDet = document.getElementById('auth-server-details');
       if (srvDet) srvDet.classList.toggle('hidden', !!DEFAULT_GAS_BACKEND_URL);
       updateBackendStatusBadge();
 
-      ['auth-login-error', 'auth-claim-error', 'auth-email-sent-status', 'auth-backend-warning'].forEach(id => {
+      ['auth-login-error', 'auth-claim-error', 'auth-email-sent-status'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
@@ -11951,7 +11948,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const email = document.getElementById('auth-claim-email').value.trim().toLowerCase();
       const errEl = document.getElementById('auth-claim-error');
       const okBox = document.getElementById('auth-email-sent-status');
-      const warnBox = document.getElementById('auth-backend-warning');
 
       if (errEl) errEl.classList.add('hidden');
       if (okBox) okBox.classList.add('hidden');
@@ -11963,9 +11959,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
 
       if (!getEmailBackendUrl()) {
-        if (warnBox) warnBox.classList.remove('hidden');
-        const det = document.getElementById('auth-server-details');
-        if (det) det.open = true;
+        if (errEl) {
+          errEl.innerText = "Email service is temporarily unavailable. Please try again shortly.";
+          errEl.classList.remove('hidden');
+        }
         return;
       }
 
@@ -18576,29 +18573,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
           </button>
         </div>
 
-        <!-- SETUP WARNING IF BACKEND URL NOT CONNECTED YET -->
-        <div id="auth-backend-warning" class="hidden p-3.5 rounded-xl bg-amber-950/50 border border-amber-500/40 space-y-1.5 text-amber-200 text-[11px]">
-          <span class="font-bold block">⚙️ Admin Setup Needed to Dispatch Real Emails</span>
-          <p class="text-amber-100/90 leading-relaxed">
-            Static GitHub Pages cannot send emails directly without a server endpoint, and passwords are never revealed on screen. Deploy <code>google_apps_script_template.gs</code> on Google Apps Script and paste the Web App URL below.
-          </p>
         </div>
-
-        <!-- ADMIN SERVER CONNECTION SETTINGS (HIDDEN WHEN DEFAULT BACKEND CONFIGURED) -->
-        <details id="auth-server-details" class="hidden p-3 rounded-xl bg-[#080C1D] border border-white/10 text-[11px] space-y-2">
-          <summary class="cursor-pointer font-semibold text-slate-300 flex items-center justify-between">
-            <span>⚙️ Admin Email Server Config (Google Apps Script)</span>
-            <span id="auth-backend-status-pill" class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">○ Server Setup Required</span>
-          </summary>
-          <div class="pt-2 space-y-2">
-            <p class="text-slate-400 text-[10px] leading-relaxed">Deploy <code>google_apps_script_template.gs</code> in Google Sheets &rarr; Extensions &rarr; Apps Script (Who has access: <strong>Anyone</strong>) and paste the <code>/exec</code> Web App URL:</p>
-            <div class="flex gap-2">
-              <input type="url" id="auth-gas-webhook-input" placeholder="https://script.google.com/macros/s/.../exec" class="px-input flex-1 text-[11px] bg-[#131C38] text-white" oninput="saveGasWebhookUrl(this.value)">
-              <button onclick="testBackendConnection()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] cursor-pointer shrink-0">Test Sync</button>
-            </div>
-          </div>
-        </details>
-      </div>
 
       <!-- TAB 3: LOGGED IN ACCOUNT SECURITY & PASSWORD UPDATE -->
       <div id="auth-panel-account" class="hidden space-y-4 text-xs">
