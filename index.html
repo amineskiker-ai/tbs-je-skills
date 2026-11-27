@@ -307,6 +307,1115 @@
       transition: background-color 5000s ease-in-out 0s;
     }
   </style>
+
+  <script>
+    const INITIAL_PROJECTS_DATA = [
+  {
+    "id": "proj_market_res_01",
+    "code": "TBS-2026-MR01",
+    "name": "InnoTech Market Expansion & Feasibility Study",
+    "category": "Market Research",
+    "department": "Hexapro 1",
+    "pm_id": "mm_3",
+    "pm_name": "Youssef Chahed",
+    "director_id": "eb_dir_studies",
+    "director_name": "Malek Trabelsi",
+    "client_name": "InnoTech Solutions SARL",
+    "client_public_authorized": true,
+    "priority": "High",
+    "confidentiality": "Standard",
+    "status": "In Execution",
+    "start_date": "2026-10-01",
+    "expected_delivery_date": "2026-12-20",
+    "actual_completion_date": null,
+    "overall_progress": 58,
+    "description": "Comprehensive quantitative and qualitative market feasibility study analyzing consumer purchasing trends and competitive positioning in Greater Tunis for a technology hardware expansion.",
+    "phases": [
+      {
+        "id": "phase_mr_1",
+        "phase_order": 1,
+        "name": "Research Briefing & Scope Definition",
+        "description": "Understand client strategic objectives and define study boundaries.",
+        "deadline": "2026-10-10",
+        "expected_deliverables": "Approved Project Charter & Signed Methodology Scope",
+        "completion_criteria": "Client signature on project scope and methodology sign-off.",
+        "status": "Completed",
+        "started_at": "2026-10-01",
+        "completed_at": "2026-10-09",
+        "validated_by": "Youssef Chahed",
+        "assigned_consultants": ["m_0"]
+      },
+      {
+        "id": "phase_mr_2",
+        "phase_order": 2,
+        "name": "Research Methodology & Sample Sizing",
+        "description": "Define sampling quotas, geographical distribution, and survey design.",
+        "deadline": "2026-10-22",
+        "expected_deliverables": "Sampling Matrix & Fieldwork Plan",
+        "completion_criteria": "Representative sample calculated at 95% confidence interval.",
+        "status": "Completed",
+        "started_at": "2026-10-10",
+        "completed_at": "2026-10-21",
+        "validated_by": "Youssef Chahed",
+        "assigned_consultants": ["m_0", "m_2"]
+      },
+      {
+        "id": "phase_mr_3",
+        "phase_order": 3,
+        "name": "Questionnaire Design & Sphinx Configuration",
+        "description": "Formulate 28 structured questions and script logic branches in Le Sphinx.",
+        "deadline": "2026-11-05",
+        "expected_deliverables": "Validated Questionnaire & Tested Le Sphinx Web Script",
+        "completion_criteria": "Pilot testing with 5 respondents and Director validation.",
+        "status": "Completed",
+        "started_at": "2026-10-22",
+        "completed_at": "2026-11-04",
+        "validated_by": "Youssef Chahed",
+        "assigned_consultants": ["m_0", "m_1", "m_2"]
+      },
+      {
+        "id": "phase_mr_4",
+        "phase_order": 4,
+        "name": "Field Data Collection & Interviews",
+        "description": "Deploy survey across target retail and commercial zones in Greater Tunis.",
+        "deadline": "2026-11-28",
+        "expected_deliverables": "350 Completed Verified Respondent Records",
+        "completion_criteria": "100% quota fulfillment with zero duplicate records.",
+        "status": "In Progress",
+        "started_at": "2026-11-05",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_0", "m_1"]
+      },
+      {
+        "id": "phase_mr_5",
+        "phase_order": 5,
+        "name": "Statistical Data Analysis & Cross-Tabulation",
+        "description": "Clean data, execute SPSS descriptive & bivariate analysis, and extract insights.",
+        "deadline": "2026-12-08",
+        "expected_deliverables": "SPSS Dataset, Cleaned Excel Tables & Cross-Tab Insights",
+        "completion_criteria": "Chi-square and correlation tests conducted on key segments.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_0", "m_2"]
+      },
+      {
+        "id": "phase_mr_6",
+        "phase_order": 6,
+        "name": "Consulting Report Preparation & Recommendations",
+        "description": "Draft executive PowerPoint presentation and comprehensive study report.",
+        "deadline": "2026-12-15",
+        "expected_deliverables": "45-Slide Executive Presentation & Strategic Action Plan",
+        "completion_criteria": "Complete narrative synthesis with data visualizations.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_0", "m_1"]
+      },
+      {
+        "id": "phase_mr_7",
+        "phase_order": 7,
+        "name": "Internal Quality Audit & Review",
+        "description": "Rigorous quality check by TBS JE Quality team according to ISO guidelines.",
+        "deadline": "2026-12-18",
+        "expected_deliverables": "Quality Audit Sign-Off Checklist & Approved Deliverables",
+        "completion_criteria": "Zero major formatting or calculation errors.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_0"]
+      },
+      {
+        "id": "phase_mr_8",
+        "phase_order": 8,
+        "name": "Final Client Delivery & Executive Pitch",
+        "description": "Present findings in executive board meeting to client leadership.",
+        "deadline": "2026-12-20",
+        "expected_deliverables": "Client Sign-Off Sheet & Testimonial Request",
+        "completion_criteria": "Client formal acceptance and completion certificate.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_0", "m_1"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_mr_1",
+        "skill_id": "s_mkt_res",
+        "name": "Market Research",
+        "category": "Consulting Skills",
+        "phase_id": "phase_mr_1",
+        "expected_level": 4,
+        "assessment_criteria": "Structure research objectives, formulate hypotheses, and identify target consumer personas."
+      },
+      {
+        "id": "pskill_mr_2",
+        "skill_id": "s_rep_wri",
+        "name": "Questionnaire Design",
+        "category": "Consulting Skills",
+        "phase_id": "phase_mr_3",
+        "expected_level": 4,
+        "assessment_criteria": "Draft clear, unbiased 5-point Likert questions with logical screening sections."
+      },
+      {
+        "id": "pskill_mr_3",
+        "skill_id": "s_sphinx",
+        "name": "Le Sphinx (Survey Analysis)",
+        "category": "Digital Skills",
+        "phase_id": "phase_mr_3",
+        "expected_level": 4,
+        "assessment_criteria": "Configure conditional question branching, online response limits, and variable coding."
+      },
+      {
+        "id": "pskill_mr_4",
+        "skill_id": "s_comm",
+        "name": "Field Interviewing & Communication",
+        "category": "Soft Skills",
+        "phase_id": "phase_mr_4",
+        "expected_level": 3,
+        "assessment_criteria": "Engage prospective respondents professionally, overcome refusals, and maintain neutrality."
+      },
+      {
+        "id": "pskill_mr_5",
+        "skill_id": "s_data_an",
+        "name": "Data Analysis & SPSS",
+        "category": "Analytical Skills",
+        "phase_id": "phase_mr_5",
+        "expected_level": 4,
+        "assessment_criteria": "Conduct bivariate cross-tabulations, chi-square tests, and demographic clustering."
+      },
+      {
+        "id": "pskill_mr_6",
+        "skill_id": "s_pres_sk",
+        "name": "Consulting Report Writing & Presentation",
+        "category": "Consulting Skills",
+        "phase_id": "phase_mr_6",
+        "expected_level": 4,
+        "assessment_criteria": "Synthesize statistical charts into actionable C-level commercial recommendations."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_0",
+        "role_in_project": "Lead Field Researcher & Analyst",
+        "responsibilities": "Lead questionnaire scripting in Le Sphinx, supervise field interviewer quotas, and conduct SPSS statistical analysis.",
+        "individual_deadline": "2026-12-10",
+        "current_phase_id": "phase_mr_4",
+        "individual_progress_status": "In Progress",
+        "assigned_skill_ids": ["pskill_mr_1", "pskill_mr_2", "pskill_mr_3", "pskill_mr_5", "pskill_mr_6"],
+        "manager_feedback": "Akram is demonstrating remarkable analytical precision and leadership on survey deployment."
+      },
+      {
+        "member_id": "m_1",
+        "role_in_project": "Field Interviewer & Data Collector",
+        "responsibilities": "Execute face-to-face consumer interviews in designated commercial clusters, record GPS/timestamp validity, and achieve daily interview targets.",
+        "individual_deadline": "2026-11-28",
+        "current_phase_id": "phase_mr_4",
+        "individual_progress_status": "In Progress",
+        "assigned_skill_ids": ["pskill_mr_4", "pskill_mr_6"],
+        "manager_feedback": "Abir has exceeded her initial daily quotas with rigorous respondent vetting."
+      },
+      {
+        "member_id": "m_2",
+        "role_in_project": "Junior Data Processor",
+        "responsibilities": "Clean incoming raw respondent records, code open-ended responses, and prepare initial SPSS syntax files.",
+        "individual_deadline": "2026-12-05",
+        "current_phase_id": "phase_mr_3",
+        "individual_progress_status": "Tasks Submitted",
+        "assigned_skill_ids": ["pskill_mr_2", "pskill_mr_3", "pskill_mr_5"],
+        "manager_feedback": "Alaa completed the variable coding dictionary ahead of schedule."
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t_mr_1",
+        "phase_id": "phase_mr_3",
+        "member_id": "m_0",
+        "title": "Script 28-item survey into Le Sphinx with filter questions",
+        "priority": "High",
+        "deadline": "2026-11-04",
+        "status": "Validated",
+        "deliverable_url": "https://sphinx.tbs-je.org/survey/innotech-v2",
+        "deliverable_notes": "Implemented skip logic for non-target tech buyers. All 28 variables labeled.",
+        "reviewer_feedback": "Excellent execution. Skip logic verified with 0 error states.",
+        "validated_by": "Youssef Chahed",
+        "validated_at": "2026-11-05"
+      },
+      {
+        "id": "t_mr_2",
+        "phase_id": "phase_mr_4",
+        "member_id": "m_1",
+        "title": "Collect 120 validated face-to-face responses at Lac 2 commercial zone",
+        "priority": "Urgent",
+        "deadline": "2026-11-24",
+        "status": "In Progress",
+        "deliverable_url": "Batch 1 (74 verified records) logged in Sphinx database",
+        "deliverable_notes": "Currently at 74 verified responses. On pace to hit 120 by Tuesday.",
+        "reviewer_feedback": "Good momentum. Please ensure evening shopper demographic quota is met.",
+        "validated_by": null,
+        "validated_at": null
+      },
+      {
+        "id": "t_mr_3",
+        "phase_id": "phase_mr_3",
+        "member_id": "m_2",
+        "title": "Build SPSS codebook and variable dictionary",
+        "priority": "Medium",
+        "deadline": "2026-11-06",
+        "status": "Validated",
+        "deliverable_url": "https://drive.google.com/file/d/innotech_spss_codebook.pdf",
+        "deliverable_notes": "Mapped all 28 variables with standard value labels (1=Strongly Disagree, 5=Strongly Agree).",
+        "reviewer_feedback": "Clean and well structured codebook.",
+        "validated_by": "Youssef Chahed",
+        "validated_at": "2026-11-07"
+      },
+      {
+        "id": "t_mr_4",
+        "phase_id": "phase_mr_5",
+        "member_id": "m_0",
+        "title": "Prepare SPSS descriptive cross-tabulation script",
+        "priority": "High",
+        "deadline": "2026-12-02",
+        "status": "Pending",
+        "deliverable_url": "",
+        "deliverable_notes": "Awaiting final batch of field survey records.",
+        "reviewer_feedback": "",
+        "validated_by": null,
+        "validated_at": null
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "del_mr_1",
+        "phase_id": "phase_mr_1",
+        "member_id": "m_0",
+        "title": "Study Charter & Methodology Specification",
+        "description": "Comprehensive document outlining research hypotheses, target populations, and timeline.",
+        "file_or_doc_url": "https://drive.google.com/file/d/innotech_charter_approved.pdf",
+        "status": "Approved",
+        "submitted_at": "2026-10-08",
+        "reviewed_by": "Malek Trabelsi",
+        "reviewed_at": "2026-10-09",
+        "feedback": "Approved with commendation from the Studies Directorate.",
+        "is_publicly_shareable": true
+      },
+      {
+        "id": "del_mr_2",
+        "phase_id": "phase_mr_3",
+        "member_id": "m_0",
+        "title": "Validated Bilingual Questionnaire (FR/EN)",
+        "description": "Bilingual survey instrument validated through pilot respondents.",
+        "file_or_doc_url": "https://drive.google.com/file/d/innotech_questionnaire_v3.pdf",
+        "status": "Approved",
+        "submitted_at": "2026-11-04",
+        "reviewed_by": "Youssef Chahed",
+        "reviewed_at": "2026-11-05",
+        "feedback": "Solid question design and clear screening sections.",
+        "is_publicly_shareable": false
+      }
+    ],
+    "evaluations": [
+      {
+        "phase_id": "phase_mr_3",
+        "member_id": "m_0",
+        "evaluator_id": "mm_3",
+        "evaluator_name": "Youssef Chahed",
+        "skill_id": "pskill_mr_2",
+        "skill_name": "Questionnaire Design",
+        "category": "Consulting Skills",
+        "expected_level": 4,
+        "assessed_level": 4,
+        "criteria": "Design clear, unbiased survey items with logical flow.",
+        "feedback": "Akram demonstrated rigorous attention to detail in formulating Likert scale items and eliminating leading questions.",
+        "evidence": "Deliverable del_mr_2 approved without revisions. Pilot testing showed 100% respondent comprehension.",
+        "assessment_date": "2026-11-06",
+        "status": "Submitted"
+      },
+      {
+        "phase_id": "phase_mr_3",
+        "member_id": "m_0",
+        "evaluator_id": "mm_3",
+        "evaluator_name": "Youssef Chahed",
+        "skill_id": "pskill_mr_3",
+        "skill_name": "Le Sphinx (Survey Analysis)",
+        "category": "Digital Skills",
+        "expected_level": 4,
+        "assessed_level": 5,
+        "criteria": "Mastery of Le Sphinx scripting, quota rules, and data export.",
+        "feedback": "Exceeded expectations by scripting advanced conditional skip patterns and online quota counters independently.",
+        "evidence": "Tested across 5 test dummy submissions with zero logic faults.",
+        "assessment_date": "2026-11-06",
+        "status": "Submitted"
+      },
+      {
+        "phase_id": "phase_mr_4",
+        "member_id": "m_1",
+        "evaluator_id": "mm_3",
+        "evaluator_name": "Youssef Chahed",
+        "skill_id": "pskill_mr_4",
+        "skill_name": "Field Interviewing & Communication",
+        "category": "Soft Skills",
+        "expected_level": 3,
+        "assessed_level": 4,
+        "criteria": "Professional engagement with prospective respondents and objection handling.",
+        "feedback": "Abir exhibited great communication skills, professional poise, and achieved above-average response rates in challenging commercial environments.",
+        "evidence": "74 verified responses collected with zero incomplete forms.",
+        "assessment_date": "2026-11-20",
+        "status": "Submitted"
+      }
+    ],
+    "history": [
+      { "date": "2026-10-01", "type": "Status Change", "description": "Project created and moved to Kickoff status." },
+      { "date": "2026-10-09", "type": "Phase Completed", "description": "Phase 1: Research Briefing marked Completed by Youssef Chahed." },
+      { "date": "2026-10-21", "type": "Phase Completed", "description": "Phase 2: Research Methodology marked Completed by Youssef Chahed." },
+      { "date": "2026-11-05", "type": "Phase Completed", "description": "Phase 3: Questionnaire Design marked Completed by Youssef Chahed." },
+      { "date": "2026-11-05", "type": "Status Change", "description": "Project status transitioned to In Execution." }
+    ]
+  },
+  {
+    "id": "proj_marketing_02",
+    "code": "TBS-2026-MKT02",
+    "name": "GreenGrow Brand Identity & Digital Launch Campaign",
+    "category": "Marketing & Communication",
+    "department": "Marketing",
+    "pm_id": "mm_2",
+    "pm_name": "Nour Elleuch",
+    "director_id": "eb_dir_marketing",
+    "director_name": "Rayen Khelifi",
+    "client_name": "GreenGrow Agribusiness",
+    "client_public_authorized": true,
+    "priority": "Medium",
+    "confidentiality": "Standard",
+    "status": "Quality Review",
+    "start_date": "2026-09-15",
+    "expected_delivery_date": "2026-12-05",
+    "actual_completion_date": null,
+    "overall_progress": 88,
+    "description": "Full-cycle digital rebranding and multichannel launch campaign targeting eco-conscious urban consumers across social and influencer touchpoints.",
+    "phases": [
+      {
+        "id": "phase_mkt_1",
+        "phase_order": 1,
+        "name": "Brand Discovery & Market Benchmarking",
+        "description": "Analyze competitor brand visual identities and target audience engagement.",
+        "deadline": "2026-09-28",
+        "expected_deliverables": "Brand Benchmark Report",
+        "completion_criteria": "Presentation of 5 competitor audits to client.",
+        "status": "Completed",
+        "started_at": "2026-09-15",
+        "completed_at": "2026-09-27",
+        "validated_by": "Nour Elleuch",
+        "assigned_consultants": ["m_3", "m_4"]
+      },
+      {
+        "id": "phase_mkt_2",
+        "phase_order": 2,
+        "name": "Visual Identity & Graphic Asset Creation",
+        "description": "Design brand moodboards, logo variations, typography, and color palette.",
+        "deadline": "2026-10-15",
+        "expected_deliverables": "Brand Guidelines Book & Master Asset Kit",
+        "completion_criteria": "Client sign-off on chosen visual direction.",
+        "status": "Completed",
+        "started_at": "2026-09-28",
+        "completed_at": "2026-10-14",
+        "validated_by": "Nour Elleuch",
+        "assigned_consultants": ["m_3"]
+      },
+      {
+        "id": "phase_mkt_3",
+        "phase_order": 3,
+        "name": "Social Media Strategy & Editorial Calendar",
+        "description": "Draft 6-week social media content pillars, copywriting, and visual assets.",
+        "deadline": "2026-11-01",
+        "expected_deliverables": "Content Calendar with 24 Feed Posts & 12 Stories",
+        "completion_criteria": "Editorial calendar approval by Marketing Director.",
+        "status": "Completed",
+        "started_at": "2026-10-15",
+        "completed_at": "2026-10-31",
+        "validated_by": "Nour Elleuch",
+        "assigned_consultants": ["m_4", "m_5"]
+      },
+      {
+        "id": "phase_mkt_4",
+        "phase_order": 4,
+        "name": "Campaign Launch & Community Management",
+        "description": "Execute scheduled publishing, community engagement, and ad monitoring.",
+        "deadline": "2026-11-25",
+        "expected_deliverables": "Mid-Campaign Performance Snapshot",
+        "completion_criteria": "Reach minimum 50,000 organic and sponsored impressions.",
+        "status": "Completed",
+        "started_at": "2026-11-01",
+        "completed_at": "2026-11-25",
+        "validated_by": "Nour Elleuch",
+        "assigned_consultants": ["m_3", "m_4", "m_5"]
+      },
+      {
+        "id": "phase_mkt_5",
+        "phase_order": 5,
+        "name": "Quality Audit & Final Performance Review",
+        "description": "Aggregate campaign metrics, ROI, and assemble final presentation.",
+        "deadline": "2026-12-05",
+        "expected_deliverables": "Final Campaign Audit Deck & Handover Assets",
+        "completion_criteria": "Approval from Quality and Marketing Directors.",
+        "status": "Under Review",
+        "started_at": "2026-11-26",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_3", "m_4"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_mkt_1",
+        "skill_id": "s_dig_mkt",
+        "name": "Digital Marketing Strategy",
+        "category": "Digital Skills",
+        "phase_id": "phase_mkt_3",
+        "expected_level": 4,
+        "assessment_criteria": "Formulate multi-channel acquisition funnels and audience segmentation."
+      },
+      {
+        "id": "pskill_mkt_2",
+        "skill_id": "s_canva",
+        "name": "Graphic Design & Visual Identity",
+        "category": "Digital Skills",
+        "phase_id": "phase_mkt_2",
+        "expected_level": 4,
+        "assessment_criteria": "Create harmonious typography, logo guidelines, and brand design assets."
+      },
+      {
+        "id": "pskill_mkt_3",
+        "skill_id": "s_crea",
+        "name": "Creative Copywriting",
+        "category": "Soft Skills",
+        "phase_id": "phase_mkt_3",
+        "expected_level": 3,
+        "assessment_criteria": "Write engaging hooks, calls-to-action, and brand story captions."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_3",
+        "role_in_project": "Lead Visual Designer",
+        "responsibilities": "Brand guidelines creation, logo design iterations, and master visual asset kit.",
+        "individual_deadline": "2026-11-30",
+        "current_phase_id": "phase_mkt_5",
+        "individual_progress_status": "Phase Validated",
+        "assigned_skill_ids": ["pskill_mkt_2", "pskill_mkt_3"],
+        "manager_feedback": "Amal demonstrated exceptional graphic design artistry and professionalism."
+      },
+      {
+        "member_id": "m_4",
+        "role_in_project": "Social Media Strategist",
+        "responsibilities": "Editorial calendar formulation, publishing schedule, and engagement optimization.",
+        "individual_deadline": "2026-12-02",
+        "current_phase_id": "phase_mkt_5",
+        "individual_progress_status": "Tasks Submitted",
+        "assigned_skill_ids": ["pskill_mkt_1", "pskill_mkt_3"],
+        "manager_feedback": "Amani maintained great content cadence and engagement rates."
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t_mkt_1",
+        "phase_id": "phase_mkt_2",
+        "member_id": "m_3",
+        "title": "Deliver high-res GreenGrow Brand Identity Guidebook (PDF)",
+        "priority": "High",
+        "deadline": "2026-10-14",
+        "status": "Validated",
+        "deliverable_url": "https://drive.google.com/file/d/greengrow_brandbook.pdf",
+        "deliverable_notes": "Included color codes, CMYK/RGB values, typography hierarchy, and misuse rules.",
+        "reviewer_feedback": "Superb brand book. Client was thrilled with the earth-tone palette.",
+        "validated_by": "Nour Elleuch",
+        "validated_at": "2026-10-15"
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "del_mkt_1",
+        "phase_id": "phase_mkt_2",
+        "member_id": "m_3",
+        "title": "GreenGrow Brand Guidelines Book",
+        "description": "Official 24-page brand guidelines with logo specifications, typography, and visual assets.",
+        "file_or_doc_url": "https://drive.google.com/file/d/greengrow_brandbook.pdf",
+        "status": "Approved",
+        "submitted_at": "2026-10-14",
+        "reviewed_by": "Rayen Khelifi",
+        "reviewed_at": "2026-10-15",
+        "feedback": "Excellence in visual execution.",
+        "is_publicly_shareable": true
+      }
+    ],
+    "evaluations": [
+      {
+        "phase_id": "phase_mkt_2",
+        "member_id": "m_3",
+        "evaluator_id": "mm_2",
+        "evaluator_name": "Nour Elleuch",
+        "skill_id": "pskill_mkt_2",
+        "skill_name": "Graphic Design & Visual Identity",
+        "category": "Digital Skills",
+        "expected_level": 4,
+        "assessed_level": 5,
+        "criteria": "High aesthetic quality, brand book consistency, vector cleanliness.",
+        "feedback": "Amal delivered a publication-grade brand identity that raised the standard for TBS JE design outputs.",
+        "evidence": "Brandbook del_mkt_1 approved on first review without rework.",
+        "assessment_date": "2026-10-16",
+        "status": "Submitted"
+      }
+    ],
+    "history": [
+      { "date": "2026-09-15", "type": "Status Change", "description": "Project initiated in Kickoff." },
+      { "date": "2026-10-15", "type": "Phase Completed", "description": "Phase 2 completed and approved." },
+      { "date": "2026-11-25", "type": "Phase Completed", "description": "Phase 4 completed." },
+      { "date": "2026-11-26", "type": "Status Change", "description": "Moved to Quality Review." }
+    ]
+  },
+  {
+    "id": "proj_iso_quality_03",
+    "code": "TBS-2026-QA03",
+    "name": "ISO 9001:2015 Internal Process Audit & Standardization",
+    "category": "Quality & Audit",
+    "department": "Micro Quality Team 1",
+    "pm_id": "mm_4",
+    "pm_name": "Sirine Ben Slimane",
+    "director_id": "eb_vp_quality",
+    "director_name": "Aya Zeddini",
+    "client_name": "TBS Junior Enterprise Internal Operations",
+    "client_public_authorized": false,
+    "priority": "Urgent",
+    "confidentiality": "Confidential",
+    "status": "In Execution",
+    "start_date": "2026-10-15",
+    "expected_delivery_date": "2026-12-18",
+    "actual_completion_date": null,
+    "overall_progress": 65,
+    "description": "Internal organizational audit evaluating departmental compliance against ISO 9001:2015 standards, identifying procedural bottlenecks, and preparing certification documentation.",
+    "phases": [
+      {
+        "id": "phase_qa_1",
+        "phase_order": 1,
+        "name": "Audit Planning & Checklist Formulation",
+        "description": "Design audit questions and matrix for all 6 departments.",
+        "deadline": "2026-10-25",
+        "expected_deliverables": "Official Audit Checklist & Schedule",
+        "completion_criteria": "VP Quality approval on audit matrix.",
+        "status": "Completed",
+        "started_at": "2026-10-15",
+        "completed_at": "2026-10-24",
+        "validated_by": "Sirine Ben Slimane",
+        "assigned_consultants": ["m_6"]
+      },
+      {
+        "id": "phase_qa_2",
+        "phase_order": 2,
+        "name": "Departmental Audits & Process Interviews",
+        "description": "Interview EB members and Project Managers, sample archived deliverables.",
+        "deadline": "2026-11-20",
+        "expected_deliverables": "Interviews Minutes & Evidence Binder",
+        "completion_criteria": "Complete audit interviews for all 6 departments.",
+        "status": "Completed",
+        "started_at": "2026-10-25",
+        "completed_at": "2026-11-19",
+        "validated_by": "Sirine Ben Slimane",
+        "assigned_consultants": ["m_6", "m_7"]
+      },
+      {
+        "id": "phase_qa_3",
+        "phase_order": 3,
+        "name": "Non-Conformance Gap Analysis",
+        "description": "Categorize minor/major non-conformances and risk factors.",
+        "deadline": "2026-12-05",
+        "expected_deliverables": "Gap Analysis Matrix & Risk Assessment",
+        "completion_criteria": "Root cause analysis for each identified deviation.",
+        "status": "In Progress",
+        "started_at": "2026-11-20",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_6", "m_7"]
+      },
+      {
+        "id": "phase_qa_4",
+        "phase_order": 4,
+        "name": "Corrective Action Plan & SOP Formulation",
+        "description": "Author standard operating procedures and corrective timeline.",
+        "deadline": "2026-12-18",
+        "expected_deliverables": "Corrective Action Plan & Revised SOPs",
+        "completion_criteria": "EB sign-off on implementation roadmap.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_6"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_qa_1",
+        "skill_id": "s_audit",
+        "name": "Internal Quality Audit (ISO)",
+        "category": "Analytical Skills",
+        "phase_id": "phase_qa_1",
+        "expected_level": 4,
+        "assessment_criteria": "Evaluate operational workflows against ISO 9001 clauses and identify deviations."
+      },
+      {
+        "id": "pskill_qa_2",
+        "skill_id": "s_crit",
+        "name": "Critical & Root Cause Analysis",
+        "category": "Soft Skills",
+        "phase_id": "phase_qa_3",
+        "expected_level": 4,
+        "assessment_criteria": "Apply 5-Whys and Ishikawa diagrams to trace procedural breakdowns."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_6",
+        "role_in_project": "Lead Quality Auditor",
+        "responsibilities": "Develop audit checklists, conduct interviews with Consulting and Marketing departments, and write gap analysis.",
+        "individual_deadline": "2026-12-10",
+        "current_phase_id": "phase_qa_3",
+        "individual_progress_status": "In Progress",
+        "assigned_skill_ids": ["pskill_qa_1", "pskill_qa_2"],
+        "manager_feedback": "Amin has demonstrated high objectivity and methodical documentation."
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t_qa_1",
+        "phase_id": "phase_qa_1",
+        "member_id": "m_6",
+        "title": "Formulate ISO 9001 audit question matrix for Consulting department",
+        "priority": "High",
+        "deadline": "2026-10-24",
+        "status": "Validated",
+        "deliverable_url": "ISO_Audit_Checklist_Consulting.pdf",
+        "deliverable_notes": "Mapped all 12 project quality gates against clause 8.1.",
+        "reviewer_feedback": "Very thorough audit matrix.",
+        "validated_by": "Sirine Ben Slimane",
+        "validated_at": "2026-10-25"
+      }
+    ],
+    "deliverables": [],
+    "evaluations": [],
+    "history": [
+      { "date": "2026-10-15", "type": "Status Change", "description": "Audit kicked off." },
+      { "date": "2026-10-24", "type": "Phase Completed", "description": "Phase 1 audit planning approved." }
+    ]
+  },
+  {
+    "id": "proj_sales_spon_04",
+    "code": "TBS-2026-BD04",
+    "name": "Corporate Partnerships & National Forum Sponsorship Drive",
+    "category": "Business Development",
+    "department": "Sales",
+    "pm_id": "mm_1",
+    "pm_name": "Balkis Ben Rhouma",
+    "director_id": "eb_dir_commercial",
+    "director_name": "Yassine Ayari",
+    "client_name": "Various Corporate Partners",
+    "client_public_authorized": false,
+    "priority": "High",
+    "confidentiality": "Confidential",
+    "status": "Awaiting Kickoff",
+    "start_date": "2026-11-15",
+    "expected_delivery_date": "2027-01-20",
+    "actual_completion_date": null,
+    "overall_progress": 25,
+    "description": "Strategic prospecting campaign to secure 15 premium corporate sponsors and institutional partners for the 2027 TBS Junior Enterprise National Forum.",
+    "phases": [
+      {
+        "id": "phase_bd_1",
+        "phase_order": 1,
+        "name": "Prospect Database & Pipeline Setup",
+        "description": "Identify 80 high-potential corporate prospects in banking, telecom, and tech.",
+        "deadline": "2026-11-30",
+        "expected_deliverables": "Verified CRM Prospect Database",
+        "completion_criteria": "80 decision-maker verified contacts (email & phone).",
+        "status": "In Progress",
+        "started_at": "2026-11-15",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_8", "m_9"]
+      },
+      {
+        "id": "phase_bd_2",
+        "phase_order": 2,
+        "name": "Commercial Pitch Deck & Sponsorship Tiers",
+        "description": "Design partnership packages (Platinum, Gold, Silver) and pitch deck.",
+        "deadline": "2026-12-10",
+        "expected_deliverables": "Sponsorship Catalog & Pitch Deck PDF",
+        "completion_criteria": "Approval by Commercial and Marketing Directors.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_8"]
+      },
+      {
+        "id": "phase_bd_3",
+        "phase_order": 3,
+        "name": "Outreach, Cold Calling & Meetings",
+        "description": "Execute email outreach and schedule in-person pitch meetings.",
+        "deadline": "2027-01-05",
+        "expected_deliverables": "Outreach Call Logs & Meeting Notes",
+        "completion_criteria": "Minimum 20 qualified meetings held.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_8", "m_9"]
+      },
+      {
+        "id": "phase_bd_4",
+        "phase_order": 4,
+        "name": "Negotiation & Contract Signing",
+        "description": "Finalize commercial sponsorship agreements and payment schedules.",
+        "deadline": "2027-01-20",
+        "expected_deliverables": "Signed Sponsorship Contracts",
+        "completion_criteria": "Achieve minimum 35,000 TND sponsorship target.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_8"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_bd_1",
+        "skill_id": "s_prospection",
+        "name": "Commercial Prospection",
+        "category": "Consulting Skills",
+        "phase_id": "phase_bd_1",
+        "expected_level": 4,
+        "assessment_criteria": "Qualify leads, research company hierarchies, and identify economic buyers."
+      },
+      {
+        "id": "pskill_bd_2",
+        "skill_id": "s_negotiation",
+        "name": "Client Negotiation",
+        "category": "Leadership Skills",
+        "phase_id": "phase_bd_4",
+        "expected_level": 4,
+        "assessment_criteria": "Conduct persuasive commercial pitches and negotiate sponsorship deliverables."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_8",
+        "role_in_project": "Lead Commercial Representative",
+        "responsibilities": "Lead target tier 1 banking outreach and draft sponsorship proposals.",
+        "individual_deadline": "2027-01-15",
+        "current_phase_id": "phase_bd_1",
+        "individual_progress_status": "In Progress",
+        "assigned_skill_ids": ["pskill_bd_1", "pskill_bd_2"],
+        "manager_feedback": "Anas has shown proactive prospecting drive."
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t_bd_1",
+        "phase_id": "phase_bd_1",
+        "member_id": "m_8",
+        "title": "Compile 40 verified contacts in banking and financial sector",
+        "priority": "High",
+        "deadline": "2026-11-28",
+        "status": "In Progress",
+        "deliverable_url": "https://docs.google.com/spreadsheets/d/banking_prospects_2026",
+        "deliverable_notes": "Currently at 32 verified HR and Marketing director contacts.",
+        "reviewer_feedback": "",
+        "validated_by": null,
+        "validated_at": null
+      }
+    ],
+    "deliverables": [],
+    "evaluations": [],
+    "history": [
+      { "date": "2026-11-15", "type": "Status Change", "description": "Project created." }
+    ]
+  },
+  {
+    "id": "proj_fin_advisory_05",
+    "code": "TBS-2026-FIN05",
+    "name": "FinTech Financial Modeling & Investment Teaser",
+    "category": "Financial Advisory",
+    "department": "Hexapro 2",
+    "pm_id": "mm_5",
+    "pm_name": "Aziz Baccouche",
+    "director_id": "eb_treasurer",
+    "director_name": "Khedija Masmoudi",
+    "client_name": "PayFlow Technologies",
+    "client_public_authorized": false,
+    "priority": "Medium",
+    "confidentiality": "Highly Confidential",
+    "status": "Delayed",
+    "start_date": "2026-10-10",
+    "expected_delivery_date": "2026-11-30",
+    "actual_completion_date": null,
+    "overall_progress": 42,
+    "description": "Developing a 5-year dynamic financial forecast model, DCF valuation, and 2-page investment teaser for a seed-stage payments startup.",
+    "phases": [
+      {
+        "id": "phase_fin_1",
+        "phase_order": 1,
+        "name": "Historical Financial Review & Assumptions",
+        "description": "Gather client historical unit economics and validate revenue growth drivers.",
+        "deadline": "2026-10-25",
+        "expected_deliverables": "Financial Assumptions Register",
+        "completion_criteria": "Validated unit economics signed off by client CFO.",
+        "status": "Completed",
+        "started_at": "2026-10-10",
+        "completed_at": "2026-10-24",
+        "validated_by": "Aziz Baccouche",
+        "assigned_consultants": ["m_11"]
+      },
+      {
+        "id": "phase_fin_2",
+        "phase_order": 2,
+        "name": "3-Statement Dynamic Financial Model (P&L, Balance Sheet, Cash Flow)",
+        "description": "Build monthly dynamic financial model with sensitivity scenarios in Excel.",
+        "deadline": "2026-11-15",
+        "expected_deliverables": "Excel Financial Model with Macro Controls",
+        "completion_criteria": "Zero formula errors and dynamic scenario toggles.",
+        "status": "Blocked",
+        "started_at": "2026-10-25",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_11", "m_12"]
+      },
+      {
+        "id": "phase_fin_3",
+        "phase_order": 3,
+        "name": "DCF Valuation & Investment Teaser Drafting",
+        "description": "Perform discounted cash flow valuation and design visual investment teaser.",
+        "deadline": "2026-11-30",
+        "expected_deliverables": "Executive Teaser PDF & Valuation Summary",
+        "completion_criteria": "Treasurer and PM review sign-off.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_11"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_fin_1",
+        "skill_id": "s_fin_an",
+        "name": "Financial Analysis & Modeling",
+        "category": "Analytical Skills",
+        "phase_id": "phase_fin_2",
+        "expected_level": 4,
+        "assessment_criteria": "Build interconnected 3-statement models and sensitivity tables."
+      },
+      {
+        "id": "pskill_fin_2",
+        "skill_id": "s_excel",
+        "name": "Advanced Microsoft Excel",
+        "category": "Digital Skills",
+        "phase_id": "phase_fin_2",
+        "expected_level": 4,
+        "assessment_criteria": "Use INDEX/MATCH, XLOOKUP, data tables, and dynamic named ranges cleanly."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_11",
+        "role_in_project": "Financial Analyst",
+        "responsibilities": "Author revenue and cost of goods sold forecast tabs in Excel.",
+        "individual_deadline": "2026-11-20",
+        "current_phase_id": "phase_fin_2",
+        "individual_progress_status": "Blocked",
+        "assigned_skill_ids": ["pskill_fin_1", "pskill_fin_2"],
+        "manager_feedback": "Awaiting updated customer churn data from client CFO."
+      }
+    ],
+    "tasks": [],
+    "deliverables": [],
+    "evaluations": [],
+    "history": [
+      { "date": "2026-10-10", "type": "Status Change", "description": "Project started." },
+      { "date": "2026-11-16", "type": "Status Change", "description": "Flagged Delayed due to pending client data." }
+    ]
+  },
+  {
+    "id": "proj_digital_trans_06",
+    "code": "TBS-2026-DIG06",
+    "name": "TBS Talent Passport Platform & Digital Identity Infrastructure",
+    "category": "Digital Transformation",
+    "department": "Hexacom",
+    "pm_id": "mm_2",
+    "pm_name": "Nour Elleuch",
+    "director_id": "eb_dir_hr",
+    "director_name": "Mohamed Amine Skiker",
+    "client_name": "TBS Junior Enterprise Internal Mandate",
+    "client_public_authorized": true,
+    "priority": "Urgent",
+    "confidentiality": "Standard",
+    "status": "In Execution",
+    "start_date": "2026-10-01",
+    "expected_delivery_date": "2026-12-30",
+    "actual_completion_date": null,
+    "overall_progress": 78,
+    "description": "Architecting and implementing the next-generation Talent Passport web application with public member portfolios, QR identity cards, private assessment workspaces, and project performance tracking.",
+    "phases": [
+      {
+        "id": "phase_dig_1",
+        "phase_order": 1,
+        "name": "Architecture & Schema Engineering",
+        "description": "Design relational schema, Supabase RLS, and component structure.",
+        "deadline": "2026-10-20",
+        "expected_deliverables": "System Architecture & Database Schema",
+        "completion_criteria": "Approved by HR Director.",
+        "status": "Completed",
+        "started_at": "2026-10-01",
+        "completed_at": "2026-10-19",
+        "validated_by": "Mohamed Amine Skiker",
+        "assigned_consultants": ["m_14", "m_15"]
+      },
+      {
+        "id": "phase_dig_2",
+        "phase_order": 2,
+        "name": "Public Portfolio & QR Code Engine",
+        "description": "Implement permanent URL routing, QR generators, and public portfolio pages.",
+        "deadline": "2026-11-10",
+        "expected_deliverables": "Interactive Digital Passport & Public Profile Views",
+        "completion_criteria": "Zero numerical score exposure and fast mobile load.",
+        "status": "Completed",
+        "started_at": "2026-10-20",
+        "completed_at": "2026-11-09",
+        "validated_by": "Mohamed Amine Skiker",
+        "assigned_consultants": ["m_14"]
+      },
+      {
+        "id": "phase_dig_3",
+        "phase_order": 3,
+        "name": "Project Lifecycle & Competency Evaluation Engine",
+        "description": "Build customizable phase manager, skills framework, and evaluation matrix.",
+        "deadline": "2026-12-05",
+        "expected_deliverables": "Project Management & JC Evaluation System",
+        "completion_criteria": "Complete mobile and desktop verification.",
+        "status": "In Progress",
+        "started_at": "2026-11-10",
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_14", "m_15"]
+      },
+      {
+        "id": "phase_dig_4",
+        "phase_order": 4,
+        "name": "Quality Audit & Final Deployment",
+        "description": "End-to-end testing, security policy audit, and production release.",
+        "deadline": "2026-12-30",
+        "expected_deliverables": "Production Deployment on GitHub Pages",
+        "completion_criteria": "Passing all 17 acceptance criteria.",
+        "status": "Not Started",
+        "started_at": null,
+        "completed_at": null,
+        "validated_by": null,
+        "assigned_consultants": ["m_14", "m_15"]
+      }
+    ],
+    "skills": [
+      {
+        "id": "pskill_dig_1",
+        "skill_id": "s_proj_mg",
+        "name": "Agile Project Management",
+        "category": "Consulting Skills",
+        "phase_id": "phase_dig_1",
+        "expected_level": 4,
+        "assessment_criteria": "Structure software requirements, milestones, and deliverable sprint backlog."
+      },
+      {
+        "id": "pskill_dig_2",
+        "skill_id": "s_qual_ass",
+        "name": "Security & Quality Assurance",
+        "category": "Analytical Skills",
+        "phase_id": "phase_dig_3",
+        "expected_level": 4,
+        "assessment_criteria": "Implement strict permission checks and zero confidentiality leaks."
+      }
+    ],
+    "team": [
+      {
+        "member_id": "m_14",
+        "role_in_project": "Full-Stack Development Lead",
+        "responsibilities": "Frontend UI components, reactive state management, and mobile responsiveness.",
+        "individual_deadline": "2026-12-15",
+        "current_phase_id": "phase_dig_3",
+        "individual_progress_status": "In Progress",
+        "assigned_skill_ids": ["pskill_dig_1", "pskill_dig_2"],
+        "manager_feedback": "Houssem has demonstrated stellar engineering craftsmanship."
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t_dig_1",
+        "phase_id": "phase_dig_2",
+        "member_id": "m_14",
+        "title": "Build dynamic SVG QR code generator with downloadable business card view",
+        "priority": "High",
+        "deadline": "2026-11-08",
+        "status": "Validated",
+        "deliverable_url": "https://amineskiker-ai.github.io/tbs-je-skills/?tab=player",
+        "deliverable_notes": "Added QR badge modal, print styles, and permanent slug links.",
+        "reviewer_feedback": "Perfect implementation.",
+        "validated_by": "Mohamed Amine Skiker",
+        "validated_at": "2026-11-09"
+      }
+    ],
+    "deliverables": [
+      {
+        "id": "del_dig_1",
+        "phase_id": "phase_dig_2",
+        "member_id": "m_14",
+        "title": "QR Code Generator & Public Digital Card",
+        "description": "Component rendering high-resolution QR codes linking to member portfolios.",
+        "file_or_doc_url": "https://amineskiker-ai.github.io/tbs-je-skills/",
+        "status": "Approved",
+        "submitted_at": "2026-11-08",
+        "reviewed_by": "Mohamed Amine Skiker",
+        "reviewed_at": "2026-11-09",
+        "feedback": "Flawless mobile behavior.",
+        "is_publicly_shareable": true
+      }
+    ],
+    "evaluations": [
+      {
+        "phase_id": "phase_dig_2",
+        "member_id": "m_14",
+        "evaluator_id": "eb_dir_hr",
+        "evaluator_name": "Mohamed Amine Skiker",
+        "skill_id": "pskill_dig_1",
+        "skill_name": "Agile Project Management",
+        "category": "Consulting Skills",
+        "expected_level": 4,
+        "assessed_level": 5,
+        "criteria": "Delivery on tight deadlines with high architectural quality.",
+        "feedback": "Houssem demonstrated remarkable problem-solving and proactive communication.",
+        "evidence": "Milestone delivered ahead of schedule.",
+        "assessment_date": "2026-11-10",
+        "status": "Submitted"
+      }
+    ],
+    "history": [
+      { "date": "2026-10-01", "type": "Status Change", "description": "Project created." },
+      { "date": "2026-10-19", "type": "Phase Completed", "description": "Phase 1 completed." },
+      { "date": "2026-11-09", "type": "Phase Completed", "description": "Phase 2 completed." }
+    ]
+  }
+];
+  </script>
+
 </head>
 <body class="bg-[#090D16] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500/30 selection:text-white">
 
@@ -413,10 +1522,10 @@
               <span class="text-indigo-200">⚡ S1 Staffing:</span>
               <span id="hero-s1-team-pill" class="font-extrabold text-white">Hexacom</span>
             </div>
-            <div class="px-capsule px-capsule-lilac shadow-sm flex items-center gap-1.5" title="Academic Major at Tunis Business School">
-              <span class="text-indigo-200">🎓 Major:</span>
-              <span id="hero-major-pill" class="font-extrabold text-white">Business Analytics</span>
-            </div>
+            <div class="px-capsule px-capsule-lilac shadow-sm flex items-center gap-1.5" title="TBS JE Mandate Team">
+          <span class="text-indigo-200">🏛️ Department:</span>
+          <span id="hero-major-pill" class="font-extrabold text-white">Hexapro 1</span>
+        </div>
             <div class="px-capsule bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm flex items-center gap-2 cursor-pointer" onclick="document.getElementById('live-attendance-card').scrollIntoView({behavior: 'smooth'})" title="Official Attendance Rate">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span class="text-slate-300 font-medium">Attendance Rate</span>
@@ -484,8 +1593,8 @@
                 
                 <!-- Purple Salary/Stat Pill Badge -->
                 <div class="px-3 py-1.5 rounded-full bg-indigo-600/90 text-white text-xs font-bold shadow-md backdrop-blur-xs text-right">
-                  <span id="hero-major-badge" class="block text-[11px] font-mono leading-none">Analytics</span>
-                  <span class="text-[9px] text-indigo-200 font-normal">Major</span>
+                  <span id="hero-major-badge" class="block text-[11px] font-mono leading-none">2026–27</span>
+            <span class="text-[9px] text-indigo-200 font-normal">Mandate</span>
                 </div>
               </div>
             </div>
@@ -1500,7 +2609,7 @@
             <input type="text" id="form-member-mandate" value="2026-2027" class="saas-input w-full font-mono">
           </div>
           <div>
-            <label class="block text-slate-400 font-medium mb-1">Academic Major</label>
+            <label class="block text-slate-400 font-medium mb-1">TBS JE Department</label>
             <input type="text" id="form-member-major" placeholder="Ex: Business Analytics" class="saas-input w-full">
           </div>
           <div>
@@ -12629,6 +13738,20 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     }
 
     function initData() {
+
+    function markInactiveMembers() {
+      if (!window.appState || !Array.isArray(window.appState.members)) return;
+      window.appState.members.forEach(m => {
+        if (m.id === 'm_19' || m.id === 'm_46' || m.name === 'Majdi Haddar' || m.name === 'Zaineb Ben Dahmen' || m.name === 'Zeineb Ben Dahmen') {
+          m.is_active = false;
+          m.isActive = false;
+        } else if (m.is_active === undefined && m.isActive === undefined) {
+          m.is_active = true;
+          m.isActive = true;
+        }
+      });
+    }
+
       const saved = safeGetStorage(STORAGE_KEY);
       if (saved) {
         try {
@@ -12787,7 +13910,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       // Render corresponding tab
       if (tab === 'player') renderPlayerCard();
       else if (tab === 'skills') renderSkillsTab();
-      else if (tab === 'manager') renderManagerTab();
+      else if (tab === 'manager') renderProjectsTab();
       else if (tab === 'board') renderBoardTab();
       else if (tab === 'admin') renderAdminTab();
       else if (tab === 'execboard') renderExecutiveBoardTab();
@@ -13610,7 +14733,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
       const projectList = (m.teams && m.teams.length > 0) ? m.teams.join(' • ') : "Junior Consultant";
       const deptEl = document.getElementById('modal-dept');
-      if (deptEl) deptEl.innerText = `${m.major || 'Business Analytics'} • ${projectList}`;
+      if (deptEl) deptEl.innerText = `${(m.department || (m.teams && m.teams[0]) || "Hexapro")} • ${projectList}`;
 
       const avatarEl = document.getElementById('modal-qr-avatar');
       if (avatarEl) {
@@ -16329,7 +17452,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const subTeams = (m.teams && m.teams.length > 0) ? m.teams.join(' • ') : "Junior Consultant";
       setElText('card-consultant-sub', `Junior Consultant • ${subTeams}`);
 
-      setElText('pill-height', (m.teams && m.teams.length > 0) ? m.teams[0] : (m.major || "Hexacom"));
+      setElText('pill-height', (m.teams && m.teams.length > 0) ? m.teams[0] : ((m.department || (m.teams && m.teams[0]) || "Hexacom")));
 
       // Photo
       const heroImg = document.getElementById('hero-photo');
@@ -16353,7 +17476,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const majorBadge = document.getElementById('hero-major-badge');
       if (majorBadge) {
         majorBadge.innerText = m.major ? m.major.split(' ')[0] : 'Analytics';
-        majorBadge.title = m.major || 'Business Analytics';
+        majorBadge.title = (m.department || (m.teams && m.teams[0]) || "Hexapro");
       }
 
       // Missions table
@@ -16445,7 +17568,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       // UPDATE AUTHENTIC JE PROJECT & COMPETENCY INSIGHTS
       try {
         const s1Project = (m.teams && m.teams.length > 0) ? m.teams[0] : "Hexacom";
-        setElText('hero-major-pill', m.major || "Business Analytics");
+        setElText('hero-major-pill', (m.department || (m.teams && m.teams[0]) || "Hexapro"));
 
         // Col 2: Domain-Aware Project Sprints & Milestones
         const pData = (m && m.name && typeof projectsDataStore !== 'undefined') ? projectsDataStore[m.name.toLowerCase()] : null;
@@ -17044,105 +18167,89 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       const countBadge = document.getElementById('player-teams-count-badge');
       if (!container) return;
 
-      const teams = m.teams || [];
+      ensureProjectsInitialized();
+      const allProjects = window.appState.projects || [];
+      const memberProjects = allProjects.filter(p => (p.team || []).some(tm => tm.member_id === m.id));
+
       if (countBadge) {
-        countBadge.innerText = `${teams.length} Project${teams.length > 1 ? 's' : ''}`;
+        countBadge.innerText = `${memberProjects.length} Real Project${memberProjects.length > 1 ? 's' : ''}`;
       }
 
-      if (teams.length === 0) {
-        container.innerHTML = '<div class="p-6 rounded-xl bg-[#0E142A] border border-white/10 text-center text-xs text-slate-500 italic">No project teams assigned for Mandate 2026-2027 yet. Click "Manage Staffing" to allocate projects.</div>';
+      if (memberProjects.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 rounded-2xl bg-[#0E142A] border border-white/10 text-center text-xs text-slate-400 space-y-2">
+            <span class="text-2xl block">📁</span>
+            <p>No project assignments currently active for this consultant.</p>
+            <p class="text-[11px] text-slate-500">Project Managers and Directors can allocate members inside the Staffing &amp; Projects workspace.</p>
+          </div>
+        `;
         return;
       }
 
-      if (!m.projectExperiences) m.projectExperiences = {};
-
-      container.innerHTML = teams.map(teamName => {
-        const meta = PROJECT_TEAMS.find(x => x.name === teamName) || { icon: '', semester: 'S1', semesterName: 'First semester', hrNeeded: 6 };
-        let exp = m.projectExperiences[teamName];
-        if (!exp) {
-          let fwKey = teamName.startsWith('Hexapro') ? 'Hexapro' : teamName;
-          let defaultFw = DEFAULT_PROJECT_LEARNINGS_MAP[fwKey] || DEFAULT_PROJECT_LEARNINGS_MAP['Hexapro'];
-          exp = {
-            projectName: teamName,
-            learnings: defaultFw.learnings,
-            skills: defaultFw.skills.map(s => ({ ...s })),
-            overallRating: 4.6
-          };
-          m.projectExperiences[teamName] = exp;
-        }
-
-        const avg = exp.skills && exp.skills.length > 0 
-          ? (exp.skills.reduce((sum, s) => sum + s.rating, 0) / exp.skills.length).toFixed(1)
-          : '4.5';
-
-        const semLabel = meta.semester === 'S1' ? 'S1 • First Semester' : 'S2 • Second Semester';
+      container.innerHTML = memberProjects.map(p => {
+        const teamMember = (p.team || []).find(tm => tm.member_id === m.id) || {};
+        const memberTasks = (p.tasks || []).filter(t => t.member_id === m.id);
+        const memberEvals = (p.evaluations || []).filter(e => e.member_id === m.id);
+        const assignedSkills = (p.skills || []).filter(s => (teamMember.assigned_skill_ids || []).includes(s.id));
 
         return `
-          <div class="saas-panel p-5 space-y-4">
-            <!-- PROJECT TITLE BAR -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#1E283D]">
-              <div class="flex items-center gap-3">
-                <span class="w-2.5 h-2.5 rounded-full ${meta.semester === 'S1' ? 'bg-indigo-400' : 'bg-purple-400'}"></span>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <h4 class="text-base font-semibold text-white tracking-tight">${teamName}</h4>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[#161F33] text-slate-300 border border-[#24314C]">${semLabel}</span>
-                  </div>
-                  <span class="text-xs text-slate-400 mt-0.5 block">Staffing Allocation: ${meta.hrNeeded} HR Team Required • 100% Staffed</span>
+          <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3.5 shadow-lg">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">${escapeHtml(p.code || 'TBS-PROJ')}</span>
+                  <span class="text-xs text-slate-400 font-semibold">• ${escapeHtml(p.department || 'Hexapro')}</span>
                 </div>
+                <h4 class="text-sm font-bold text-white mt-1">${escapeHtml(p.name)}</h4>
+                <span class="text-xs text-indigo-300 font-semibold block">Role: ${escapeHtml(teamMember.role_in_project || 'Consultant')}</span>
               </div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20 flex items-center gap-1.5">
-                  <span class="text-amber-400">★</span> Overall Rating: <span class="font-bold text-white">${avg}</span> / 5.0
+
+              <div class="text-right">
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-bold border ${p.status === 'Completed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'}">
+                  ${escapeHtml(p.status || 'Active')}
                 </span>
+                <span class="text-[10px] text-slate-400 font-mono block mt-1">Due: ${escapeHtml(teamMember.individual_deadline || p.expected_delivery_date || 'TBD')}</span>
               </div>
             </div>
 
-            <!-- WHAT I LEARNED & KEY TAKEAWAYS -->
-            <div class="p-3.5 rounded-lg bg-[#121828] border-l-2 border-indigo-500 space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">What I Learned & Key Takeaways</span>
-                ${isJcOwner(m.id) ? `<button onclick="openProjectReflectionModal('${escapeHtml(teamName)}')" class="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1 cursor-pointer">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                  <span>Edit Reflection</span>
-                </button>` : '<span class="text-[10px] font-mono text-slate-500">Consultant Reflection</span>'}
-              </div>
-              <p class="text-xs text-slate-300 italic leading-relaxed">
-                "${escapeHtml(exp.learnings)}"
-              </p>
+            <!-- Specific Responsibilities -->
+            <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 text-xs space-y-1">
+              <span class="text-[10px] text-slate-400 uppercase font-mono block">Assigned Responsibilities</span>
+              <p class="text-slate-300 leading-relaxed">${escapeHtml(teamMember.responsibilities || 'Contribute to core project execution deliverables.')}</p>
             </div>
 
-            <!-- COMPETENCY SELF-RATING GRID -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between text-[11px]">
-                <span class="font-semibold uppercase tracking-wider text-slate-400">Project Competencies Self-Rating (1 to 5 Stars)</span>
-                <span class="text-slate-500">${isJcOwner(m.id) ? 'Click a star to calibrate rating' : 'Visible self-rating (Owner edits only)'}</span>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                ${(exp.skills || []).map((sk, sIdx) => {
-                  const starsHtml = [1, 2, 3, 4, 5].map(starNum => {
-                    const filled = starNum <= Math.round(sk.rating);
-                    return `
-                      <button onclick="rateProjectSkill('${m.id}', '${escapeHtml(teamName)}', ${sIdx}, ${starNum})"
-                              class="star-btn cursor-pointer p-0.5 text-base leading-none transition ${filled ? 'text-amber-400' : 'text-slate-600 hover:text-amber-300'}"
-                              title="Rate ${starNum} / 5">
-                        ★
-                      </button>
-                    `;
-                  }).join('');
-
+            <!-- Verified Project Skills & Badges -->
+            <div class="space-y-1.5 text-xs">
+              <span class="text-[10px] text-slate-400 uppercase font-mono block">Developed &amp; Evaluated Competencies</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${assignedSkills.map(s => {
+                  const ev = memberEvals.find(e => e.skill_id === s.id || e.skill_name === s.name);
+                  const isVerified = ev && ev.status === 'Submitted';
                   return `
-                    <div class="saas-card p-3 flex items-center justify-between gap-3">
-                      <span class="text-xs font-medium text-slate-200 truncate">${escapeHtml(sk.name)}</span>
-                      <div class="flex items-center gap-2 shrink-0">
-                        <div class="flex items-center">${starsHtml}</div>
-                        <span class="font-mono text-xs font-semibold text-white w-6 text-right">${sk.rating.toFixed(1)}</span>
-                      </div>
-                    </div>
+                    <span class="text-[10px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 ${isVerified ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/20'}">
+                      <span>${isVerified ? '✓' : '○'}</span>
+                      <strong class="font-semibold">${escapeHtml(s.name)}</strong>
+                      ${isVerified ? '<span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/20 px-1 rounded">Verified</span>' : ''}
+                    </span>
                   `;
                 }).join('')}
               </div>
+            </div>
+
+            <!-- Manager Feedback -->
+            ${teamMember.manager_feedback ? `
+              <div class="p-3 rounded-xl bg-[#080C1D] border border-emerald-500/20 text-xs space-y-1">
+                <span class="text-[10px] text-emerald-400 uppercase font-mono block">Manager Constructive Feedback</span>
+                <p class="text-slate-200 italic leading-relaxed">"${escapeHtml(teamMember.manager_feedback)}"</p>
+              </div>
+            ` : ''}
+
+            <!-- Quick Action -->
+            <div class="pt-1 flex justify-end">
+              <button onclick="openProjectWorkspace('${p.id}')" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
+                <span>View Full Project Workspace</span>
+                <span>➔</span>
+              </button>
             </div>
           </div>
         `;
@@ -17672,7 +18779,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         list = list.filter(m => 
           (m.name && m.name.toLowerCase().includes(q)) || 
           (m.roleTitle && m.roleTitle.toLowerCase().includes(q)) || 
-          (m.major && m.major.toLowerCase().includes(q)) ||
+          (m.department && m.department.toLowerCase().includes(q)) ||
           (m.teams || []).some(t => t.toLowerCase().includes(q))
         );
       }
@@ -17709,7 +18816,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
                   <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-full bg-[#131C38] text-slate-500">#${m.jerseyNum || '01'}</span>
                 </div>
               </div>
-              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block truncate mt-0.5">${escapeHtml(m.major || 'Business Analytics')}</span>
+              <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold block truncate mt-0.5">${escapeHtml((m.department || (m.teams && m.teams[0]) || "Hexapro"))}</span>
               <span class="text-[11px] text-slate-400 block mt-0.5">Mandate 2026-2027</span>
             </div>
           </div>
@@ -17833,7 +18940,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       document.getElementById('form-member-role').value = m.roleTitle;
       document.getElementById('form-member-jersey').value = m.jerseyNum;
       document.getElementById('form-member-mandate').value = m.mandate || '2026-2027';
-      document.getElementById('form-member-major').value = m.major || 'Business Analytics';
+      document.getElementById('form-member-major').value = (m.department || (m.teams && m.teams[0]) || "Hexapro");
       document.getElementById('form-member-linkedin').value = m.linkedin || '';
       document.getElementById('form-photo-url').value = m.photo || '';
       document.getElementById('form-photo-preview').src = (m.photo && m.photo.trim().length > 0) ? m.photo : DEFAULT_AVATAR;
@@ -18600,5 +19707,1584 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       </div>
     </div>
   </div>
+
+  <script>
+// ============================================================================
+// TBS JUNIOR ENTERPRISE — ADVANCED PROJECT MANAGEMENT & JC EVALUATION SYSTEM
+// Custom Lifecycles • Skills Frameworks • Tasks • Deliverables • Evaluations
+// ============================================================================
+
+let currentActiveProjectId = null;
+let currentProjectSubTab = 'overview';
+let projectSearchQuery = '';
+let projectStatusFilter = 'all';
+let projectDeptFilter = 'all';
+let projectOnlyMine = false;
+
+// Ensure appState.projects exists and is populated
+function ensureProjectsInitialized() {
+  if (!window.appState) window.appState = {};
+  if (!Array.isArray(window.appState.projects) || window.appState.projects.length === 0) {
+    if (typeof INITIAL_PROJECTS_DATA !== 'undefined' && Array.isArray(INITIAL_PROJECTS_DATA)) {
+      window.appState.projects = JSON.parse(JSON.stringify(INITIAL_PROJECTS_DATA));
+    } else {
+      window.appState.projects = [];
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 1. PROJECT MANAGEMENT DASHBOARD
+// ----------------------------------------------------------------------------
+function renderProjectsTab() {
+  ensureProjectsInitialized();
+  const container = document.getElementById('section-manager');
+  if (!container) return;
+
+  const projects = window.appState.projects || [];
+  const user = window.currentAuthUser;
+  const isMgr = isEvaluator();
+  const isEb = isEbAdmin();
+
+  // Metrics calculations
+  const totalCount = projects.length;
+  const activeCount = projects.filter(p => ['In Execution', 'Quality Review', 'Kickoff', 'Active'].includes(p.status)).length;
+  const reviewCount = projects.filter(p => p.status === 'Quality Review').length;
+  const completedCount = projects.filter(p => p.status === 'Completed').length;
+  const delayedCount = projects.filter(p => p.status === 'Delayed').length;
+  const avgProgress = totalCount > 0 ? Math.round(projects.reduce((acc, p) => acc + (p.overall_progress || 0), 0) / totalCount) : 0;
+
+  // Render Dashboard HTML
+  container.innerHTML = `
+    <!-- TOP HEADER & CONTROLS -->
+    <div class="space-y-6">
+      <!-- Title & RBAC Banner -->
+      <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 uppercase">
+              TBS JE Mandate 2026–2027
+            </span>
+            <span class="text-xs text-slate-400">• Project Governance &amp; Competency Hub</span>
+          </div>
+          <h2 class="text-2xl font-black text-white tracking-tight mt-1">Project Management &amp; JC Evaluation</h2>
+          <p class="text-xs text-slate-300 mt-0.5">
+            Manage customized project lifecycles, assign Junior Consultants, validate deliverables, and conduct evidence-based skill evaluations.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0">
+          ${isMgr || isEb ? `
+            <button onclick="openCreateProjectModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-indigo-900/30 flex items-center gap-2 transition cursor-pointer">
+              <span>+ Create Project</span>
+            </button>
+          ` : `
+            <div class="px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-slate-400 text-xs flex items-center gap-2">
+              <span>🔒 JC View: Viewing Assigned Projects &amp; Tasks</span>
+            </div>
+          `}
+        </div>
+      </div>
+
+      <!-- KPI METRIC CARDS -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-white/10 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Total Projects</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-white">${totalCount}</span>
+            <span class="text-xs text-indigo-400 font-mono">100%</span>
+          </div>
+          <span class="text-[10px] text-slate-400 mt-1 block">Commercial &amp; Internal</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-emerald-500/30 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-emerald-400 block tracking-wider">In Execution</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-emerald-300">${activeCount}</span>
+            <span class="text-xs text-emerald-400 font-mono">● Active</span>
+          </div>
+          <span class="text-[10px] text-emerald-400/80 mt-1 block">Live deliverables</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-purple-500/30 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-purple-400 block tracking-wider">Quality Review</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-purple-300">${reviewCount}</span>
+            <span class="text-xs text-purple-400 font-mono">Audits</span>
+          </div>
+          <span class="text-[10px] text-purple-400/80 mt-1 block">Before delivery</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-blue-500/30 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-blue-400 block tracking-wider">Completed</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-blue-300">${completedCount}</span>
+            <span class="text-xs text-blue-400 font-mono">✓ Signed</span>
+          </div>
+          <span class="text-[10px] text-blue-400/80 mt-1 block">Client validated</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-rose-500/30 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-rose-400 block tracking-wider">Delayed / Blocked</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-rose-300">${delayedCount}</span>
+            <span class="text-xs text-rose-400 font-mono">⚠️ Need Action</span>
+          </div>
+          <span class="text-[10px] text-rose-400/80 mt-1 block">Pending data/client</span>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#0A0E23] border border-amber-500/30 shadow-sm">
+          <span class="text-[10px] uppercase font-bold text-amber-400 block tracking-wider">Average Progress</span>
+          <div class="flex items-baseline justify-between mt-1.5">
+            <span class="text-2xl font-extrabold text-amber-300">${avgProgress}%</span>
+            <div class="w-12 h-1.5 bg-slate-800 rounded-full overflow-hidden self-center">
+              <div class="h-full bg-amber-400" style="width: ${avgProgress}%"></div>
+            </div>
+          </div>
+          <span class="text-[10px] text-amber-400/80 mt-1 block">Overall completion</span>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div class="p-4 rounded-2xl bg-[#0E142A] border border-white/10 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+          <!-- Search input -->
+          <div class="relative flex-1">
+            <input 
+              type="text" 
+              id="proj-search-input"
+              value="${escapeHtml(projectSearchQuery)}"
+              oninput="handleProjectSearch(this.value)"
+              placeholder="Search by project name, code, client, or competency..."
+              class="w-full pl-9 pr-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50"
+            />
+            <span class="absolute left-3 top-2.5 text-slate-500 text-xs">🔍</span>
+          </div>
+
+          <!-- Status Filter -->
+          <select 
+            id="proj-status-filter"
+            onchange="handleProjectStatusFilter(this.value)"
+            class="px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white text-xs focus:outline-none focus:border-indigo-500/50"
+          >
+            <option value="all" ${projectStatusFilter === 'all' ? 'selected' : ''}>All Statuses</option>
+            <option value="In Execution" ${projectStatusFilter === 'In Execution' ? 'selected' : ''}>In Execution</option>
+            <option value="Quality Review" ${projectStatusFilter === 'Quality Review' ? 'selected' : ''}>Quality Review</option>
+            <option value="Awaiting Kickoff" ${projectStatusFilter === 'Awaiting Kickoff' ? 'selected' : ''}>Awaiting Kickoff</option>
+            <option value="Completed" ${projectStatusFilter === 'Completed' ? 'selected' : ''}>Completed</option>
+            <option value="Delayed" ${projectStatusFilter === 'Delayed' ? 'selected' : ''}>Delayed</option>
+          </select>
+
+          <!-- Department Filter -->
+          <select 
+            id="proj-dept-filter"
+            onchange="handleProjectDeptFilter(this.value)"
+            class="px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white text-xs focus:outline-none focus:border-indigo-500/50"
+          >
+            <option value="all" ${projectDeptFilter === 'all' ? 'selected' : ''}>All Departments</option>
+            <option value="Hexapro 1" ${projectDeptFilter === 'Hexapro 1' ? 'selected' : ''}>Hexapro 1 (Consulting)</option>
+            <option value="Hexapro 2" ${projectDeptFilter === 'Hexapro 2' ? 'selected' : ''}>Hexapro 2 (Consulting)</option>
+            <option value="Hexacom" ${projectDeptFilter === 'Hexacom' ? 'selected' : ''}>Hexacom (Digital &amp; IT)</option>
+            <option value="Marketing" ${projectDeptFilter === 'Marketing' ? 'selected' : ''}>Marketing</option>
+            <option value="Sales" ${projectDeptFilter === 'Sales' ? 'selected' : ''}>Sales &amp; Partnerships</option>
+            <option value="Micro Quality Team 1" ${projectDeptFilter === 'Micro Quality Team 1' ? 'selected' : ''}>Micro Quality Team</option>
+          </select>
+        </div>
+
+        <!-- My Projects Toggle -->
+        <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300 px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 shrink-0 hover:bg-white/[0.04]">
+          <input 
+            type="checkbox" 
+            ${projectOnlyMine ? 'checked' : ''} 
+            onchange="handleProjectOnlyMineToggle(this.checked)"
+            class="rounded border-slate-700 text-indigo-600 focus:ring-0"
+          />
+          <span class="font-semibold">My Projects Only</span>
+        </label>
+      </div>
+
+      <!-- PROJECTS LIST / GRID -->
+      <div id="projects-grid-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        ${renderProjectCardsHTML()}
+      </div>
+    </div>
+  `;
+}
+
+function handleProjectSearch(val) {
+  projectSearchQuery = val || '';
+  const container = document.getElementById('projects-grid-container');
+  if (container) container.innerHTML = renderProjectCardsHTML();
+}
+
+function handleProjectStatusFilter(val) {
+  projectStatusFilter = val || 'all';
+  const container = document.getElementById('projects-grid-container');
+  if (container) container.innerHTML = renderProjectCardsHTML();
+}
+
+function handleProjectDeptFilter(val) {
+  projectDeptFilter = val || 'all';
+  const container = document.getElementById('projects-grid-container');
+  if (container) container.innerHTML = renderProjectCardsHTML();
+}
+
+function handleProjectOnlyMineToggle(checked) {
+  projectOnlyMine = !!checked;
+  const container = document.getElementById('projects-grid-container');
+  if (container) container.innerHTML = renderProjectCardsHTML();
+}
+
+// ----------------------------------------------------------------------------
+// 2. PROJECT CARDS RENDERING
+// ----------------------------------------------------------------------------
+function renderProjectCardsHTML() {
+  const projects = window.appState.projects || [];
+  const user = window.currentAuthUser;
+  const q = projectSearchQuery.toLowerCase().trim();
+
+  const filtered = projects.filter(p => {
+    // Search
+    if (q) {
+      const matchName = (p.name || '').toLowerCase().includes(q);
+      const matchCode = (p.code || '').toLowerCase().includes(q);
+      const matchClient = (p.client_name || '').toLowerCase().includes(q);
+      const matchCat = (p.category || '').toLowerCase().includes(q);
+      const matchSkills = (p.skills || []).some(s => (s.name || '').toLowerCase().includes(q));
+      if (!matchName && !matchCode && !matchClient && !matchCat && !matchSkills) return false;
+    }
+
+    // Status
+    if (projectStatusFilter !== 'all') {
+      if (p.status !== projectStatusFilter) return false;
+    }
+
+    // Department
+    if (projectDeptFilter !== 'all') {
+      if (p.department !== projectDeptFilter) return false;
+    }
+
+    // My Projects Only
+    if (projectOnlyMine && user) {
+      const isPm = p.pm_id === user.targetId || (user.name && p.pm_name === user.name);
+      const isDir = p.director_id === user.targetId || (user.name && p.director_name === user.name);
+      const isTeam = (p.team || []).some(m => m.member_id === user.targetId);
+      if (!isPm && !isDir && !isTeam) return false;
+    }
+
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    return `
+      <div class="col-span-full py-16 text-center rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+        <span class="text-4xl block">📋</span>
+        <h3 class="text-base font-bold text-white">No projects found</h3>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto">
+          No projects match your current search and filter criteria. Adjust your filters or create a new project.
+        </p>
+      </div>
+    `;
+  }
+
+  return filtered.map(p => {
+    // Status color
+    let statusClass = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+    if (p.status === 'Quality Review') statusClass = "bg-purple-500/20 text-purple-300 border-purple-500/40";
+    if (p.status === 'Completed') statusClass = "bg-blue-500/20 text-blue-300 border-blue-500/40";
+    if (p.status === 'Delayed') statusClass = "bg-rose-500/20 text-rose-300 border-rose-500/40";
+    if (p.status === 'Awaiting Kickoff' || p.status === 'Prospect') statusClass = "bg-amber-500/20 text-amber-300 border-amber-500/40";
+
+    // Priority badge
+    let prioClass = "text-slate-400";
+    if (p.priority === 'High') prioClass = "text-amber-400 font-bold";
+    if (p.priority === 'Urgent') prioClass = "text-rose-400 font-bold";
+
+    // Current phase
+    const phases = p.phases || [];
+    const activePhase = phases.find(ph => ph.status === 'In Progress') || phases.find(ph => ph.status === 'Under Review') || phases[0] || { name: 'Kickoff' };
+    const totalPhases = phases.length;
+    const completedPhases = phases.filter(ph => ph.status === 'Completed').length;
+
+    // Team avatars
+    const teamMembers = p.team || [];
+    const teamAvatars = teamMembers.slice(0, 4).map(tm => {
+      const fullM = (window.appState.members || []).find(x => x.id === tm.member_id) || {};
+      const photo = fullM.photo || tm.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150";
+      const name = fullM.name || tm.name || "JC";
+      return `<img src="${escapeHtml(photo)}" title="${escapeHtml(name)} (${escapeHtml(tm.role_in_project || 'Consultant')})" class="w-7 h-7 rounded-full object-cover border-2 border-[#0E142A] -ml-2 first:ml-0 shadow-sm" />`;
+    }).join('');
+    const extraCount = teamMembers.length > 4 ? `<span class="w-7 h-7 rounded-full bg-slate-800 border-2 border-[#0E142A] -ml-2 flex items-center justify-center text-[10px] text-white font-mono font-bold">+${teamMembers.length - 4}</span>` : '';
+
+    return `
+      <div class="rounded-2xl bg-[#0E142A] border border-white/10 hover:border-indigo-500/40 transition duration-200 shadow-xl flex flex-col justify-between overflow-hidden group">
+        <!-- Card Header -->
+        <div class="p-5 space-y-3.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[11px] font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-lg border border-indigo-500/20">
+              ${escapeHtml(p.code || 'TBS-PROJ')}
+            </span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] px-2 py-0.5 rounded-full border font-bold ${statusClass}">
+                ${escapeHtml(p.status || 'Active')}
+              </span>
+              ${p.confidentiality === 'Highly Confidential' ? `
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 font-mono" title="Restricted Access">🔒 Strict NDA</span>
+              ` : ''}
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-base font-bold text-white group-hover:text-indigo-300 transition line-clamp-1">
+              ${escapeHtml(p.name)}
+            </h3>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+              ${escapeHtml(p.description || 'No description provided.')}
+            </p>
+          </div>
+
+          <!-- Metadata Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-white/[0.04] text-slate-300 border border-white/5">
+              🏷️ ${escapeHtml(p.category || 'Consulting')}
+            </span>
+            <span class="px-2 py-0.5 rounded bg-white/[0.04] text-slate-300 border border-white/5">
+              🏛️ ${escapeHtml(p.department || 'Hexapro')}
+            </span>
+            <span class="text-[11px] ${prioClass}">
+              ⚡ ${escapeHtml(p.priority || 'Medium')}
+            </span>
+          </div>
+
+          <!-- Progress Bar & Current Phase -->
+          <div class="pt-2 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-400 text-[11px] flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                Phase: <strong class="text-white">${escapeHtml(activePhase.name || 'Kickoff')}</strong>
+              </span>
+              <span class="font-mono font-bold text-indigo-300 text-[11px]">${p.overall_progress || 0}%</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-[#080C1D] border border-white/5 overflow-hidden">
+              <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-400 transition-all duration-500" style="width: ${p.overall_progress || 0}%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400">
+              <span>Phases: ${completedPhases} of ${totalPhases} done</span>
+              <span>Due: ${escapeHtml(p.expected_delivery_date || 'TBD')}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="p-4 bg-[#080C1D]/80 border-t border-white/5 flex items-center justify-between gap-3">
+          <!-- PM & Assigned stack -->
+          <div class="flex items-center gap-2 min-w-0">
+            <div class="flex items-center">
+              ${teamAvatars}
+              ${extraCount}
+            </div>
+            <div class="min-w-0 text-[11px]">
+              <span class="text-slate-400 block truncate">PM: <strong class="text-slate-200">${escapeHtml(p.pm_name || 'Assigned')}</strong></span>
+            </div>
+          </div>
+
+          <button onclick="openProjectWorkspace('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white border border-indigo-500/40 text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm">
+            <span>Workspace</span>
+            <span>➔</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ----------------------------------------------------------------------------
+// 3. PROJECT WORKSPACE (8-TAB INTERACTIVE ENVIRONMENT)
+// ----------------------------------------------------------------------------
+function openProjectWorkspace(projectId, subTab = 'overview') {
+  ensureProjectsInitialized();
+  currentActiveProjectId = projectId;
+  currentProjectSubTab = subTab;
+
+  const project = (window.appState.projects || []).find(p => p.id === projectId);
+  if (!project) return showToast("Project not found.");
+
+  let modal = document.getElementById('projectWorkspaceModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'projectWorkspaceModal';
+    modal.className = "fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto";
+    document.body.appendChild(modal);
+  }
+
+  const isMgr = isEvaluator();
+  const isEb = isEbAdmin();
+
+  modal.innerHTML = `
+    <div class="relative w-full max-w-6xl max-h-[92vh] rounded-3xl bg-[#0A0E23] border border-white/10 shadow-2xl flex flex-col overflow-hidden text-slate-200">
+      <!-- Modal Header -->
+      <div class="p-5 sm:p-6 bg-[#0E142A] border-b border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shrink-0">
+        <div class="space-y-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-mono font-bold text-indigo-400 bg-indigo-500/20 px-2.5 py-0.5 rounded-lg border border-indigo-500/40">
+              ${escapeHtml(project.code || 'TBS-PROJ')}
+            </span>
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${project.status === 'Completed' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'}">
+              ${escapeHtml(project.status || 'Active')}
+            </span>
+            <span class="text-xs text-slate-400">Department: <strong class="text-white">${escapeHtml(project.department || 'Hexapro')}</strong></span>
+            ${project.client_public_authorized ? `
+              <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Public Client Authorized</span>
+            ` : `
+              <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Internal NDA Client</span>
+            `}
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black text-white truncate">${escapeHtml(project.name)}</h2>
+          <p class="text-xs text-slate-400 truncate max-w-2xl">${escapeHtml(project.description || '')}</p>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="text-right hidden sm:block">
+            <span class="text-[10px] text-slate-400 uppercase font-mono block">Overall Progress</span>
+            <span class="text-lg font-mono font-black text-emerald-400">${project.overall_progress || 0}%</span>
+          </div>
+          <button onclick="closeProjectWorkspace()" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (8 Workspace Sections) -->
+      <div class="px-6 bg-[#080C1D] border-b border-white/10 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs">
+        <button onclick="switchProjectSubTab('overview')" id="pws-tab-overview" class="pws-nav-btn ${currentProjectSubTab === 'overview' ? 'pws-nav-active' : ''}">
+          📊 Overview
+        </button>
+        <button onclick="switchProjectSubTab('lifecycle')" id="pws-tab-lifecycle" class="pws-nav-btn ${currentProjectSubTab === 'lifecycle' ? 'pws-nav-active' : ''}">
+          🔄 Lifecycle &amp; Phases (${(project.phases || []).length})
+        </button>
+        <button onclick="switchProjectSubTab('team')" id="pws-tab-team" class="pws-nav-btn ${currentProjectSubTab === 'team' ? 'pws-nav-active' : ''}">
+          👥 Team &amp; Assignments (${(project.team || []).length})
+        </button>
+        <button onclick="switchProjectSubTab('tasks')" id="pws-tab-tasks" class="pws-nav-btn ${currentProjectSubTab === 'tasks' ? 'pws-nav-active' : ''}">
+          📋 Tasks &amp; Deliverables (${(project.tasks || []).length})
+        </button>
+        <button onclick="switchProjectSubTab('skills')" id="pws-tab-skills" class="pws-nav-btn ${currentProjectSubTab === 'skills' ? 'pws-nav-active' : ''}">
+          🎯 Skills Framework (${(project.skills || []).length})
+        </button>
+        <button onclick="switchProjectSubTab('evaluations')" id="pws-tab-evaluations" class="pws-nav-btn ${currentProjectSubTab === 'evaluations' ? 'pws-nav-active' : ''}">
+          ⭐ Member Evaluations
+        </button>
+        <button onclick="switchProjectSubTab('matrix')" id="pws-tab-matrix" class="pws-nav-btn ${currentProjectSubTab === 'matrix' ? 'pws-nav-active' : ''}">
+          📈 Performance Matrix
+        </button>
+        <button onclick="switchProjectSubTab('history')" id="pws-tab-history" class="pws-nav-btn ${currentProjectSubTab === 'history' ? 'pws-nav-active' : ''}">
+          📜 Activity History
+        </button>
+      </div>
+
+      <!-- Workspace Body Container -->
+      <div id="project-workspace-body" class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
+        ${renderProjectSubTabContent(project, currentProjectSubTab)}
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
+
+function closeProjectWorkspace() {
+  const modal = document.getElementById('projectWorkspaceModal');
+  if (modal) modal.classList.add('hidden');
+  currentActiveProjectId = null;
+}
+
+function switchProjectSubTab(tabName) {
+  currentProjectSubTab = tabName;
+  const project = (window.appState.projects || []).find(p => p.id === currentActiveProjectId);
+  if (!project) return;
+
+  // Update tabs highlight
+  document.querySelectorAll('.pws-nav-btn').forEach(b => b.classList.remove('pws-nav-active'));
+  const activeBtn = document.getElementById('pws-tab-' + tabName);
+  if (activeBtn) activeBtn.classList.add('pws-nav-active');
+
+  // Re-render body
+  const body = document.getElementById('project-workspace-body');
+  if (body) {
+    body.innerHTML = renderProjectSubTabContent(project, tabName);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 4. SUB-TAB CONTENT RENDERERS
+// ----------------------------------------------------------------------------
+function renderProjectSubTabContent(p, tab) {
+  if (tab === 'overview') return renderProjectOverviewTab(p);
+  if (tab === 'lifecycle') return renderProjectLifecycleTab(p);
+  if (tab === 'team') return renderProjectTeamTab(p);
+  if (tab === 'tasks') return renderProjectTasksTab(p);
+  if (tab === 'skills') return renderProjectSkillsTab(p);
+  if (tab === 'evaluations') return renderProjectEvaluationsTab(p);
+  if (tab === 'matrix') return renderProjectMatrixTab(p);
+  if (tab === 'history') return renderProjectHistoryTab(p);
+  return `<div class="p-8 text-center text-slate-400">Under construction</div>`;
+}
+
+// TAB 1: OVERVIEW
+function renderProjectOverviewTab(p) {
+  return `
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Col 1: Scope & Details -->
+      <div class="lg:col-span-8 space-y-5">
+        <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span>🎯</span> Project Scope &amp; Objectives
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            ${escapeHtml(p.description || 'No detailed description available.')}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-[#0E142A] border border-white/10 space-y-2">
+            <span class="text-[10px] text-slate-400 uppercase font-mono block">Client Information</span>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-white">${escapeHtml(p.client_name || 'TBS JE Internal')}</span>
+              ${p.client_public_authorized ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Public</span>' : '<span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Confidential</span>'}
+            </div>
+            <p class="text-[11px] text-slate-400">
+              ${p.client_public_authorized ? 'Authorized for display in member public portfolios.' : 'Restricted by NDA. Masked in external portfolios.'}
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[#0E142A] border border-white/10 space-y-2">
+            <span class="text-[10px] text-slate-400 uppercase font-mono block">Timeline &amp; Deadlines</span>
+            <div class="text-xs space-y-1">
+              <div class="flex justify-between"><span class="text-slate-400">Start Date:</span> <span class="font-mono text-white">${escapeHtml(p.start_date || 'N/A')}</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Target Delivery:</span> <span class="font-mono text-amber-300 font-bold">${escapeHtml(p.expected_delivery_date || 'N/A')}</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Actual Completion:</span> <span class="font-mono text-slate-300">${escapeHtml(p.actual_completion_date || 'In Progress')}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Milestones Stepper Preview -->
+        <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <span>🚀</span> Lifecycle Stepper
+            </h4>
+            <button onclick="switchProjectSubTab('lifecycle')" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer">
+              Customize Phases ➔
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 overflow-x-auto py-2 no-scrollbar">
+            ${(p.phases || []).map((ph, idx) => `
+              <div class="flex items-center gap-2 shrink-0">
+                <div class="px-3 py-2 rounded-xl text-xs flex items-center gap-2 ${ph.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : ph.status === 'In Progress' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-bold' : 'bg-slate-800 text-slate-400 border border-white/5'}">
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono ${ph.status === 'Completed' ? 'bg-emerald-500 text-black font-bold' : 'bg-slate-700 text-white'}">${idx + 1}</span>
+                  <span class="truncate max-w-[140px]">${escapeHtml(ph.name)}</span>
+                </div>
+                ${idx < (p.phases || []).length - 1 ? '<span class="text-slate-600 text-xs">➔</span>' : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Leadership & Team Snapshot -->
+      <div class="lg:col-span-4 space-y-5">
+        <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3.5">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Project Leadership</h4>
+          
+          <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center font-bold text-indigo-300">PM</div>
+            <div class="min-w-0 flex-1 text-xs">
+              <span class="text-[10px] text-indigo-400 font-mono block">Project Manager</span>
+              <strong class="text-white block truncate">${escapeHtml(p.pm_name || 'Unassigned')}</strong>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-600/30 border border-purple-500/40 flex items-center justify-center font-bold text-purple-300">EB</div>
+            <div class="min-w-0 flex-1 text-xs">
+              <span class="text-[10px] text-purple-400 font-mono block">Assigned Director</span>
+              <strong class="text-white block truncate">${escapeHtml(p.director_name || 'Executive Board')}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Assigned JCs (${(p.team || []).length})</h4>
+            <button onclick="switchProjectSubTab('team')" class="text-xs text-indigo-400 hover:text-indigo-300">View Team</button>
+          </div>
+          <div class="space-y-2">
+            ${(p.team || []).map(tm => {
+              const fullM = (window.appState.members || []).find(x => x.id === tm.member_id) || {};
+              return `
+                <div class="p-2.5 rounded-xl bg-[#080C1D] border border-white/5 flex items-center justify-between gap-2 text-xs">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <img src="${escapeHtml(fullM.photo || tm.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')}" class="w-7 h-7 rounded-full object-cover" />
+                    <div class="min-w-0">
+                      <strong class="text-white block truncate text-[11px]">${escapeHtml(fullM.name || tm.name || 'JC')}</strong>
+                      <span class="text-[10px] text-slate-400 block truncate">${escapeHtml(tm.role_in_project || 'Consultant')}</span>
+                    </div>
+                  </div>
+                  <span class="text-[9px] px-2 py-0.5 rounded font-mono ${tm.individual_progress_status === 'Phase Validated' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-300'}">
+                    ${escapeHtml(tm.individual_progress_status || 'In Progress')}
+                  </span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// TAB 2: CUSTOMIZABLE LIFECYCLE & PHASES
+function renderProjectLifecycleTab(p) {
+  const isMgr = isEvaluator() || isEbAdmin();
+  const phases = p.phases || [];
+
+  return `
+    <div class="space-y-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-white">Customized Project Lifecycle</h3>
+          <p class="text-xs text-slate-400">
+            Define tailored phases, milestones, completion criteria, and expected deliverables for this specific project.
+          </p>
+        </div>
+        ${isMgr ? `
+          <button onclick="openCreatePhaseModal('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer">
+            + Add Project Phase
+          </button>
+        ` : ''}
+      </div>
+
+      <!-- Phases Timeline / List -->
+      <div class="space-y-3.5">
+        ${phases.map((ph, idx) => {
+          let statusBadge = "bg-slate-800 text-slate-300 border-white/5";
+          if (ph.status === 'In Progress') statusBadge = "bg-indigo-500/20 text-indigo-300 border-indigo-500/40";
+          if (ph.status === 'Completed') statusBadge = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+          if (ph.status === 'Under Review') statusBadge = "bg-purple-500/20 text-purple-300 border-purple-500/40";
+          if (ph.status === 'Blocked') statusBadge = "bg-rose-500/20 text-rose-300 border-rose-500/40";
+
+          return `
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#0E142A] border border-white/10 hover:border-white/20 transition space-y-3">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                <div class="flex items-center gap-3">
+                  <span class="w-8 h-8 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-300 font-mono font-bold flex items-center justify-center text-sm">
+                    ${idx + 1}
+                  </span>
+                  <div>
+                    <h4 class="text-sm font-bold text-white">${escapeHtml(ph.name)}</h4>
+                    <span class="text-[11px] text-slate-400">Target Deadline: <strong class="text-amber-300 font-mono">${escapeHtml(ph.deadline || 'TBD')}</strong></span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2.5 py-1 rounded-full font-bold border ${statusBadge}">
+                    ${escapeHtml(ph.status || 'Not Started')}
+                  </span>
+                  ${isMgr ? `
+                    <div class="flex items-center gap-1">
+                      <select 
+                        onchange="changePhaseStatus('${p.id}', '${ph.id}', this.value)"
+                        class="px-2 py-1 rounded-lg bg-[#080C1D] border border-white/10 text-[11px] text-slate-200"
+                      >
+                        <option value="Not Started" ${ph.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                        <option value="In Progress" ${ph.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="Under Review" ${ph.status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                        <option value="Completed" ${ph.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                        <option value="Blocked" ${ph.status === 'Blocked' ? 'selected' : ''}>Blocked</option>
+                      </select>
+                      ${ph.status !== 'Completed' ? `
+                        <button onclick="validatePhaseCompletion('${p.id}', '${ph.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 hover:text-white border border-emerald-500/40 text-[11px] font-bold cursor-pointer">
+                          ✓ Validate
+                        </button>
+                      ` : ''}
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Phase Details -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 text-xs">
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Expected Deliverables</span>
+                  <p class="text-slate-300">${escapeHtml(ph.expected_deliverables || 'Specific deliverables defined by Manager.')}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Completion Criteria</span>
+                  <p class="text-slate-300">${escapeHtml(ph.completion_criteria || 'Manager quality review sign-off.')}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// TAB 3: TEAM & ASSIGNMENTS
+function renderProjectTeamTab(p) {
+  const isMgr = isEvaluator() || isEbAdmin();
+  const team = p.team || [];
+
+  return `
+    <div class="space-y-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-white">Assigned Team &amp; Responsibilities</h3>
+          <p class="text-xs text-slate-400">
+            Every consultant has designated roles, individual responsibilities, deadlines, and tailored competency requirements.
+          </p>
+        </div>
+        ${isMgr ? `
+          <button onclick="openAssignMemberModal('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer">
+            + Assign Consultant
+          </button>
+        ` : ''}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${team.map(tm => {
+          const fullM = (window.appState.members || []).find(x => x.id === tm.member_id) || {};
+          const photo = fullM.photo || tm.photo || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150";
+          const assignedSkills = (p.skills || []).filter(s => (tm.assigned_skill_ids || []).includes(s.id));
+
+          return `
+            <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-4">
+              <!-- Header -->
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="${escapeHtml(photo)}" class="w-12 h-12 rounded-xl object-cover border border-indigo-400/30" />
+                  <div class="min-w-0">
+                    <h4 class="text-sm font-bold text-white truncate">${escapeHtml(fullM.name || tm.name || 'JC')}</h4>
+                    <span class="text-xs text-indigo-300 font-semibold block">${escapeHtml(tm.role_in_project || 'Consultant')}</span>
+                    <span class="text-[10px] text-slate-400 font-mono">Deadline: ${escapeHtml(tm.individual_deadline || 'End of project')}</span>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <span class="text-[10px] px-2.5 py-0.5 rounded-full border font-bold ${tm.individual_progress_status === 'Phase Validated' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40'}">
+                    ${escapeHtml(tm.individual_progress_status || 'In Progress')}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Responsibilities -->
+              <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1 text-xs">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">Individual Responsibilities</span>
+                <p class="text-slate-300 leading-relaxed">${escapeHtml(tm.responsibilities || 'General consulting support.')}</p>
+              </div>
+
+              <!-- Required Competencies for this JC -->
+              <div class="space-y-1.5 text-xs">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">Assigned Project Competencies (${assignedSkills.length})</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${assignedSkills.map(s => `
+                    <span class="text-[10px] px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                      ${escapeHtml(s.name)} (Target: ${s.expected_level || 3}/5)
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="pt-2 border-t border-white/5 flex items-center justify-between text-xs">
+                <button onclick="openEvaluateMemberModal('${p.id}', '${tm.member_id}')" class="text-indigo-400 hover:text-indigo-300 font-bold cursor-pointer">
+                  ⭐ Evaluate Competencies ➔
+                </button>
+                ${isMgr ? `
+                  <button onclick="removeMemberFromProject('${p.id}', '${tm.member_id}')" class="text-rose-400 hover:text-rose-300 text-[11px] cursor-pointer">
+                    Remove
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// TAB 4: TASKS & DELIVERABLES
+function renderProjectTasksTab(p) {
+  const isMgr = isEvaluator() || isEbAdmin();
+  const user = window.currentAuthUser;
+  const tasks = p.tasks || [];
+
+  return `
+    <div class="space-y-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-white">Tasks &amp; Deliverables</h3>
+          <p class="text-xs text-slate-400">
+            Track individual consultant task execution, deliverable submissions, and managerial approvals.
+          </p>
+        </div>
+        ${isMgr ? `
+          <button onclick="openCreateTaskModal('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer">
+            + New Task
+          </button>
+        ` : ''}
+      </div>
+
+      <!-- Task List -->
+      <div class="space-y-3">
+        ${tasks.map(t => {
+          const assignee = (window.appState.members || []).find(x => x.id === t.member_id) || {};
+          const isOwn = user && user.targetId === t.member_id;
+
+          let statusBadge = "bg-slate-800 text-slate-300 border-white/5";
+          if (t.status === 'In Progress') statusBadge = "bg-indigo-500/20 text-indigo-300 border-indigo-500/40";
+          if (t.status === 'Submitted') statusBadge = "bg-amber-500/20 text-amber-300 border-amber-500/40";
+          if (t.status === 'Validated') statusBadge = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+
+          return `
+            <div class="p-4 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                <div class="flex items-center gap-3">
+                  <img src="${escapeHtml(assignee.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')}" class="w-8 h-8 rounded-full object-cover" />
+                  <div>
+                    <h4 class="text-sm font-bold text-white">${escapeHtml(t.title)}</h4>
+                    <span class="text-[11px] text-slate-400">Assigned to: <strong class="text-indigo-300">${escapeHtml(assignee.name || 'JC')}</strong> • Due: <span class="font-mono text-amber-300">${escapeHtml(t.deadline || 'TBD')}</span></span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="text-xs px-2.5 py-0.5 rounded-full border font-bold ${statusBadge}">
+                    ${escapeHtml(t.status || 'Pending')}
+                  </span>
+                  ${isOwn || isMgr ? `
+                    <select 
+                      onchange="updateTaskStatus('${p.id}', '${t.id}', this.value)"
+                      class="px-2 py-1 rounded-lg bg-[#080C1D] border border-white/10 text-[11px] text-slate-200"
+                    >
+                      <option value="Pending" ${t.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                      <option value="In Progress" ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                      <option value="Submitted" ${t.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
+                      ${isMgr ? `<option value="Validated" ${t.status === 'Validated' ? 'selected' : ''}>Validated</option>` : ''}
+                    </select>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Deliverable and Reviewer Feedback -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Submitted Deliverable / Notes</span>
+                  ${t.deliverable_url ? `
+                    <a href="${escapeHtml(t.deliverable_url)}" target="_blank" class="text-indigo-400 hover:underline block truncate font-semibold">
+                      🔗 ${escapeHtml(t.deliverable_url)}
+                    </a>
+                  ` : ''}
+                  <p class="text-slate-300 italic">${escapeHtml(t.deliverable_notes || 'No deliverable attached yet.')}</p>
+                  ${isOwn && t.status !== 'Validated' ? `
+                    <button onclick="promptSubmitDeliverable('${p.id}', '${t.id}')" class="mt-1 text-[11px] text-indigo-400 hover:text-indigo-300 font-bold cursor-pointer">
+                      + Attach / Update Deliverable
+                    </button>
+                  ` : ''}
+                </div>
+
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Manager Feedback &amp; Validation</span>
+                  <p class="text-slate-300">${escapeHtml(t.reviewer_feedback || 'Pending manager review.')}</p>
+                  ${isMgr ? `
+                    <button onclick="promptManagerFeedback('${p.id}', '${t.id}')" class="mt-1 text-[11px] text-emerald-400 hover:text-emerald-300 font-bold cursor-pointer">
+                      💬 Add Feedback / Validate
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// TAB 5: SKILLS FRAMEWORK (PROJECT-SPECIFIC COMPETENCIES)
+function renderProjectSkillsTab(p) {
+  const isMgr = isEvaluator() || isEbAdmin();
+  const skills = p.skills || [];
+
+  return `
+    <div class="space-y-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-white">Project Competency Framework</h3>
+          <p class="text-xs text-slate-400">
+            Each project defines its own required skills, expected proficiency levels (1–5), phase links, and assessment criteria.
+          </p>
+        </div>
+        ${isMgr ? `
+          <button onclick="openAddProjectSkillModal('${p.id}')" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer">
+            + Add Competency
+          </button>
+        ` : ''}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${skills.map(s => {
+          const linkedPhase = (p.phases || []).find(ph => ph.id === s.phase_id) || {};
+          return `
+            <div class="p-4 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="text-sm font-bold text-white">${escapeHtml(s.name)}</h4>
+                  <span class="text-[10px] font-mono text-indigo-400">${escapeHtml(s.category || 'Consulting Skills')}</span>
+                </div>
+                <div class="px-2 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-mono font-bold text-xs">
+                  Target: ${s.expected_level || 3}/5
+                </div>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-[#080C1D] border border-white/5 space-y-1 text-xs">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">Associated Phase</span>
+                <span class="text-slate-200 font-semibold">${escapeHtml(linkedPhase.name || 'General Project Scope')}</span>
+              </div>
+
+              <div class="p-2.5 rounded-xl bg-[#080C1D] border border-white/5 space-y-1 text-xs">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">Assessment Criteria</span>
+                <p class="text-slate-300 text-[11px] leading-relaxed">${escapeHtml(s.assessment_criteria || 'Demonstrated high competence in deliverable execution.')}</p>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// TAB 6: MEMBER EVALUATIONS (PHASE-BASED ASSESSMENT WORKSPACE)
+function renderProjectEvaluationsTab(p) {
+  const isMgr = isEvaluator() || isEbAdmin();
+  const evals = p.evaluations || [];
+  const team = p.team || [];
+
+  return `
+    <div class="space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="text-lg font-bold text-white">Project-Based JC Skills Evaluation</h3>
+          <p class="text-xs text-slate-400">
+            Phase-specific evaluations using a 1–5 proficiency scale based on demonstrated evidence, deliverables, and performance.
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Select: Choose JC to Evaluate -->
+      <div class="p-4 rounded-2xl bg-[#0E142A] border border-white/10 flex flex-wrap items-center gap-3">
+        <span class="text-xs font-bold text-slate-300">Select Consultant to Evaluate:</span>
+        <div class="flex flex-wrap gap-2">
+          ${team.map(tm => {
+            const fullM = (window.appState.members || []).find(x => x.id === tm.member_id) || {};
+            return `
+              <button onclick="openEvaluateMemberModal('${p.id}', '${tm.member_id}')" class="px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600 text-indigo-200 hover:text-white border border-indigo-500/40 text-xs font-bold transition flex items-center gap-2 cursor-pointer">
+                <img src="${escapeHtml(fullM.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')}" class="w-4 h-4 rounded-full object-cover" />
+                <span>${escapeHtml(fullM.name || tm.name || 'JC')}</span>
+                <span>➔</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Evaluations History List -->
+      <div class="space-y-3.5">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Submitted Phase Evaluations (${evals.length})</h4>
+        
+        ${evals.length === 0 ? `
+          <div class="p-8 text-center rounded-2xl bg-[#0E142A] border border-white/10 text-slate-400 text-xs">
+            No evaluations submitted yet for this project. Managers can evaluate assigned consultants by selecting a JC above.
+          </div>
+        ` : evals.map(ev => {
+          const member = (window.appState.members || []).find(x => x.id === ev.member_id) || {};
+          const phase = (p.phases || []).find(ph => ph.id === ev.phase_id) || {};
+
+          return `
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-3">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                <div class="flex items-center gap-3">
+                  <img src="${escapeHtml(member.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')}" class="w-10 h-10 rounded-xl object-cover border border-white/10" />
+                  <div>
+                    <h4 class="text-sm font-bold text-white">${escapeHtml(member.name || 'Consultant')}</h4>
+                    <span class="text-xs text-indigo-400">Skill: <strong>${escapeHtml(ev.skill_name)}</strong> • Phase: <strong>${escapeHtml(phase.name || 'General')}</strong></span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div class="text-right">
+                    <span class="text-[10px] text-slate-400 font-mono block">Assessed Level</span>
+                    <span class="text-base font-black text-emerald-400 font-mono">${ev.assessed_level || 3} / 5</span>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">
+                    ${escapeHtml(ev.status || 'Submitted')}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Feedback & Evidence -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-2">
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Manager Written Feedback</span>
+                  <p class="text-slate-300 leading-relaxed">${escapeHtml(ev.feedback || 'No written feedback provided.')}</p>
+                </div>
+                <div class="p-3 rounded-xl bg-[#080C1D] border border-white/5 space-y-1">
+                  <span class="text-[10px] text-slate-400 uppercase font-mono block">Demonstrated Evidence</span>
+                  <p class="text-slate-300 leading-relaxed">${escapeHtml(ev.evidence || 'Demonstrated during deliverable execution.')}</p>
+                </div>
+              </div>
+
+              <div class="text-[10px] text-slate-500 flex justify-between pt-1">
+                <span>Evaluator: <strong>${escapeHtml(ev.evaluator_name || 'Project Manager')}</strong></span>
+                <span>Date: ${escapeHtml(ev.assessment_date || 'Recent')}</span>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// TAB 7: PERFORMANCE & SKILLS MATRIX
+function renderProjectMatrixTab(p) {
+  const team = p.team || [];
+  const skills = p.skills || [];
+  const evals = p.evaluations || [];
+
+  return `
+    <div class="space-y-5">
+      <div>
+        <h3 class="text-lg font-bold text-white">Project Skills Matrix</h3>
+        <p class="text-xs text-slate-400">
+          Visual matrix mapping assigned Junior Consultants against project-specific competency ratings.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-white/10 bg-[#0E142A] shadow-xl">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-[#080C1D] border-b border-white/10 text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+              <th class="p-4 sticky left-0 bg-[#080C1D] z-10">Consultant</th>
+              <th class="p-4">Role</th>
+              ${skills.map(s => `
+                <th class="p-4 text-center min-w-[130px]">
+                  <span class="block truncate max-w-[120px]">${escapeHtml(s.name)}</span>
+                  <span class="text-[9px] text-slate-400 font-normal">Target: ${s.expected_level || 3}/5</span>
+                </th>
+              `).join('')}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            ${team.map(tm => {
+              const fullM = (window.appState.members || []).find(x => x.id === tm.member_id) || {};
+              return `
+                <tr class="hover:bg-white/[0.02] transition">
+                  <td class="p-4 sticky left-0 bg-[#0E142A] z-10 flex items-center gap-2.5">
+                    <img src="${escapeHtml(fullM.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')}" class="w-8 h-8 rounded-full object-cover" />
+                    <div>
+                      <strong class="text-white block truncate text-[11px]">${escapeHtml(fullM.name || tm.name || 'JC')}</strong>
+                      <span class="text-[10px] text-slate-400">${escapeHtml(fullM.team || 'Consulting')}</span>
+                    </div>
+                  </td>
+                  <td class="p-4 text-slate-300 font-medium">
+                    ${escapeHtml(tm.role_in_project || 'Consultant')}
+                  </td>
+                  ${skills.map(s => {
+                    const isAssigned = (tm.assigned_skill_ids || []).includes(s.id);
+                    if (!isAssigned) {
+                      return `<td class="p-4 text-center text-slate-600 font-mono text-xs">—</td>`;
+                    }
+                    const ev = evals.find(e => e.member_id === tm.member_id && (e.skill_id === s.id || e.skill_name === s.name));
+                    if (ev) {
+                      return `
+                        <td class="p-4 text-center">
+                          <span class="inline-block px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono font-bold text-xs" title="${escapeHtml(ev.feedback || '')}">
+                            ${ev.assessed_level} / 5
+                          </span>
+                        </td>
+                      `;
+                    } else {
+                      return `
+                        <td class="p-4 text-center">
+                          <span class="inline-block px-2 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/20 font-mono">
+                            Pending
+                          </span>
+                        </td>
+                      `;
+                    }
+                  }).join('')}
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// TAB 8: ACTIVITY HISTORY
+function renderProjectHistoryTab(p) {
+  const history = p.history || [];
+
+  return `
+    <div class="space-y-5">
+      <div>
+        <h3 class="text-lg font-bold text-white">Project Activity &amp; Audit Trail</h3>
+        <p class="text-xs text-slate-400">
+          Timestamped log of status changes, phase validations, deliverable reviews, and competency evaluations.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#0E142A] border border-white/10 space-y-4">
+        ${history.map(item => `
+          <div class="flex items-start gap-3 pb-3 border-b border-white/5 last:border-0 last:pb-0 text-xs">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 shrink-0"></span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between">
+                <strong class="text-white">${escapeHtml(item.type || 'Event')}</strong>
+                <span class="text-[10px] font-mono text-slate-400">${escapeHtml(item.date || '')}</span>
+              </div>
+              <p class="text-slate-300 mt-0.5">${escapeHtml(item.description || '')}</p>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ----------------------------------------------------------------------------
+// 5. EVALUATION MODAL & INTERACTIVE SUBMISSION
+// ----------------------------------------------------------------------------
+function openEvaluateMemberModal(projectId, memberId) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p) return;
+  const m = (window.appState.members || []).find(x => x.id === memberId) || {};
+  const teamMember = (p.team || []).find(x => x.member_id === memberId) || {};
+
+  let modal = document.getElementById('evalModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'evalModal';
+    modal.className = "fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 overflow-y-auto";
+    document.body.appendChild(modal);
+  }
+
+  const skills = p.skills || [];
+  const phases = p.phases || [];
+
+  modal.innerHTML = `
+    <div class="relative w-full max-w-lg rounded-2xl bg-[#0E142A] border border-white/10 p-6 shadow-2xl space-y-4 text-slate-200 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div>
+          <h3 class="text-base font-bold text-white">Evaluate Consultant Competency</h3>
+          <span class="text-slate-400 text-[11px]">${escapeHtml(m.name || 'JC')} • ${escapeHtml(teamMember.role_in_project || 'Consultant')}</span>
+        </div>
+        <button onclick="document.getElementById('evalModal').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Select Competency to Assess</label>
+          <select id="eval-skill-select" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            ${skills.map(s => `<option value="${s.id}">${escapeHtml(s.name)} (Target: ${s.expected_level || 3}/5)</option>`).join('')}
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Related Project Phase</label>
+          <select id="eval-phase-select" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            ${phases.map(ph => `<option value="${ph.id}">${escapeHtml(ph.name)}</option>`).join('')}
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Assessed Level (1–5 Standardized Scale)</label>
+          <div class="grid grid-cols-5 gap-2 text-center">
+            ${[1, 2, 3, 4, 5].map(lvl => `
+              <label class="p-2 rounded-xl bg-[#080C1D] border border-white/10 hover:border-indigo-500/50 cursor-pointer flex flex-col items-center">
+                <input type="radio" name="eval_level" value="${lvl}" ${lvl === 4 ? 'checked' : ''} class="mb-1" />
+                <span class="font-bold text-white">${lvl}</span>
+                <span class="text-[8px] text-slate-400">${lvl === 1 ? 'Beginner' : lvl === 2 ? 'Basic' : lvl === 3 ? 'Interm.' : lvl === 4 ? 'Advanced' : 'Expert'}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Manager Constructive Feedback</label>
+          <textarea id="eval-feedback-text" rows="3" placeholder="Provide specific feedback on performance, strengths, and areas to calibrate..." class="w-full p-2.5 rounded-xl bg-[#080C1D] border border-white/10 text-white placeholder:text-slate-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Supporting Evidence / Deliverable</label>
+          <input type="text" id="eval-evidence-text" placeholder="E.g., Approved survey deliverable, zero logic errors..." class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white placeholder:text-slate-500" />
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex items-center justify-end gap-2">
+        <button onclick="document.getElementById('evalModal').classList.add('hidden')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold">
+          Cancel
+        </button>
+        <button onclick="submitEvaluationRecord('${projectId}', '${memberId}')" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-md cursor-pointer">
+          Save &amp; Submit Evaluation
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
+
+function submitEvaluationRecord(projectId, memberId) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p) return;
+  const skillId = document.getElementById('eval-skill-select').value;
+  const phaseId = document.getElementById('eval-phase-select').value;
+  const levelRadio = document.querySelector('input[name="eval_level"]:checked');
+  const level = levelRadio ? parseInt(levelRadio.value, 10) : 3;
+  const feedback = document.getElementById('eval-feedback-text').value.trim();
+  const evidence = document.getElementById('eval-evidence-text').value.trim();
+
+  const skill = (p.skills || []).find(s => s.id === skillId) || { name: 'General Competency', category: 'Consulting Skills' };
+  const user = window.currentAuthUser;
+  const evaluatorName = user ? user.name : (p.pm_name || 'Project Manager');
+  const evaluatorId = user ? user.targetId : (p.pm_id || 'mm_3');
+
+  if (!p.evaluations) p.evaluations = [];
+
+  // Update or append evaluation
+  const existingIdx = p.evaluations.findIndex(e => e.member_id === memberId && (e.skill_id === skillId || e.skill_name === skill.name));
+  const newRecord = {
+    phase_id: phaseId,
+    member_id: memberId,
+    evaluator_id: evaluatorId,
+    evaluator_name: evaluatorName,
+    skill_id: skillId,
+    skill_name: skill.name,
+    category: skill.category || 'Consulting Skills',
+    expected_level: skill.expected_level || 3,
+    assessed_level: level,
+    feedback: feedback || 'Performance evaluated by manager.',
+    evidence: evidence || 'Demonstrated during project execution.',
+    assessment_date: new Date().toISOString().split('T')[0],
+    status: 'Submitted'
+  };
+
+  if (existingIdx !== -1) {
+    p.evaluations[existingIdx] = newRecord;
+  } else {
+    p.evaluations.push(newRecord);
+  }
+
+  // Add history event
+  if (!p.history) p.history = [];
+  p.history.unshift({
+    date: new Date().toISOString().split('T')[0],
+    type: 'Skill Evaluation',
+    description: `${evaluatorName} evaluated ${skill.name} (${level}/5) for ${memberId}.`
+  });
+
+  document.getElementById('evalModal').classList.add('hidden');
+  showToast(`⭐ Evaluated ${skill.name}: Level ${level}/5 submitted!`);
+  
+  // Re-render subtab
+  switchProjectSubTab(currentProjectSubTab);
+}
+
+// ----------------------------------------------------------------------------
+// 6. PHASE & TASK STATUS MUTATIONS
+// ----------------------------------------------------------------------------
+function changePhaseStatus(projectId, phaseId, newStatus) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p || !p.phases) return;
+  const ph = p.phases.find(x => x.id === phaseId);
+  if (ph) {
+    ph.status = newStatus;
+    if (newStatus === 'Completed') {
+      ph.completed_at = new Date().toISOString().split('T')[0];
+    }
+    recalculateProjectProgress(p);
+    showToast(`Phase "${ph.name}" marked ${newStatus}.`);
+    switchProjectSubTab('lifecycle');
+  }
+}
+
+function validatePhaseCompletion(projectId, phaseId) {
+  changePhaseStatus(projectId, phaseId, 'Completed');
+}
+
+function updateTaskStatus(projectId, taskId, newStatus) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p || !p.tasks) return;
+  const t = p.tasks.find(x => x.id === taskId);
+  if (t) {
+    t.status = newStatus;
+    showToast(`Task "${t.title}" status: ${newStatus}`);
+    switchProjectSubTab('tasks');
+  }
+}
+
+function promptSubmitDeliverable(projectId, taskId) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p || !p.tasks) return;
+  const t = p.tasks.find(x => x.id === taskId);
+  if (!t) return;
+
+  const url = prompt("Enter deliverable document link (Google Drive, Figma, Sphinx, etc.):", t.deliverable_url || "");
+  if (url === null) return;
+  const notes = prompt("Enter submission summary notes:", t.deliverable_notes || "");
+  
+  t.deliverable_url = url;
+  t.deliverable_notes = notes || "";
+  t.status = "Submitted";
+
+  showToast("Deliverable submitted for manager review!");
+  switchProjectSubTab('tasks');
+}
+
+function promptManagerFeedback(projectId, taskId) {
+  const p = (window.appState.projects || []).find(x => x.id === projectId);
+  if (!p || !p.tasks) return;
+  const t = p.tasks.find(x => x.id === taskId);
+  if (!t) return;
+
+  const fb = prompt("Enter manager review feedback:", t.reviewer_feedback || "");
+  if (fb === null) return;
+  const approve = confirm("Do you approve and validate this deliverable?");
+
+  t.reviewer_feedback = fb;
+  if (approve) {
+    t.status = "Validated";
+    t.validated_at = new Date().toISOString().split('T')[0];
+    t.validated_by = (window.currentAuthUser ? window.currentAuthUser.name : p.pm_name) || "Manager";
+  }
+
+  showToast(approve ? "Deliverable approved and validated!" : "Feedback saved.");
+  switchProjectSubTab('tasks');
+}
+
+function recalculateProjectProgress(p) {
+  if (!p.phases || p.phases.length === 0) return;
+  const completed = p.phases.filter(ph => ph.status === 'Completed').length;
+  const inProgress = p.phases.filter(ph => ph.status === 'In Progress').length;
+  const pct = Math.min(100, Math.round(((completed + (inProgress * 0.4)) / p.phases.length) * 100));
+  p.overall_progress = pct;
+}
+
+// ----------------------------------------------------------------------------
+// 7. CREATE PROJECT MODAL
+// ----------------------------------------------------------------------------
+function openCreateProjectModal() {
+  let modal = document.getElementById('createProjectModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'createProjectModal';
+    modal.className = "fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 overflow-y-auto";
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div class="relative w-full max-w-xl rounded-2xl bg-[#0E142A] border border-white/10 p-6 shadow-2xl space-y-4 text-slate-200 text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div>
+          <h3 class="text-base font-bold text-white">Create New TBS JE Project</h3>
+          <span class="text-slate-400 text-[11px]">Configure project lifecycle, team allocation, and skills</span>
+        </div>
+        <button onclick="document.getElementById('createProjectModal').classList.add('hidden')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="sm:col-span-2">
+          <label class="block text-slate-300 font-bold mb-1">Project Name</label>
+          <input type="text" id="new-proj-name" placeholder="Ex: FinTech Market Expansion & Feasibility Study" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white" />
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Category</label>
+          <select id="new-proj-cat" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            <option value="Market Research">Market Research</option>
+            <option value="Marketing & Communication">Marketing &amp; Communication</option>
+            <option value="Quality & Audit">Quality &amp; Audit</option>
+            <option value="Business Development">Business Development</option>
+            <option value="Financial Advisory">Financial Advisory</option>
+            <option value="Digital Transformation">Digital Transformation</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Department</label>
+          <select id="new-proj-dept" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            <option value="Hexapro 1">Hexapro 1 (Consulting)</option>
+            <option value="Hexapro 2">Hexapro 2 (Consulting)</option>
+            <option value="Hexacom">Hexacom (Digital &amp; IT)</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales &amp; Partnerships</option>
+            <option value="Micro Quality Team 1">Micro Quality Team</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Client Name</label>
+          <input type="text" id="new-proj-client" placeholder="Ex: InnoTech Solutions" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white" />
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Client Confidentiality</label>
+          <select id="new-proj-conf" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            <option value="true">Publicly Authorized (Visible in Portfolios)</option>
+            <option value="false">Internal NDA (Masked Client Name)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Target Delivery Date</label>
+          <input type="date" id="new-proj-deadline" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white" />
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Lifecycle Template</label>
+          <select id="new-proj-template" class="w-full px-3 py-2 rounded-xl bg-[#080C1D] border border-white/10 text-white">
+            <option value="market_research">Market Research (8 Standard Phases)</option>
+            <option value="marketing">Marketing Campaign (6 Phases)</option>
+            <option value="audit">Quality Audit (5 Phases)</option>
+            <option value="custom">Blank Custom Lifecycle</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block text-slate-300 font-bold mb-1">Scope &amp; Objectives</label>
+          <textarea id="new-proj-desc" rows="2" placeholder="Brief summary of client challenge and mandate objectives..." class="w-full p-2.5 rounded-xl bg-[#080C1D] border border-white/10 text-white"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex items-center justify-end gap-2">
+        <button onclick="document.getElementById('createProjectModal').classList.add('hidden')" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold">
+          Cancel
+        </button>
+        <button onclick="saveNewProjectFromModal()" class="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-md cursor-pointer">
+          Create Project
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
+
+function saveNewProjectFromModal() {
+  const name = document.getElementById('new-proj-name').value.trim();
+  if (!name) return alert("Please enter project name.");
+  const cat = document.getElementById('new-proj-cat').value;
+  const dept = document.getElementById('new-proj-dept').value;
+  const client = document.getElementById('new-proj-client').value.trim() || 'Internal Client';
+  const pubAuth = document.getElementById('new-proj-conf').value === 'true';
+  const deadline = document.getElementById('new-proj-deadline').value || '2026-12-30';
+  const template = document.getElementById('new-proj-template').value;
+  const desc = document.getElementById('new-proj-desc').value.trim();
+
+  const id = 'proj_' + Date.now();
+  const code = 'TBS-2026-' + cat.slice(0, 3).toUpperCase() + Math.floor(10 + Math.random() * 89);
+
+  let phases = [];
+  if (template === 'market_research') {
+    phases = [
+      { id: 'p1_' + id, phase_order: 1, name: 'Research Briefing', status: 'In Progress', expected_deliverables: 'Project Charter', completion_criteria: 'Client sign-off' },
+      { id: 'p2_' + id, phase_order: 2, name: 'Research Design', status: 'Not Started', expected_deliverables: 'Methodology Matrix', completion_criteria: 'Sample validation' },
+      { id: 'p3_' + id, phase_order: 3, name: 'Questionnaire Development', status: 'Not Started', expected_deliverables: 'Survey Script in Sphinx', completion_criteria: 'Pilot test' },
+      { id: 'p4_' + id, phase_order: 4, name: 'Data Collection', status: 'Not Started', expected_deliverables: 'Verified respondent datasets', completion_criteria: 'Quotas reached' },
+      { id: 'p5_' + id, phase_order: 5, name: 'Data Analysis', status: 'Not Started', expected_deliverables: 'SPSS Analysis & Cross-Tabs', completion_criteria: 'Statistical sign-off' },
+      { id: 'p6_' + id, phase_order: 6, name: 'Report Preparation', status: 'Not Started', expected_deliverables: 'Executive Slide Deck', completion_criteria: 'Draft approval' },
+      { id: 'p7_' + id, phase_order: 7, name: 'Quality Review', status: 'Not Started', expected_deliverables: 'ISO Quality Audit Sign-Off', completion_criteria: 'Quality Director approval' },
+      { id: 'p8_' + id, phase_order: 8, name: 'Final Delivery', status: 'Not Started', expected_deliverables: 'Client Handover', completion_criteria: 'Client acceptance' }
+    ];
+  } else {
+    phases = [
+      { id: 'p1_' + id, phase_order: 1, name: 'Scope & Discovery', status: 'In Progress', expected_deliverables: 'Charter', completion_criteria: 'Director approval' },
+      { id: 'p2_' + id, phase_order: 2, name: 'Core Execution', status: 'Not Started', expected_deliverables: 'Main Deliverables', completion_criteria: 'Manager review' },
+      { id: 'p3_' + id, phase_order: 3, name: 'Quality Review & Handover', status: 'Not Started', expected_deliverables: 'Final Package', completion_criteria: 'Client Sign-off' }
+    ];
+  }
+
+  const user = window.currentAuthUser;
+  const pmName = user ? user.name : "Assigned Manager";
+  const pmId = user ? user.targetId : "mm_1";
+
+  const newProj = {
+    id: id,
+    code: code,
+    name: name,
+    category: cat,
+    department: dept,
+    pm_id: pmId,
+    pm_name: pmName,
+    director_id: "eb_dir_studies",
+    director_name: "Directorate",
+    client_name: client,
+    client_public_authorized: pubAuth,
+    priority: "High",
+    confidentiality: pubAuth ? "Standard" : "Confidential",
+    status: "Awaiting Kickoff",
+    start_date: new Date().toISOString().split('T')[0],
+    expected_delivery_date: deadline,
+    overall_progress: 10,
+    description: desc,
+    phases: phases,
+    skills: [],
+    team: [],
+    tasks: [],
+    deliverables: [],
+    evaluations: [],
+    history: [{ date: new Date().toISOString().split('T')[0], type: 'Created', description: `Project ${code} created by ${pmName}.` }]
+  };
+
+  if (!window.appState.projects) window.appState.projects = [];
+  window.appState.projects.unshift(newProj);
+
+  document.getElementById('createProjectModal').classList.add('hidden');
+  showToast(`🎉 Project ${code} created successfully!`);
+  renderProjectsTab();
+}
+  </script>
+
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#080C1D]/95 backdrop-blur-xl border-t border-white/10 px-2 py-2 flex items-center justify-around text-[10px] text-slate-400 shadow-2xl">
+    <button onclick="setMainTab('player')" class="flex flex-col items-center gap-1 p-1 hover:text-white">
+      <span class="text-base">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button onclick="setMainTab('manager')" class="flex flex-col items-center gap-1 p-1 hover:text-white">
+      <span class="text-base">💼</span>
+      <span>Projects</span>
+    </button>
+    <button onclick="setMainTab('skills')" class="flex flex-col items-center gap-1 p-1 hover:text-white">
+      <span class="text-base">🎯</span>
+      <span>Radar</span>
+    </button>
+    <button onclick="setMainTab('admin')" class="flex flex-col items-center gap-1 p-1 hover:text-white">
+      <span class="text-base">👥</span>
+      <span>Directory</span>
+    </button>
+    <button onclick="openQrBadgeModal()" class="flex flex-col items-center gap-1 p-1 text-indigo-400 hover:text-white font-bold">
+      <span class="text-base">🪪</span>
+      <span>Passport</span>
+    </button>
+  </div>
+
 </body>
 </html>
